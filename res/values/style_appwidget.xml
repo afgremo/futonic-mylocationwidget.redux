@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<style name="AppWidgetClassic">
+	    <item name="android:background">@drawable/appwidget_bg</item>
+	</style>
+    
+	<style name="AWCButton">
+	    <item name="android:scaleType">centerInside</item>
+	</style>
+	<style name="AWCButton.Left">
+	    <item name="android:background">@drawable/appwidget_button_left</item>
+	</style>
+	
+	<style name="AWCButton.Center">
+	    <item name="android:background">@drawable/appwidget_button_center</item>
+	</style>
+	
+	<style name="AWCButton.Right">
+	    <item name="android:background">@drawable/appwidget_button_right</item>
+	</style>
+	
+	<style name="AWCVerticalDivider">
+	    <item name="android:layout_width">@dimen/hairline</item>
+	    <item name="android:layout_height">fill_parent</item>
+	    <item name="android:background">@drawable/appwidget_divider</item>
+	</style>
+	
+	<style name="AWCText">
+	    <item name="android:textColor">@color/appwidget_text</item>
+	    <item name="android:textSize">13sp</item>
+	    <item name="android:singleLine">false</item>
+	    <item name="android:fadingEdge">horizontal</item>
+	    <item name="android:fadingEdgeLength">10dp</item>
+	    <item name="android:ellipsize">none</item>
+	</style>
+
+	<style name="AWCText.Important">
+	    <item name="android:textStyle">bold</item>
+	    <item name="android:textSize">14sp</item>
+	    <item name="android:singleLine">true</item>
+	</style>
+</resources>

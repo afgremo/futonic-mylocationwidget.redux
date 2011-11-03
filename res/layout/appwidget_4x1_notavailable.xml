@@ -3,27 +3,20 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="horizontal"
-    android:background="@drawable/appwidget_bg">
+    style="@style/AppWidgetClassic">
 
-    <ImageButton
-        android:id="@+id/btnAction"
-        android:layout_width="0dip"
+    <ImageButton android:id="@+id/ActionImageButton"
+        style="@style/AWCButton.Left"
+        android:layout_width="@dimen/use_weight"
         android:layout_weight="1"
         android:layout_height="fill_parent"
-        android:src="@drawable/btn_search"
-        android:background="@drawable/appwidget_button_left"
-        android:scaleType="centerInside"
-        />
+        android:src="@drawable/ic_tab_refresh_selected" />
         
-	<ImageView
-        android:layout_width="1dip"
-        android:layout_height="fill_parent"
-        android:background="@drawable/appwidget_divider"
-        />
+	<ImageView style="@style/AWCVerticalDivider" />
         
-	<LinearLayout
-        android:id="@+id/panelInformation"
-        android:layout_width="0dip"
+	<LinearLayout android:id="@+id/DetailButtonLinearLayout"
+	    style="@style/AWCButton.Right"
+        android:layout_width="@dimen/use_weight"
         android:layout_weight="5"
         android:layout_height="fill_parent"
         android:orientation="vertical"
@@ -31,33 +24,17 @@
         android:clickable="true"
         android:focusable="true"
         android:paddingLeft="8dip"
-        android:paddingRight="8dip"
-        android:background="@drawable/appwidget_button_right"
-        >
+        android:paddingRight="8dip">
 
-        <TextView
-            android:id="@+id/txtTitle"
+        <TextView android:id="@+id/TitleTextView"
+            style="@style/AWCText.Important"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/appwidget_text"
-            android:textStyle="bold"
-            android:textSize="14sp"
-            android:singleLine="true"
-            android:fadingEdge="horizontal"
-            android:fadingEdgeLength="10dip"
-            android:ellipsize="none"
-            />
+            android:layout_height="wrap_content" />
 
-        <TextView
-            android:id="@+id/txtDescription"
+        <TextView android:id="@+id/DescriptionTextView"
+            style="@style/AWCText"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/appwidget_text"
-            android:textSize="13sp"
-            android:singleLine="false"
-            android:fadingEdge="horizontal"
-            android:fadingEdgeLength="10dip"
-            android:ellipsize="none"
-            />
+            android:layout_height="wrap_content" />
+        
     </LinearLayout>
 </LinearLayout>

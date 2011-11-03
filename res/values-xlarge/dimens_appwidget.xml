@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!-- AppWidget Dimensions (tablet) -->
+	<dimen name="AppWidget_FullScreenWidth">@dimen/AppWidget_8Cell</dimen>
+	<dimen name="AppWidget_FullScreenHeight">@dimen/AppWidget_7Cell</dimen>
+</resources>
