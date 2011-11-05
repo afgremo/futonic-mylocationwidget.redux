@@ -1,6 +1,5 @@
-package com.futonredemption.mlcomp;
+package com.futonredemption.mylocation;
 
-import com.futonredemption.mylocation.Constants;
 
 import android.app.backup.BackupAgentHelper;
 import android.app.backup.SharedPreferencesBackupHelper;

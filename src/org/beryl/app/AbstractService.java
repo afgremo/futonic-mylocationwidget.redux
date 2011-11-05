@@ -16,8 +16,7 @@ public abstract class AbstractService extends Service {
 	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		handleOnStartCommand(intent, flags, startId);
-		return START_STICKY;
+		return handleOnStartCommand(intent, flags, startId);
 	}
 	
 	@Override
