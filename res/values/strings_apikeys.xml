@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="nolocal_google_map_key">@string/nolocal_google_map_key_nonproduction</string>
-    <string name="nolocal_google_map_key_nonproduction">01rg6-5BkSuVsdkNTMg9nypUyLArHSYo9x7jFpw</string>
+    <string name="nolocal_google_map_key">@string/nolocal_google_map_key_debug_jewel</string>
     <string name="nolocal_google_map_key_production">0h6yRm2Q6c_8DaHmYxuEC9lVm30NVfYtmmiz9hw</string>
+    <string name="nolocal_google_map_key_debug_jewel">01rg6-5BkSuWOZmqL1396Y_2KhqvpterwTP9GIA</string>
 </resources>

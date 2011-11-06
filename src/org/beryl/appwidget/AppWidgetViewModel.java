@@ -1,7 +1,8 @@
 package org.beryl.appwidget;
 
+import android.content.Context;
 import android.widget.RemoteViews;
 
 public interface AppWidgetViewModel {
-	void onUpdate(RemoteViews views);
+	RemoteViews createViews(final Context context);
 }

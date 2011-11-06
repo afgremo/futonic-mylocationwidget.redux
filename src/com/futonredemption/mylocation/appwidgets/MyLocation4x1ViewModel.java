@@ -2,16 +2,22 @@ package com.futonredemption.mylocation.appwidgets;
 
 import org.beryl.appwidget.AppWidgetViewModel;
 
+import com.futonredemption.mylocation.R;
+
+import android.content.Context;
 import android.widget.RemoteViews;
 
 public class MyLocation4x1ViewModel implements AppWidgetViewModel {
 
-	public String Line1;
-	public String Line2;
+	public CharSequence Title;
+	public CharSequence Description;
 	
-	public void onUpdate(RemoteViews views) {
-		// TODO Auto-generated method stub
-
+	public RemoteViews createViews(Context context) {
+		final RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.appwidget_4x1_loading);
+		
+		views.setTextViewText(R.id.TitleTextView, Title);
+		views.setTextViewText(R.id.DescriptionTextView, Description);
+		
+		return views;
 	}
-
 }

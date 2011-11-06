@@ -3,16 +3,17 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="horizontal"
-    style="@style/AppWidgetClassic">
-    
-    <ImageButton android:id="@+id/ActionImageButton"
-        style="@style/AWCButton.Left"
+    style="@style/AppWidgetClassic.Clickable">
+
+    <ProgressBar android:id="@+id/WorkingIndicatorProgressBar"
         android:layout_width="@dimen/use_weight"
         android:layout_weight="1"
         android:layout_height="fill_parent"
-        android:src="@drawable/ic_tab_cancel_selected" />
-    
-	<ImageView style="@style/AWCVerticalDivider" />
+        android:indeterminate="true"
+        android:indeterminateBehavior="cycle"
+        android:padding="8dp"
+        
+        style="@android:style/Widget.ProgressBar.Inverse" />
         
 	<LinearLayout android:id="@+id/DetailLinearLayout"
         android:layout_width="@dimen/use_weight"

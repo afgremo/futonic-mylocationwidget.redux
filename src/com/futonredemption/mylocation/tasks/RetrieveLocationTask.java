@@ -4,12 +4,14 @@ import org.beryl.diagnostics.Logger;
 import org.beryl.location.LocationMonitor;
 import org.beryl.location.ProviderSelectors;
 
+import com.futonredemption.mylocation.MyLocationBundle;
+
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
 
-public class RetrieveLocationTask extends EventBasedContextAwareCallable<Location> {
+public class RetrieveLocationTask extends EventBasedContextAwareCallable<MyLocationBundle> {
 
 	public RetrieveLocationTask(Context context) {
 		super(context);
@@ -19,19 +21,16 @@ public class RetrieveLocationTask extends EventBasedContextAwareCallable<Locatio
 	
 	@Override
 	protected void onBeginTask() {
-		Logger.w("Begin Location Retrieve");
 		monitor = new LocationMonitor(context);
 		final BestLocationListener bestLocationListener = new BestLocationListener(monitor);
 
 		monitor.setProviderSelector(ProviderSelectors.AllFree);
 		monitor.addListener(bestLocationListener);
 		monitor.startListening();
-		Logger.w("Listening");
 	};
 
 	@Override
 	protected void onFinishTask() {
-		Logger.w("Finishing");
 		if(monitor != null) {
 			monitor.stopListening();
 		}
@@ -72,7 +71,7 @@ public class RetrieveLocationTask extends EventBasedContextAwareCallable<Locatio
 			}
 			
 			if(location.getAccuracy() <= DESIRED_ACCURACY) {
-				finishWithResult(getLocation());
+				finishWithResult(new MyLocationBundle(getLocation()));
 			}
 		}
 
