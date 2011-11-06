@@ -23,4 +23,13 @@ public class MyLocationBundle {
 	public Address getAddress() {
 		return address;
 	}
+	
+	public boolean hasLocation() {
+		return location != null;
+	}
+	
+	public boolean hasAddress() {
+		return address != null;
+	}
+	
 }

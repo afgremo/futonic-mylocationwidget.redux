@@ -11,8 +11,7 @@
         android:layout_height="fill_parent"
         android:indeterminate="true"
         android:indeterminateBehavior="cycle"
-        android:padding="8dp"
-        
+        android:layout_margin="8dp"
         style="@android:style/Widget.ProgressBar.Inverse" />
         
 	<LinearLayout android:id="@+id/DetailLinearLayout"

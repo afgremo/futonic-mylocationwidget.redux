@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">My Location</string>
-    <string name="my_location">My Location</string>
+    <string name="coordinates">Coordinates</string>
+    <string name="locating">Locating</string>
+    <string name="finding_coordinates">Finding Coordinates...</string>
 </resources>
