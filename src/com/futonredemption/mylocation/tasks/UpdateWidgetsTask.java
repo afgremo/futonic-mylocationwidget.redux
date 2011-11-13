@@ -9,37 +9,39 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.widget.RemoteViews;
 
-import com.futonredemption.mylocation.BundleToViewModelAdapter;
-import com.futonredemption.mylocation.MyLocationBundle;
+import com.futonredemption.mylocation.DataToViewModelAdapter;
+import com.futonredemption.mylocation.MyLocationRetrievalState;
 import com.futonredemption.mylocation.appwidgets.AppWidgetProvider4x1;
-import com.futonredemption.mylocation.appwidgets.MyLocation4x1ViewModel;
-import com.futonredemption.mylocation.appwidgets.MyLocationViewModel;
+import com.futonredemption.mylocation.appwidgets.viewmodels.IMyLocationAppWidgetViewModel;
+import com.futonredemption.mylocation.appwidgets.viewmodels.IMyLocationStateViewModelSelectables;
+import com.futonredemption.mylocation.appwidgets.viewmodels.ViewModelStateSelector;
 
 public class UpdateWidgetsTask extends AbstractMyLocationTask {
 
-	public UpdateWidgetsTask(Context context, Future<MyLocationBundle> bundle) {
-		super(context, bundle);
+	public UpdateWidgetsTask(Context context, MyLocationRetrievalState state) {
+		super(context, state);
 	}
 	
+	public UpdateWidgetsTask(Context context, Future<MyLocationRetrievalState> state) {
+		super(context, state);
+	}
+
 	@Override
-	protected void appendLocationData(MyLocationBundle bundle) {
+	protected void loadData(MyLocationRetrievalState state) {
 		Logger.i("Update Widgets");
-		final BundleToViewModelAdapter adapter = new BundleToViewModelAdapter(context, bundle);
+		final DataToViewModelAdapter adapter = new DataToViewModelAdapter(context, state);
 		updateAllWidgets(adapter);
 	}
-	@Override
-	protected void onEmptyLocation() {
-		final BundleToViewModelAdapter adapter = new BundleToViewModelAdapter(context, new MyLocationBundle(null));
-		updateAllWidgets(adapter);
-	}
-
-	private void updateAllWidgets(BundleToViewModelAdapter adapter) {
+	
+	private void updateAllWidgets(DataToViewModelAdapter adapter) {
 		final AppWidgetManager manager = AppWidgetManager.getInstance(context);
-		final MyLocation4x1ViewModel vm4x1 = new MyLocation4x1ViewModel();
-		updateWidgets(manager, AppWidgetProvider4x1.class, vm4x1, adapter);
+		updateWidgets(manager, AppWidgetProvider4x1.class, AppWidgetProvider4x1.ViewModelSelectables, adapter);
 	}
 
-	private void updateWidgets(AppWidgetManager manager, Class<?> clazz, MyLocationViewModel vm, BundleToViewModelAdapter adapter) {
+	private void updateWidgets(AppWidgetManager manager, Class<?> clazz,
+			IMyLocationStateViewModelSelectables selectables, DataToViewModelAdapter adapter) {
+		ViewModelStateSelector selector = new ViewModelStateSelector();
+		IMyLocationAppWidgetViewModel vm = selector.getViewModel(adapter, selectables);
 		final int[] ids = manager.getAppWidgetIds(new ComponentName(context, clazz));
 		vm.fromAdapter(adapter);
 		final RemoteViews views = vm.createViews(context);

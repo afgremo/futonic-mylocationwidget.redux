@@ -11,7 +11,7 @@ public class WatchdogTimer implements Runnable {
 	Callable<MyLocationBundle> c = new Callable<MyLocationBundle>() {
 
 		public MyLocationBundle call() throws Exception {
-			MyLocationBundle bundle = new MyLocationBundle(null);
+			MyLocationBundle bundle = new MyLocationBundle();
 			try {
 				Thread.sleep(5000);
 			} catch(InterruptedException ex) {

@@ -1,11 +1,15 @@
 package com.futonredemption.mylocation.appwidgets;
 
+import com.futonredemption.mylocation.appwidgets.viewmodels.IMyLocationAppWidgetViewModel;
+import com.futonredemption.mylocation.appwidgets.viewmodels.IMyLocationStateViewModelSelectables;
+import com.futonredemption.mylocation.appwidgets.viewmodels.MyLocation4x1AvailableViewModel;
+import com.futonredemption.mylocation.appwidgets.viewmodels.MyLocation4x1ErrorViewModel;
+import com.futonredemption.mylocation.appwidgets.viewmodels.MyLocation4x1LoadingViewModel;
 import com.futonredemption.mylocation.services.WidgetUpdateService;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
-import android.content.Intent;
 
 public class AppWidgetProvider4x1 extends AppWidgetProvider {
 
@@ -13,8 +17,22 @@ public class AppWidgetProvider4x1 extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
 		
-		Intent intent = new Intent(context, WidgetUpdateService.class);
-		intent.putExtra("method", "FullUpdate");
-		context.startService(intent);
+		WidgetUpdateService.beginFullUpdate(context);
 	}
+	
+	
+	public static IMyLocationStateViewModelSelectables ViewModelSelectables = new IMyLocationStateViewModelSelectables() {
+
+		public IMyLocationAppWidgetViewModel getAvailable() {
+			return new MyLocation4x1AvailableViewModel();
+		}
+
+		public IMyLocationAppWidgetViewModel getError() {
+			return new MyLocation4x1ErrorViewModel();
+		}
+
+		public IMyLocationAppWidgetViewModel getLoading() {
+			return new MyLocation4x1LoadingViewModel();
+		}
+	};
 }

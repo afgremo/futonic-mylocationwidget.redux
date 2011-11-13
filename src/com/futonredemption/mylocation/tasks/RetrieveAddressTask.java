@@ -11,31 +11,39 @@ import android.location.Geocoder;
 import android.location.Location;
 
 import com.futonredemption.mylocation.MyLocationBundle;
+import com.futonredemption.mylocation.MyLocationRetrievalState;
 
 public class RetrieveAddressTask extends AbstractMyLocationTask {
 
 	private static final int NUM_ATTEMPTS = 4;
 	
-	Future<Location> futureLocation = null;
-	public RetrieveAddressTask(Context context, Future<MyLocationBundle> bundle) {
-		super(context, bundle);
+	public RetrieveAddressTask(Context context, MyLocationRetrievalState state) {
+		super(context, state);
+	}
+	
+	public RetrieveAddressTask(Context context, Future<MyLocationRetrievalState> state) {
+		super(context, state);
 	}
 
 	@Override
-	protected void appendLocationData(MyLocationBundle bundle) {
-		final Location location = bundle.getLocation();
-		try {
-			Logger.w("Starting address finding.");
-			final Geocoder coder = new Geocoder(context);
-			Address address = null;
-			
-			for(int i = 0; i < NUM_ATTEMPTS && address == null; i++) {
-				address = tryGetAddress(coder, location);
+	protected void loadData(MyLocationRetrievalState state) {
+		final MyLocationBundle bundle = state.bundle;
+		
+		if(bundle.hasLocation()) {
+			final Location location = bundle.getLocation();
+			try {
+				Logger.w("Starting address finding.");
+				final Geocoder coder = new Geocoder(context);
+				Address address = null;
+				
+				for(int i = 0; i < NUM_ATTEMPTS && address == null; i++) {
+					address = tryGetAddress(coder, location);
+				}
+				bundle.setAddress(address);
+			} finally {
+				Logger.w("Address Finishing: ");
+				Logger.w(bundle.getAddress().toString());
 			}
-			bundle.setAddress(address);
-		} finally {
-			Logger.w("Address Finishing: ");
-			Logger.w(bundle.getAddress().toString());
 		}
 	}
 

@@ -34,6 +34,7 @@ public abstract class EventBasedContextAwareCallable<V> extends ContextAwareCall
 			Logger.e(e);
 		} finally {
 			onFinishTask();
+			looper.quit();
 		}
 		
 		return this.result;

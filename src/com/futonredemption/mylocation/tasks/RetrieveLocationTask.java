@@ -1,32 +1,45 @@
 package com.futonredemption.mylocation.tasks;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
 import org.beryl.diagnostics.Logger;
 import org.beryl.location.LocationMonitor;
 import org.beryl.location.ProviderSelectors;
 
-import com.futonredemption.mylocation.MyLocationBundle;
+import com.futonredemption.mylocation.MyLocationRetrievalState;
 
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
 
-public class RetrieveLocationTask extends EventBasedContextAwareCallable<MyLocationBundle> {
+public class RetrieveLocationTask extends EventBasedContextAwareCallable<MyLocationRetrievalState> {
 
-	public RetrieveLocationTask(Context context) {
+	final Future<MyLocationRetrievalState> future;
+	public RetrieveLocationTask(Context context, Future<MyLocationRetrievalState> future) {
 		super(context);
+		this.future = future;
 	}
-	
+
 	LocationMonitor monitor = null;
 	
 	@Override
 	protected void onBeginTask() {
-		monitor = new LocationMonitor(context);
-		final BestLocationListener bestLocationListener = new BestLocationListener(monitor);
+		try {
+			MyLocationRetrievalState state = future.get();
+			this.result = state;
+			monitor = new LocationMonitor(context);
+			final BestLocationListener bestLocationListener = new BestLocationListener(monitor);
 
-		monitor.setProviderSelector(ProviderSelectors.AllFree);
-		monitor.addListener(bestLocationListener);
-		monitor.startListening();
+			monitor.setProviderSelector(ProviderSelectors.AllFree);
+			monitor.addListener(bestLocationListener);
+			monitor.startListening();
+		} catch (InterruptedException e) {
+			finishWithError(e);
+		} catch (ExecutionException e) {
+			finishWithError(e);
+		}
 	};
 
 	@Override
@@ -71,7 +84,8 @@ public class RetrieveLocationTask extends EventBasedContextAwareCallable<MyLocat
 			}
 			
 			if(location.getAccuracy() <= DESIRED_ACCURACY) {
-				finishWithResult(new MyLocationBundle(getLocation()));
+				result.bundle.setLocation(getLocation());
+				finishWithResult(result);
 			}
 		}
 

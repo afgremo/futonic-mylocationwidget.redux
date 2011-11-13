@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="coordinates">Coordinates</string>
+    <string name="address">Address</string>
     <string name="locating">Locating</string>
-    <string name="finding_coordinates">Finding Coordinates...</string>
+    <string name="finding_location">Finding Location...</string>
+    <string name="unknown">Unknown</string>
+    <string name="error">error</string>
 </resources>
