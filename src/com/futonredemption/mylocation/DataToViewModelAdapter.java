@@ -28,7 +28,7 @@ public class DataToViewModelAdapter {
 	}
 	
 	public CharSequence getTitle() {
-		CharSequence title = "";
+		CharSequence title = new String();
 		
 		if(isLoading()) {
 			title = context.getText(R.string.finding_location);
@@ -52,7 +52,7 @@ public class DataToViewModelAdapter {
 	}
 	
 	public CharSequence getDescription() {
-		CharSequence description = "";
+		CharSequence description = new String();
 		
 		if(state.isCompleted()) {
 			if(state.bundle.hasAddress()) {

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<style name="WhiteIndeterminateProgressBar" parent="@android:style/Widget.ProgressBar">
+	    <item name="android:indeterminate">true</item>
+	    <item name="android:indeterminateBehavior">cycle</item>
+    </style>
+</resources>

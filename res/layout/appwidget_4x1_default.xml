@@ -11,8 +11,8 @@
         android:layout_weight="1"
         android:layout_height="fill_parent"
         android:src="@drawable/ic_tab_refresh_selected" />
-        
-	<ImageView style="@style/AWCVerticalDivider" />
+
+    <ImageView style="@style/AWCVerticalDivider" />
         
     <ImageButton android:id="@+id/ShareImageButton"
         style="@style/AWCButton.Center"
@@ -20,7 +20,7 @@
         android:layout_weight="1"
         android:layout_height="fill_parent"
         android:src="@drawable/ic_tab_share_selected" />
-        
+    
 	<ImageView style="@style/AWCVerticalDivider" />
         
 	<LinearLayout android:id="@+id/DetailButtonLinearLayout"
@@ -45,4 +45,5 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
+        
 </LinearLayout>

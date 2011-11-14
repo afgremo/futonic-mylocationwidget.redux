@@ -1,5 +1,7 @@
 package com.futonredemption.mylocation.appwidgets.viewmodels;
 
+import org.beryl.diagnostics.Logger;
+
 import android.content.Context;
 import android.widget.RemoteViews;
 
@@ -14,11 +16,12 @@ public abstract class TwoLineMyLocationAppWidgetViewModel implements IMyLocation
 	public final RemoteViews createViews(Context context) {
 		final RemoteViews views = new RemoteViews(context.getPackageName(), getLayoutId());
 		
+		Logger.w(Title);
 		views.setTextViewText(R.id.TitleTextView, Title);
 		views.setTextViewText(R.id.DescriptionTextView, Description);
 		
 		onCreateViews(context, views);
-		return null;
+		return views;
 	}
 	
 	public void fromAdapter(final DataToViewModelAdapter adapter) {

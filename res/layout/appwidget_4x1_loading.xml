@@ -3,17 +3,20 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="horizontal"
-    style="@style/AppWidgetClassic.Clickable">
+    style="@style/AppWidgetClassic">
 
-    <ProgressBar android:id="@+id/WorkingIndicatorProgressBar"
+
+    <FrameLayout
         android:layout_width="@dimen/use_weight"
         android:layout_weight="1"
         android:layout_height="fill_parent"
-        android:indeterminate="true"
-        android:indeterminateBehavior="cycle"
-        android:layout_margin="8dp"
-        style="@android:style/Widget.ProgressBar.Inverse" />
-        
+        android:layout_margin="8dp">
+	    <ProgressBar android:id="@+id/WorkingIndicatorProgressBar"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center"
+	        style="@style/WhiteIndeterminateProgressBar" />
+    </FrameLayout>
 	<LinearLayout android:id="@+id/DetailLinearLayout"
         android:layout_width="@dimen/use_weight"
         android:layout_weight="5"

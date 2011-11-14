@@ -5,6 +5,8 @@
     <application android:icon="@drawable/icon" android:label="@string/app_name"
         android:debuggable="true" android:hardwareAccelerated="true"
         android:backupAgent=".ApplicationBackupAgent" android:allowBackup="true">
+        
+        <!-- 
         <activity android:name=".activities.PhoneActivity"
             android:label="@string/app_name" android:enabled="@bool/IsPhone"
             android:theme="@style/Theme.ActivityDefault">
@@ -22,7 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
+         -->
 		<activity android:name="org.beryl.app.IntentChooser"
                   android:label="@string/my_location"
                   android:theme="@android:style/Theme.Translucent.NoTitleBar"

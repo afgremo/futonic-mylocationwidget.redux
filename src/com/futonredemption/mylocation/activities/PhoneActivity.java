@@ -18,5 +18,4 @@ public class PhoneActivity extends MapActivity {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
 }
