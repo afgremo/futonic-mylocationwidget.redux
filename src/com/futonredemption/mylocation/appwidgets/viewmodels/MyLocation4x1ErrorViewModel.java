@@ -19,14 +19,13 @@ public class MyLocation4x1ErrorViewModel extends TwoLineMyLocationAppWidgetViewM
 
 	@Override
 	protected void onCreateViews(Context context, RemoteViews views) {
-		// TODO Auto-generated method stub
-		
+		views.setOnClickPendingIntent(R.id.ActionImageButton, RefreshAction);
+		views.setOnClickPendingIntent(R.id.DetailButtonLinearLayout, FixProblemAction);
 	}
 
 	@Override
 	protected void onFromAdapter(DataToViewModelAdapter adapter) {
-		// TODO Auto-generated method stub
-		
+		RefreshAction = adapter.getPendingRefreshAction();
+		FixProblemAction = adapter.getPendingOpenLocationSettingsAction();
 	}
-
 }

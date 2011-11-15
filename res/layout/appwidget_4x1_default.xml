@@ -12,19 +12,10 @@
         android:layout_height="fill_parent"
         android:src="@drawable/ic_tab_refresh_selected" />
 
-    <ImageView style="@style/AWCVerticalDivider" />
-        
-    <ImageButton android:id="@+id/ShareImageButton"
-        style="@style/AWCButton.Center"
-        android:layout_width="@dimen/use_weight"
-        android:layout_weight="1"
-        android:layout_height="fill_parent"
-        android:src="@drawable/ic_tab_share_selected" />
-    
 	<ImageView style="@style/AWCVerticalDivider" />
         
 	<LinearLayout android:id="@+id/DetailButtonLinearLayout"
-        style="@style/AWCButton.Right"
+        style="@style/AWCButton.Center"
         android:layout_width="@dimen/use_weight"
         android:layout_weight="4"
         android:layout_height="fill_parent"
@@ -36,14 +27,23 @@
         android:paddingRight="8dip">
 
         <TextView android:id="@+id/TitleTextView"
-            style="@style/AWCText.Important"
+            style="@style/AWCText.Important.Centered"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
 
         <TextView android:id="@+id/DescriptionTextView"
-            style="@style/AWCText"
+            style="@style/AWCText.Centered"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
+
+	<ImageView style="@style/AWCVerticalDivider" />
+        
+    <ImageButton android:id="@+id/ShareImageButton"
+        style="@style/AWCButton.Right"
+        android:layout_width="@dimen/use_weight"
+        android:layout_weight="1"
+        android:layout_height="fill_parent"
+        android:src="@drawable/ic_tab_share_selected" />
         
 </LinearLayout>

@@ -33,6 +33,11 @@ public class UpdateWidgetsTask extends AbstractMyLocationTask {
 		updateAllWidgets(adapter);
 	}
 	
+	@Override
+	protected void loadDataFromErrorState(MyLocationRetrievalState state) {
+		loadData(state);
+	}
+	
 	private void updateAllWidgets(DataToViewModelAdapter adapter) {
 		final AppWidgetManager manager = AppWidgetManager.getInstance(context);
 		updateWidgets(manager, AppWidgetProvider4x1.class, AppWidgetProvider4x1.ViewModelSelectables, adapter);

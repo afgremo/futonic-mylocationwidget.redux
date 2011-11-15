@@ -17,6 +17,10 @@ public abstract class EventBasedContextAwareCallable<V> extends ContextAwareCall
 		super(context);
 	}
 
+	protected Handler createHandler() {
+		return new Handler(looper);
+	}
+	
 	public final V call() throws Exception {
 		Thread.currentThread().setName(this.getClass().getSimpleName());
 		Looper.prepare();

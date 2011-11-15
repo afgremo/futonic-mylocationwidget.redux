@@ -3,6 +3,6 @@
 	android:id="@+id/mapview"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
-	android:apiKey="@string/nolocal_google_map_key"
+	android:apiKey="@string/apikey_google_maps"
 	android:clickable="true"
 	/>

@@ -17,10 +17,20 @@ import android.content.Intent;
 
 public class WidgetUpdateService extends AbstractService {
 
-	public static void beginFullUpdate(Context context) {
-		Intent intent = new Intent(context, WidgetUpdateService.class);
+	public static Intent getBeginFullUpdate(final Context context) {
+		final Intent intent = new Intent(context, WidgetUpdateService.class);
 		intent.putExtra("method", "FullUpdate");
-		context.startService(intent);
+		return intent;
+	}
+	
+	public static void beginFullUpdate(Context context) {
+		context.startService(getBeginFullUpdate(context));
+	}
+	
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		Logger.w("Service Destroy");
 	}
 	
 	@Override
@@ -47,7 +57,6 @@ public class WidgetUpdateService extends AbstractService {
 		RetrieveAddressTask addressGet;
 		Future<MyLocationRetrievalState> future;
 		
-		android.os.Debug.waitForDebugger();
 		widgetUpdate = new UpdateWidgetsTask(this, state);
 		future = service.submit(widgetUpdate);
 		

@@ -15,13 +15,9 @@ public class MyLocation4x1LoadingViewModel extends TwoLineMyLocationAppWidgetVie
 
 	@Override
 	protected void onCreateViews(Context context, RemoteViews views) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	protected void onFromAdapter(DataToViewModelAdapter adapter) {
-		// TODO Auto-generated method stub
-		
 	}
 }

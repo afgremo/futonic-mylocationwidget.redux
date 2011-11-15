@@ -14,7 +14,7 @@ public class MyLocationRetrievalState {
 	}
 
 	public boolean isLoading() {
-		return !(bundle.hasLocation() && bundle.hasAddress());
+		return ! hasError() && !(bundle.hasLocation() && bundle.hasAddress());
 	}
 	
 	public boolean isCompleted() {

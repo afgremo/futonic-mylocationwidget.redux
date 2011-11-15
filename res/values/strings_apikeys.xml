@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="nolocal_google_map_key">@string/nolocal_google_map_key_debug_jewel</string>
-    <string name="nolocal_google_map_key_production">0h6yRm2Q6c_8DaHmYxuEC9lVm30NVfYtmmiz9hw</string>
-    <string name="nolocal_google_map_key_debug_jewel">01rg6-5BkSuWOZmqL1396Y_2KhqvpterwTP9GIA</string>
+    <string name="apikey_google_maps">@string/apikey_google_maps_debug_jewel</string>
+    <string name="apikey_google_maps_production">0h6yRm2Q6c_8DaHmYxuEC9lVm30NVfYtmmiz9hw</string>
+    <string name="apikey_google_maps_debug_amethyst">01rg6-5BkSuUXc5usd1IbYvLy-kNd9e8CV0U4pw</string>
+    <string name="apikey_google_maps_debug_jewel">01rg6-5BkSuWOZmqL1396Y_2KhqvpterwTP9GIA</string>
+    <string name="apikey_google_backupagent">AEdPqrEAAAAIu-hDJ2ITJ4ATIgwAaRQFkdpwgG0RnIlkLFH3wQ</string>
 </resources>

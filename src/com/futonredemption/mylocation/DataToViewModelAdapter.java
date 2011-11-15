@@ -2,8 +2,13 @@ package com.futonredemption.mylocation;
 
 import java.util.Locale;
 
+import com.futonredemption.mylocation.services.WidgetUpdateService;
+
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Address;
+import android.provider.Settings;
 
 public class DataToViewModelAdapter {
 
@@ -45,7 +50,7 @@ public class DataToViewModelAdapter {
 				title = context.getText(R.string.locating);
 			}
 		} else {
-			title = context.getText(R.string.error);
+			title = context.getText(R.string.could_not_get_location);
 		}
 		
 		return title;
@@ -90,5 +95,32 @@ public class DataToViewModelAdapter {
 	
 	public boolean isLoading() {
 		return state.isLoading();
+	}
+
+	public Intent getRefreshAction() {
+		final Intent intent = WidgetUpdateService.getBeginFullUpdate(context);
+		return intent;
+	}
+	
+	public Intent getOpenLocationSettingsAction() {
+		return new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+	}
+	
+	public PendingIntent getPendingRefreshAction() {
+		return convertToPendingService(context, getRefreshAction());
+	}
+	
+	public PendingIntent getPendingOpenLocationSettingsAction() {
+		return convertToPendingActivity(context, getOpenLocationSettingsAction());
+	}
+	
+	
+	
+	public static PendingIntent convertToPendingService(final Context context, final Intent intent) {
+		return PendingIntent.getService(context, intent.hashCode(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+	}
+	
+	public static PendingIntent convertToPendingActivity(final Context context, final Intent intent) {
+		return PendingIntent.getActivity(context, intent.hashCode(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 	}
 }

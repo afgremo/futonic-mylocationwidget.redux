@@ -20,11 +20,15 @@ public class MyLocation4x1AvailableViewModel extends TwoLineMyLocationAppWidgetV
 
 	@Override
 	protected void onCreateViews(Context context, RemoteViews views) {
+		views.setOnClickPendingIntent(R.id.ActionImageButton, RefreshAction);
+		views.setOnClickPendingIntent(R.id.ShareImageButton, ShareLocationAction);
+		views.setOnClickPendingIntent(R.id.DetailButtonLinearLayout, LocationDetailsAction);
 	}
 
 	@Override
 	protected void onFromAdapter(DataToViewModelAdapter adapter) {
-		// TODO Auto-generated method stub
-		
+		RefreshAction = adapter.getPendingRefreshAction();
+		LocationDetailsAction = null;
+		ShareLocationAction = null;
 	}
 }

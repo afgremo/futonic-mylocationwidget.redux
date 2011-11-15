@@ -33,10 +33,18 @@ public abstract class AbstractMyLocationTask extends ContextAwareCallable<MyLoca
 			state = currentState;
 		}
 		
-		loadData(state);
+		if(state.hasError()) {
+			loadDataFromErrorState(state);
+		} else {
+			loadData(state);
+		}
 		
 		return state;
 	}
 
+	protected void loadDataFromErrorState(final MyLocationRetrievalState state) {
+		
+	}
+	
 	protected abstract void loadData(final MyLocationRetrievalState state);
 }

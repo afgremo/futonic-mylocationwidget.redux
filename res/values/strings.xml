@@ -5,5 +5,7 @@
     <string name="locating">Locating</string>
     <string name="finding_location">Finding Location...</string>
     <string name="unknown">Unknown</string>
-    <string name="error">error</string>
+    <string name="error">Error</string>
+    <string name="could_not_get_location">Could not get Location</string>
+    <string name="tap_here_to_fix">Tap here to fix.</string>
 </resources>

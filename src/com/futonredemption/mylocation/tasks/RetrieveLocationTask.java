@@ -8,14 +8,19 @@ import org.beryl.location.LocationMonitor;
 import org.beryl.location.ProviderSelectors;
 
 import com.futonredemption.mylocation.MyLocationRetrievalState;
+import com.futonredemption.mylocation.exceptions.CannotObtainAccurateFixException;
+import com.futonredemption.mylocation.exceptions.NoLocationProvidersEnabledException;
 
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
+import android.os.Handler;
 
 public class RetrieveLocationTask extends EventBasedContextAwareCallable<MyLocationRetrievalState> {
 
+	private static final int TIMEOUT_PERIOD = 5000;
+	
 	final Future<MyLocationRetrievalState> future;
 	public RetrieveLocationTask(Context context, Future<MyLocationRetrievalState> future) {
 		super(context);
@@ -27,14 +32,20 @@ public class RetrieveLocationTask extends EventBasedContextAwareCallable<MyLocat
 	@Override
 	protected void onBeginTask() {
 		try {
+			Handler handler = createHandler();
+			handler.postDelayed(AutoCancelMethod, TIMEOUT_PERIOD);
 			MyLocationRetrievalState state = future.get();
 			this.result = state;
 			monitor = new LocationMonitor(context);
 			final BestLocationListener bestLocationListener = new BestLocationListener(monitor);
 
 			monitor.setProviderSelector(ProviderSelectors.AllFree);
-			monitor.addListener(bestLocationListener);
-			monitor.startListening();
+			if(monitor.hasAtLeastOneEnabledProvider()) {
+				monitor.addListener(bestLocationListener);
+				monitor.startListening();
+			} else {
+				finishWithError(new NoLocationProvidersEnabledException());
+			}
 		} catch (InterruptedException e) {
 			finishWithError(e);
 		} catch (ExecutionException e) {
@@ -47,11 +58,24 @@ public class RetrieveLocationTask extends EventBasedContextAwareCallable<MyLocat
 		if(monitor != null) {
 			monitor.stopListening();
 		}
+		
+		if(result == null) {
+			result = new MyLocationRetrievalState();
+		}
+		
+		result.error = this.error;
 	}
+
+	private Runnable AutoCancelMethod = new Runnable() {
+		public void run() {
+			android.os.Debug.waitForDebugger();
+			finishWithError(new CannotObtainAccurateFixException());
+		}
+	};
 	
 	class BestLocationListener implements LocationListener {
 
-		private final float DESIRED_ACCURACY = 50.0f;
+		private final float DESIRED_ACCURACY = 0.0f;
 		private Location baselineLocation = null;
 		private Location bestLocation = null;
 		
