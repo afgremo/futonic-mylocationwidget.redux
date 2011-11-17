@@ -10,7 +10,7 @@
         android:layout_width="@dimen/use_weight"
         android:layout_weight="1"
         android:layout_height="fill_parent"
-        android:src="@drawable/ic_tab_refresh_selected" />
+        android:src="@drawable/ic_menu_refresh" />
 
 	<ImageView style="@style/AWCVerticalDivider" />
         
@@ -44,6 +44,6 @@
         android:layout_width="@dimen/use_weight"
         android:layout_weight="1"
         android:layout_height="fill_parent"
-        android:src="@drawable/ic_tab_share_selected" />
+        android:src="@drawable/ic_menu_share" />
         
 </LinearLayout>

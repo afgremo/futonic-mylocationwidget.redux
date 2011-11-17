@@ -2,6 +2,8 @@ package com.futonredemption.mylocation.tasks;
 
 import java.util.concurrent.Future;
 
+import org.beryl.diagnostics.Logger;
+
 import android.content.Context;
 
 import com.futonredemption.mylocation.MyLocationRetrievalState;
@@ -25,18 +27,23 @@ public abstract class AbstractMyLocationTask extends ContextAwareCallable<MyLoca
 	
 	public final MyLocationRetrievalState call() throws Exception {
 		
+		Logger.w("call invoke");
 		MyLocationRetrievalState state = null;
 		
-		if(stateFuture != null) {
-			state = this.stateFuture.get();
-		} else {
-			state = currentState;
-		}
-		
-		if(state.hasError()) {
-			loadDataFromErrorState(state);
-		} else {
-			loadData(state);
+		try {
+			if(stateFuture != null) {
+				state = this.stateFuture.get();
+			} else {
+				state = currentState;
+			}
+			
+			if(state.hasError()) {
+				loadDataFromErrorState(state);
+			} else {
+				loadData(state);
+			}
+		} catch(Exception e) {
+			Logger.e(e);
 		}
 		
 		return state;

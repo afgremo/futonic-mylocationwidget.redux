@@ -28,7 +28,7 @@ public class UpdateWidgetsTask extends AbstractMyLocationTask {
 
 	@Override
 	protected void loadData(MyLocationRetrievalState state) {
-		Logger.i("Update Widgets");
+		Logger.w("Update Widgets");
 		final DataToViewModelAdapter adapter = new DataToViewModelAdapter(context, state);
 		updateAllWidgets(adapter);
 	}

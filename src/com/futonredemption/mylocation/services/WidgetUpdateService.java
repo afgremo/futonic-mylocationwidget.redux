@@ -8,12 +8,14 @@ import org.beryl.app.AbstractService;
 import org.beryl.diagnostics.Logger;
 
 import com.futonredemption.mylocation.MyLocationRetrievalState;
+import com.futonredemption.mylocation.tasks.DownloadStaticMapTask;
 import com.futonredemption.mylocation.tasks.RetrieveAddressTask;
 import com.futonredemption.mylocation.tasks.RetrieveLocationTask;
 import com.futonredemption.mylocation.tasks.UpdateWidgetsTask;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Debug;
 
 public class WidgetUpdateService extends AbstractService {
 
@@ -50,12 +52,15 @@ public class WidgetUpdateService extends AbstractService {
 		Thread.currentThread().setName("WidgetUpdateService");
 		Logger.w("Starting WidgetUpdateService");
 		
+		Debug.waitForDebugger();
+		
 		final ExecutorService service = Executors.newSingleThreadExecutor();
 		final MyLocationRetrievalState state = new MyLocationRetrievalState();
 		UpdateWidgetsTask widgetUpdate;
 		RetrieveLocationTask locationGet;
 		RetrieveAddressTask addressGet;
 		Future<MyLocationRetrievalState> future;
+		DownloadStaticMapTask staticMapGet;
 		
 		widgetUpdate = new UpdateWidgetsTask(this, state);
 		future = service.submit(widgetUpdate);
@@ -64,14 +69,17 @@ public class WidgetUpdateService extends AbstractService {
 		future = service.submit(locationGet);
 		
 		widgetUpdate = new UpdateWidgetsTask(this, future);
-		service.submit(widgetUpdate);
+		future = service.submit(widgetUpdate);
 		
 		addressGet = new RetrieveAddressTask(this, future);
 		future = service.submit(addressGet);
 		
+		staticMapGet = new DownloadStaticMapTask(this, future);
+		future = service.submit(staticMapGet);
+		
 		widgetUpdate = new UpdateWidgetsTask(this, future);
 		future = service.submit(widgetUpdate);
-		
+
 		RequestCompleted<Future<MyLocationRetrievalState>> serviceStopper = new RequestCompleted<Future<MyLocationRetrievalState>>(future, service);
 		service.submit(serviceStopper);
 	}

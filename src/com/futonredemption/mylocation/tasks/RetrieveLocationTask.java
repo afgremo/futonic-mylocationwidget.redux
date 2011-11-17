@@ -19,7 +19,7 @@ import android.os.Handler;
 
 public class RetrieveLocationTask extends EventBasedContextAwareCallable<MyLocationRetrievalState> {
 
-	private static final int TIMEOUT_PERIOD = 5000;
+	private static final int TIMEOUT_PERIOD = 60000;
 	
 	final Future<MyLocationRetrievalState> future;
 	public RetrieveLocationTask(Context context, Future<MyLocationRetrievalState> future) {
@@ -68,14 +68,13 @@ public class RetrieveLocationTask extends EventBasedContextAwareCallable<MyLocat
 
 	private Runnable AutoCancelMethod = new Runnable() {
 		public void run() {
-			android.os.Debug.waitForDebugger();
 			finishWithError(new CannotObtainAccurateFixException());
 		}
 	};
 	
 	class BestLocationListener implements LocationListener {
 
-		private final float DESIRED_ACCURACY = 0.0f;
+		private final float DESIRED_ACCURACY = 50.0f;
 		private Location baselineLocation = null;
 		private Location bestLocation = null;
 		

@@ -2,6 +2,7 @@ package com.futonredemption.mylocation.appwidgets.viewmodels;
 
 import org.beryl.diagnostics.Logger;
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.widget.RemoteViews;
 
@@ -28,6 +29,12 @@ public abstract class TwoLineMyLocationAppWidgetViewModel implements IMyLocation
 		Title = adapter.getTitle();
 		Description = adapter.getDescription();
 		onFromAdapter(adapter);
+	}
+	
+	protected void setOnClick(RemoteViews views, int viewId, PendingIntent action) {
+		if(action != null) {
+			views.setOnClickPendingIntent(viewId, action);
+		}
 	}
 	
 	protected abstract void onFromAdapter(final DataToViewModelAdapter adapter);
