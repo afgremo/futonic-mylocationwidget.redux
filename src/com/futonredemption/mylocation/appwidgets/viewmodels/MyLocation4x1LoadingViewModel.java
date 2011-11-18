@@ -6,18 +6,19 @@ import android.widget.RemoteViews;
 import com.futonredemption.mylocation.DataToViewModelAdapter;
 import com.futonredemption.mylocation.R;
 
-public class MyLocation4x1LoadingViewModel extends TwoLineMyLocationAppWidgetViewModel {
+public class MyLocation4x1LoadingViewModel implements IMyLocationAppWidgetViewModel {
 
-	@Override
 	protected int getLayoutId() {
 		return R.layout.appwidget_4x1_loading;
 	}
 
-	@Override
-	protected void onCreateViews(Context context, RemoteViews views) {
+	public RemoteViews createViews(Context context) {
+		final RemoteViews views = new RemoteViews(context.getPackageName(), getLayoutId());
+		return views;
 	}
 
-	@Override
-	protected void onFromAdapter(DataToViewModelAdapter adapter) {
+	public void fromAdapter(DataToViewModelAdapter adapter) {
+		// TODO Auto-generated method stub
+		
 	}
 }

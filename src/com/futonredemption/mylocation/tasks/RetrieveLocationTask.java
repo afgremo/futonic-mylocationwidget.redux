@@ -107,6 +107,12 @@ public class RetrieveLocationTask extends EventBasedContextAwareCallable<MyLocat
 			}
 			
 			if(location.getAccuracy() <= DESIRED_ACCURACY) {
+				try {
+					Thread.sleep(10000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				result.bundle.setLocation(getLocation());
 				finishWithResult(result);
 			}

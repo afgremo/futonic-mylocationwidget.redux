@@ -6,6 +6,16 @@
     <string name="finding_location">Finding Location...</string>
     <string name="unknown">Unknown</string>
     <string name="error">Error</string>
-    <string name="could_not_get_location">Could not get Location</string>
+    <string name="could_not_get_location">Could not get location</string>
     <string name="tap_here_to_fix">Tap here to fix.</string>
+    
+   	<string name="locating1">Locating</string>
+   	<string name="locating2">Locating.</string>
+   	<string name="locating3">Locating..</string>
+   	<string name="locating4">Locating...</string>
+   	
+   	<string name="loadingtext_pinpointing_location">Pinpointing your location</string>
+   	<string name="loadingtext_gps_is_off">GPS is off. <b>Tap here</b> for better accuracy.</string>
+   	<string name="loadingtext_go_outside">Finding your location works best when you\'re outside.</string>
+   	<string name="loadingtext_network_is_off">Network location is off. <b>Tap here</b> to turn on.</string>
 </resources>

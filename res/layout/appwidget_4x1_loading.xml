@@ -1,41 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="horizontal"
     style="@style/AppWidgetClassic">
 
-
-    <FrameLayout
-        android:layout_width="@dimen/use_weight"
-        android:layout_weight="1"
-        android:layout_height="fill_parent"
-        android:layout_margin="8dp">
-	    <ProgressBar android:id="@+id/WorkingIndicatorProgressBar"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_gravity="center"
-	        style="@style/WhiteIndeterminateProgressBar" />
-    </FrameLayout>
 	<LinearLayout android:id="@+id/DetailLinearLayout"
-        android:layout_width="@dimen/use_weight"
-        android:layout_weight="5"
+        android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:orientation="vertical"
-        android:gravity="center_vertical"
+        android:gravity="center"
         android:clickable="true"
         android:focusable="true"
         android:paddingLeft="8dip"
         android:paddingRight="8dip">
 
-        <TextView android:id="@+id/TitleTextView"
-            style="@style/AWCText.Important"
+        <TextView style="@style/AWCText.Important.Centered"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="@string/locating4" />
 
-        <TextView android:id="@+id/DescriptionTextView"
-            style="@style/AWCText"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+        <ViewFlipper android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:flipInterval="7500" android:autoStart="true"
+            android:inAnimation="@android:anim/fade_in" android:outAnimation="@android:anim/fade_out" android:animateFirstView="true">
+            <TextView
+	            style="@style/AWCText.Centered"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content" android:text="@string/loadingtext_pinpointing_location" />
+            <TextView
+	            style="@style/AWCText.Centered"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content" android:text="@string/loadingtext_go_outside" />
+            <TextView
+	            style="@style/AWCText.Centered"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content" android:text="@string/loadingtext_gps_is_off" />
+            <TextView
+	            style="@style/AWCText.Centered"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content" android:text="@string/loadingtext_network_is_off" />
+       	</ViewFlipper>
     </LinearLayout>
-</LinearLayout>
+</FrameLayout>

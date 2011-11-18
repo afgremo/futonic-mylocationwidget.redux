@@ -51,6 +51,5 @@
 	<style name="AWCText.Important.Centered">
 	    <item name="android:gravity">center</item>
 	</style>
-	
-	    
+
 </resources>

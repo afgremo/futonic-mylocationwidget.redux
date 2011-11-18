@@ -68,8 +68,8 @@ public class WidgetUpdateService extends AbstractService {
 		locationGet = new RetrieveLocationTask(this, future);
 		future = service.submit(locationGet);
 		
-		widgetUpdate = new UpdateWidgetsTask(this, future);
-		future = service.submit(widgetUpdate);
+		//widgetUpdate = new UpdateWidgetsTask(this, future);
+		//future = service.submit(widgetUpdate);
 		
 		addressGet = new RetrieveAddressTask(this, future);
 		future = service.submit(addressGet);
