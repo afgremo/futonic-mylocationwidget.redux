@@ -24,11 +24,8 @@ public abstract class EventBasedContextAwareCallable<V> extends ContextAwareCall
 	public final V call() throws Exception {
 		Thread.currentThread().setName(this.getClass().getSimpleName());
 		Looper.prepare();
-		Looper mainLooper = Looper.getMainLooper();
 		looper = Looper.myLooper();
 		handler = new Handler(looper);
-		
-		Logger.w("Main Looper Same? " + Boolean.toString(looper == mainLooper));
 		
 		try {
 			onBeginTask();

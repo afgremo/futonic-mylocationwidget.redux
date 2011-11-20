@@ -7,6 +7,7 @@ import org.beryl.diagnostics.Logger;
 import org.beryl.location.LocationMonitor;
 import org.beryl.location.ProviderSelectors;
 
+import com.futonredemption.mylocation.Debugging;
 import com.futonredemption.mylocation.MyLocationRetrievalState;
 import com.futonredemption.mylocation.exceptions.CannotObtainAccurateFixException;
 import com.futonredemption.mylocation.exceptions.NoLocationProvidersEnabledException;
@@ -28,20 +29,30 @@ public class RetrieveLocationTask extends EventBasedContextAwareCallable<MyLocat
 	}
 
 	LocationMonitor monitor = null;
+	BestLocationListener locationListener = null;
+	
+	private void startTimeoutWatchdog() {
+		final Handler handler = createHandler();
+		handler.postDelayed(AutoCancelMethod, TIMEOUT_PERIOD);
+	}
+	
+	private void setupLocationMonitor() {
+		monitor = new LocationMonitor(context);
+		monitor.setProviderSelector(ProviderSelectors.AllFree);
+		locationListener = new BestLocationListener(monitor);
+		monitor.addListener(locationListener);
+	}
 	
 	@Override
 	protected void onBeginTask() {
 		try {
-			Handler handler = createHandler();
-			handler.postDelayed(AutoCancelMethod, TIMEOUT_PERIOD);
-			MyLocationRetrievalState state = future.get();
+			final MyLocationRetrievalState state = future.get();
 			this.result = state;
-			monitor = new LocationMonitor(context);
-			final BestLocationListener bestLocationListener = new BestLocationListener(monitor);
+			
+			startTimeoutWatchdog();
+			setupLocationMonitor();
 
-			monitor.setProviderSelector(ProviderSelectors.AllFree);
 			if(monitor.hasAtLeastOneEnabledProvider()) {
-				monitor.addListener(bestLocationListener);
 				monitor.startListening();
 			} else {
 				finishWithError(new NoLocationProvidersEnabledException());
@@ -63,7 +74,18 @@ public class RetrieveLocationTask extends EventBasedContextAwareCallable<MyLocat
 			result = new MyLocationRetrievalState();
 		}
 		
-		result.error = this.error;
+		if(locationListener != null) {
+			Location location = locationListener.getLocation();
+			result.setLocation(location);
+			result.setStateLocationIndicator(locationListener.isStaleLocation());
+		}
+		
+		// If we got some fix before the timeout but it wasn't accurate enough then still continue.
+		if(result.isError(CannotObtainAccurateFixException.class) && result.hasLocation()) {
+			this.error = null;
+		}
+		
+		result.setError(this.error);
 	}
 
 	private Runnable AutoCancelMethod = new Runnable() {
@@ -84,6 +106,15 @@ public class RetrieveLocationTask extends EventBasedContextAwareCallable<MyLocat
 			this.baselineLocation = monitor.getBestStaleLocation();
 		}
 
+		public boolean isStaleLocation() {
+			final Location location = getLocation();
+			if(location == baselineLocation) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+		
 		public Location getLocation() {
 			Location location;
 			
@@ -106,14 +137,8 @@ public class RetrieveLocationTask extends EventBasedContextAwareCallable<MyLocat
 				}
 			}
 			
+			Debugging.haltForAWhile();
 			if(location.getAccuracy() <= DESIRED_ACCURACY) {
-				try {
-					Thread.sleep(10000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				result.bundle.setLocation(getLocation());
 				finishWithResult(result);
 			}
 		}

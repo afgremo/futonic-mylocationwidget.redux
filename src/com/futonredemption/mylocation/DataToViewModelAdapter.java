@@ -2,6 +2,7 @@ package com.futonredemption.mylocation;
 
 import java.util.Locale;
 
+import com.futonredemption.mylocation.activities.LocationCardActivity;
 import com.futonredemption.mylocation.services.WidgetUpdateService;
 
 import android.app.PendingIntent;
@@ -25,11 +26,11 @@ public class DataToViewModelAdapter {
 	}
 	
 	public double getLatitude() {
-		return state.bundle.getLocation().getLatitude();
+		return state.getLocation().getLatitude();
 	}
 	
 	public double getLongitude() {
-		return state.bundle.getLocation().getLongitude();
+		return state.getLocation().getLongitude();
 	}
 	
 	public CharSequence getTitle() {
@@ -38,13 +39,13 @@ public class DataToViewModelAdapter {
 		if(isLoading()) {
 			title = context.getText(R.string.finding_location);
 		} else if(isAvailable()) {
-			if(state.bundle.hasAddress()) {
-				final Address address = state.bundle.getAddress();
+			if(state.hasAddress()) {
+				final Address address = state.getAddress();
 				if(address.getMaxAddressLineIndex() > 0) {
 					title = address.getAddressLine(0);
 				}
 			}
-			else if (state.bundle.hasLocation()) {
+			else if (state.hasLocation()) {
 				title = context.getText(R.string.coordinates);
 			} else {
 				title = context.getText(R.string.locating);
@@ -60,8 +61,8 @@ public class DataToViewModelAdapter {
 		CharSequence description = new String();
 		
 		if(state.isCompleted()) {
-			if(state.bundle.hasAddress()) {
-				final Address address = state.bundle.getAddress();
+			if(state.hasAddress()) {
+				final Address address = state.getAddress();
 				if(address.getMaxAddressLineIndex() > 1) {
 					description = address.getAddressLine(1);
 				}
@@ -69,13 +70,13 @@ public class DataToViewModelAdapter {
 					description = address.getFeatureName();
 				}
 			}
-			else if (state.bundle.hasLocation()){
+			else if (state.hasLocation()){
 				description = getOneLineCoordinates();
 			} else {
 				description = context.getText(R.string.finding_location);
 			}
 		} else if (state.isLoading()) {
-			if(state.bundle.hasLocation()) {
+			if(state.hasLocation()) {
 				description = context.getText(R.string.address);
 			} else {
 				description = context.getText(R.string.coordinates);
@@ -114,8 +115,27 @@ public class DataToViewModelAdapter {
 		return convertToPendingActivity(context, getOpenLocationSettingsAction());
 	}
 	
+	public PendingIntent getPendingOpenLocationCardAction() {
+		return convertToPendingActivity(context, getOpenLocationCardAction());
+	}
+
+	private Intent getOpenLocationCardAction() {
+		final Intent intent = new Intent(context, LocationCardActivity.class);
+		intent.putExtra("location", this.state.getLocationBundle());
+		return intent;
+	}
+
+	public PendingIntent getPendingShareLocationAction() {
+		return convertToPendingActivity(context, getShareLocationAction());
+	}
 	
-	
+	private Intent getShareLocationAction() {
+		// TODO: This isn't complete.
+		final Intent intent = new Intent(Intent.ACTION_SEND);
+		
+		return intent;
+	}
+
 	public static PendingIntent convertToPendingService(final Context context, final Intent intent) {
 		return PendingIntent.getService(context, intent.hashCode(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 	}

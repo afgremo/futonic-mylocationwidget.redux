@@ -25,7 +25,7 @@
 	
 	<style name="AWCVerticalDivider">
 	    <item name="android:layout_width">@dimen/hairline</item>
-	    <item name="android:layout_height">fill_parent</item>
+	    <item name="android:layout_height">match_parent</item>
 	    <item name="android:background">@drawable/appwidget_divider</item>
 	</style>
 	

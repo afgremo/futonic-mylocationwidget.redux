@@ -19,10 +19,20 @@ import android.os.Debug;
 
 public class WidgetUpdateService extends AbstractService {
 
+	public static Intent getSyncToLatestKnownLocation(final Context context) {
+		final Intent intent = new Intent(context, WidgetUpdateService.class);
+		intent.putExtra("method", "SyncLatest");
+		return intent;
+	}
+	
 	public static Intent getBeginFullUpdate(final Context context) {
 		final Intent intent = new Intent(context, WidgetUpdateService.class);
 		intent.putExtra("method", "FullUpdate");
 		return intent;
+	}
+	
+	public static void beginSyncLatestKnownLocation(final Context context) {
+		context.startService(getSyncToLatestKnownLocation(context));
 	}
 	
 	public static void beginFullUpdate(Context context) {
@@ -41,11 +51,18 @@ public class WidgetUpdateService extends AbstractService {
 		
 		if(method.equalsIgnoreCase("FullUpdate")) {
 			beginFullUpdate();
+		} else if (method.equalsIgnoreCase("SyncLatest")) {
+			syncToLatestKnownLocation();
 		} else {
 			setRequestCompleted();
 		}
 		
 		return 0;
+	}
+
+	private void syncToLatestKnownLocation() {
+		// TODO Sync all widgets to latest known location. Otherwise obtain a new location.
+		beginFullUpdate();
 	}
 
 	private void beginFullUpdate() {
@@ -67,9 +84,6 @@ public class WidgetUpdateService extends AbstractService {
 		
 		locationGet = new RetrieveLocationTask(this, future);
 		future = service.submit(locationGet);
-		
-		//widgetUpdate = new UpdateWidgetsTask(this, future);
-		//future = service.submit(widgetUpdate);
 		
 		addressGet = new RetrieveAddressTask(this, future);
 		future = service.submit(addressGet);

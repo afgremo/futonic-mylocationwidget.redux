@@ -23,9 +23,9 @@ public class DownloadStaticMapTask extends AbstractMyLocationTask {
 	@Override
 	protected void loadData(MyLocationRetrievalState state) {
 
-		if(state.bundle.hasLocation()) {
+		if(state.hasLocation()) {
 			Parameters params = new Parameters();
-			params.center = new Center(state.bundle.getLocation());
+			params.center = new Center(state.getLocation());
 			params.size = new Dimension(128,128);
 			params.scale = 2;
 			params.zoom = 9;

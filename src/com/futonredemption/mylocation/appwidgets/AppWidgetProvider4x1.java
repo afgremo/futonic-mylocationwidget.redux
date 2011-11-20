@@ -17,7 +17,7 @@ public class AppWidgetProvider4x1 extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
 		
-		WidgetUpdateService.beginFullUpdate(context);
+		WidgetUpdateService.beginSyncLatestKnownLocation(context);
 	}
 	
 	

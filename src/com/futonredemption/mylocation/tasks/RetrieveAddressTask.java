@@ -10,7 +10,6 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 
-import com.futonredemption.mylocation.MyLocationBundle;
 import com.futonredemption.mylocation.MyLocationRetrievalState;
 
 public class RetrieveAddressTask extends AbstractMyLocationTask {
@@ -27,22 +26,18 @@ public class RetrieveAddressTask extends AbstractMyLocationTask {
 
 	@Override
 	protected void loadData(MyLocationRetrievalState state) {
-		final MyLocationBundle bundle = state.bundle;
-		
-		if(bundle.hasLocation()) {
-			final Location location = bundle.getLocation();
+		if(state.hasLocation()) {
+			final Location location = state.getLocation();
 			try {
-				Logger.w("Starting address finding.");
 				final Geocoder coder = new Geocoder(context);
 				Address address = null;
 				
 				for(int i = 0; i < NUM_ATTEMPTS && address == null; i++) {
 					address = tryGetAddress(coder, location);
 				}
-				bundle.setAddress(address);
-			} finally {
-				Logger.w("Address Finishing: ");
-				Logger.w(bundle.getAddress().toString());
+				state.setAddress(address);
+			} catch(Exception e) {
+				state.setError(e);
 			}
 		}
 	}

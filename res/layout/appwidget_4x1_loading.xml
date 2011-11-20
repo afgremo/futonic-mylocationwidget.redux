@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="horizontal"
     style="@style/AppWidgetClassic">
 
 	<LinearLayout android:id="@+id/DetailLinearLayout"
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center"
         android:clickable="true"
@@ -16,28 +16,28 @@
         android:paddingRight="8dip">
 
         <TextView style="@style/AWCText.Important.Centered"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/locating4" />
 
-        <ViewFlipper android:layout_width="fill_parent"
+        <ViewFlipper android:layout_width="match_parent"
             android:layout_height="wrap_content" android:flipInterval="7500" android:autoStart="true"
             android:inAnimation="@android:anim/fade_in" android:outAnimation="@android:anim/fade_out" android:animateFirstView="true">
             <TextView
 	            style="@style/AWCText.Centered"
-	            android:layout_width="fill_parent"
+	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content" android:text="@string/loadingtext_pinpointing_location" />
             <TextView
 	            style="@style/AWCText.Centered"
-	            android:layout_width="fill_parent"
+	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content" android:text="@string/loadingtext_go_outside" />
             <TextView
 	            style="@style/AWCText.Centered"
-	            android:layout_width="fill_parent"
+	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content" android:text="@string/loadingtext_gps_is_off" />
             <TextView
 	            style="@style/AWCText.Centered"
-	            android:layout_width="fill_parent"
+	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content" android:text="@string/loadingtext_network_is_off" />
        	</ViewFlipper>
     </LinearLayout>

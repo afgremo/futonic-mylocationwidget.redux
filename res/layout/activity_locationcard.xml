@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="horizontal">
+    
+	<include android:id="@+id/mapview" layout="@layout/mapview"
+	    android:layout_weight="4"
+	    android:layout_width="@dimen/use_weight" android:layout_height="match_parent" />
+	<include android:id="@+id/addressinfo" layout="@layout/address_info"
+	    android:layout_weight="6"
+	    android:layout_width="@dimen/use_weight" android:layout_height="match_parent" />
+</LinearLayout>

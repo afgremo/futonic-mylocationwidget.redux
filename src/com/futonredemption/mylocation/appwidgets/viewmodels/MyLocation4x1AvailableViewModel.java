@@ -28,7 +28,7 @@ public class MyLocation4x1AvailableViewModel extends TwoLineMyLocationAppWidgetV
 	@Override
 	protected void onFromAdapter(DataToViewModelAdapter adapter) {
 		RefreshAction = adapter.getPendingRefreshAction();
-		LocationDetailsAction = null;
-		ShareLocationAction = null;
+		LocationDetailsAction = adapter.getPendingOpenLocationCardAction();
+		ShareLocationAction = adapter.getPendingShareLocationAction();
 	}
 }
