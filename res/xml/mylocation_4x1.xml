@@ -4,6 +4,6 @@
 	android:minHeight="@dimen/AppWidget_1Cell"
 	android:updatePeriodMillis="0"
 	android:previewImage="@drawable/appwidget_4x1_preview"
-	android:initialLayout="@layout/appwidget_4x1_loading"
+	android:initialLayout="@layout/aw_mylocation_4x1_loading"
 	android:resizeMode="horizontal"
 	android:minResizeWidth="@dimen/AppWidget_3Cell" />

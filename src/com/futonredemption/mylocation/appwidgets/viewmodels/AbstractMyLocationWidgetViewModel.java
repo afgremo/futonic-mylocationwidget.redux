@@ -7,28 +7,22 @@ import android.content.Context;
 import android.widget.RemoteViews;
 
 import com.futonredemption.mylocation.DataToViewModelAdapter;
-import com.futonredemption.mylocation.R;
 
-public abstract class TwoLineMyLocationAppWidgetViewModel implements IMyLocationAppWidgetViewModel {
-	
-	public CharSequence Title;
-	public CharSequence Description;
-	
+public abstract class AbstractMyLocationWidgetViewModel implements IMyLocationAppWidgetViewModel {
+
 	public final RemoteViews createViews(Context context) {
 		final RemoteViews views = new RemoteViews(context.getPackageName(), getLayoutId());
-		
-		Logger.w(Title);
-		views.setTextViewText(R.id.TitleTextView, Title);
-		views.setTextViewText(R.id.DescriptionTextView, Description);
-		
+		Logger.w("Creating RemoteViews...");
 		onCreateViews(context, views);
 		return views;
 	}
-	
-	public void fromAdapter(final DataToViewModelAdapter adapter) {
-		Title = adapter.getTitle();
-		Description = adapter.getDescription();
+
+	public final void fromAdapter(DataToViewModelAdapter adapter) {
 		onFromAdapter(adapter);
+	}
+
+	protected void setText(RemoteViews views, int viewId, CharSequence text) {
+		views.setTextViewText(viewId, text);
 	}
 	
 	protected void setOnClick(RemoteViews views, int viewId, PendingIntent action) {

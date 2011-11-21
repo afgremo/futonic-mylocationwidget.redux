@@ -5,6 +5,7 @@
 	</style>
 	
 	<style name="AppWidgetClassic.Clickable">
+	    <item name="android:clickable">true</item>
 	    <item name="android:background">@drawable/appwidget_dark_bg_clickable</item>
 	</style>
     

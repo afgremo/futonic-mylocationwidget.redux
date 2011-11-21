@@ -52,7 +52,7 @@ public class RetrieveLocationTask extends EventBasedContextAwareCallable<MyLocat
 			startTimeoutWatchdog();
 			setupLocationMonitor();
 
-			if(monitor.hasAtLeastOneEnabledProvider()) {
+			if(monitor.isAnyProviderEnabled()) {
 				monitor.startListening();
 			} else {
 				finishWithError(new NoLocationProvidersEnabledException());

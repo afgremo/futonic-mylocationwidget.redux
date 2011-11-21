@@ -1,24 +1,55 @@
 package com.futonredemption.mylocation.appwidgets.viewmodels;
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.widget.RemoteViews;
 
 import com.futonredemption.mylocation.DataToViewModelAdapter;
 import com.futonredemption.mylocation.R;
 
-public class MyLocation4x1LoadingViewModel implements IMyLocationAppWidgetViewModel {
+public class MyLocation4x1LoadingViewModel extends AbstractMyLocationWidgetViewModel {
 
+	PendingIntent LocationSettingsAction;
+	MultiTextFieldWriter writer = new MultiTextFieldWriter();
+	
 	protected int getLayoutId() {
-		return R.layout.appwidget_4x1_loading;
+		return R.layout.aw_mylocation_4x1_loading;
 	}
 
-	public RemoteViews createViews(Context context) {
-		final RemoteViews views = new RemoteViews(context.getPackageName(), getLayoutId());
-		return views;
-	}
-
-	public void fromAdapter(DataToViewModelAdapter adapter) {
-		// TODO Auto-generated method stub
+	public void onCreateViews(Context context, RemoteViews views) {
+		writer.bindViews(views);
 		
+		setOnClick(views, R.id.AppWidgetBackground, LocationSettingsAction);
+	}
+	
+	private void setupWriter() {
+		writer.addView(R.id.Description1TextView);
+		writer.addView(R.id.Description2TextView);
+		writer.addView(R.id.Description3TextView);
+		writer.addView(R.id.Description4TextView);
+	}
+
+	public void onFromAdapter(DataToViewModelAdapter adapter) {
+		boolean gpsDisabled = adapter.isGpsLocationDisabled();
+		boolean networkDisabled = adapter.isNetworkLocationDisabled();
+		boolean gpsEnabled = adapter.isGpsLocationEnabled();
+		
+		setupWriter();
+		
+		if(gpsDisabled) {
+			writer.addText(adapter.getText(R.string.loadingtext_gps_is_off));
+		}
+		
+		writer.addText(adapter.getText(R.string.loadingtext_pinpointing_location));
+		
+		if(networkDisabled) {
+			writer.addText(adapter.getText(R.string.loadingtext_network_is_off));
+		}
+		
+		if(gpsEnabled) {
+			writer.addText(adapter.getText(R.string.loadingtext_go_outside));
+		}
+		
+		LocationSettingsAction = adapter.getPendingOpenLocationSettingsAction();
 	}
 }

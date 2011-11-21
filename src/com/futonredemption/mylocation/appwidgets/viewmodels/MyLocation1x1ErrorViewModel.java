@@ -7,32 +7,23 @@ import android.widget.RemoteViews;
 import com.futonredemption.mylocation.DataToViewModelAdapter;
 import com.futonredemption.mylocation.R;
 
-public class MyLocation4x1ErrorViewModel extends AbstractMyLocationWidgetViewModel {
+public class MyLocation1x1ErrorViewModel extends AbstractMyLocationWidgetViewModel {
 
-	public CharSequence Title;
-	public CharSequence Description;
-	
 	public PendingIntent RefreshAction;
 	public PendingIntent FixProblemAction;
 	
 	@Override
 	protected int getLayoutId() {
-		return R.layout.aw_mylocation_4x1_error;
+		return R.layout.aw_mylocation_1x1_error;
 	}
 
 	@Override
 	protected void onCreateViews(Context context, RemoteViews views) {
-		setText(views, R.id.TitleTextView, Title);
-		setText(views, R.id.DescriptionTextView, Description);
-		setOnClick(views, R.id.ActionImageButton, RefreshAction);
-		setOnClick(views, R.id.DetailButtonLinearLayout, FixProblemAction);
+		views.setOnClickPendingIntent(R.id.ActionImageButton, RefreshAction);
 	}
 
 	@Override
 	protected void onFromAdapter(DataToViewModelAdapter adapter) {
-		Title = adapter.getErrorTitle();
-		Description = adapter.getErrorDescription();
 		RefreshAction = adapter.getPendingRefreshAction();
-		FixProblemAction = adapter.getPendingOpenLocationSettingsAction();
 	}
 }

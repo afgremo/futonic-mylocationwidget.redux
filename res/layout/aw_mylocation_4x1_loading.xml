@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/AppWidgetBackground"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="@style/AppWidgetClassic.Clickable">
+
+	<LinearLayout android:id="@+id/DetailLinearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:focusable="true"
+        android:paddingLeft="8dip"
+        android:paddingRight="8dip">
+
+        <TextView style="@style/AWCText.Important.Centered"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/locating4" />
+
+        <ViewFlipper android:layout_width="match_parent" android:measureAllChildren="true"
+            android:layout_height="wrap_content" android:flipInterval="10000" android:autoStart="true" 
+            android:inAnimation="@android:anim/fade_in" android:outAnimation="@android:anim/fade_out" android:animateFirstView="true">
+            <TextView android:id="@+id/Description1TextView"
+	            style="@style/AWCText.Centered"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content" />
+            <TextView android:id="@+id/Description2TextView"
+	            style="@style/AWCText.Centered"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content" />
+            <TextView android:id="@+id/Description3TextView"
+	            style="@style/AWCText.Centered"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content" />
+            <TextView android:id="@+id/Description4TextView"
+	            style="@style/AWCText.Centered"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content" />
+       	</ViewFlipper>
+    </LinearLayout>
+</FrameLayout>

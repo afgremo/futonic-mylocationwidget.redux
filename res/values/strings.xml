@@ -14,8 +14,12 @@
    	<string name="locating3">Locating..</string>
    	<string name="locating4">Locating...</string>
    	
-   	<string name="loadingtext_pinpointing_location">Pinpointing your location</string>
+   	<string name="loadingtext_pinpointing_location">Pinpointing your location. This might take some time.</string>
    	<string name="loadingtext_gps_is_off">GPS is off. <b>Tap here</b> for better accuracy.</string>
    	<string name="loadingtext_go_outside">Finding your location works best when you\'re outside.</string>
    	<string name="loadingtext_network_is_off">Network location is off. <b>Tap here</b> to turn on.</string>
+   	
+    <string name="error_its_taking_too_long_to_get_a_fix">It\'s taking too long to get anything. Try again later.</string>
+    <string name="error_location_is_disabled">Location services are disabled. <b>Tap here</b> to turn on.</string>
+    <string name="error_something_went_wrong_try_again">Something went wrong. Try again later.</string>
 </resources>

@@ -2,7 +2,11 @@ package com.futonredemption.mylocation;
 
 import java.util.Locale;
 
+import org.beryl.location.LocationMonitor;
+
 import com.futonredemption.mylocation.activities.LocationCardActivity;
+import com.futonredemption.mylocation.exceptions.CannotObtainAccurateFixException;
+import com.futonredemption.mylocation.exceptions.NoLocationProvidersEnabledException;
 import com.futonredemption.mylocation.services.WidgetUpdateService;
 
 import android.app.PendingIntent;
@@ -90,6 +94,10 @@ public class DataToViewModelAdapter {
 		return String.format(Locale.ENGLISH, "Lat: %s Long: %s", getLatitude(), getLongitude());
 	}
 
+	public CharSequence getText(int resId) {
+		return context.getText(resId);
+	}
+	
 	public boolean isAvailable() {
 		return state.isCompleted();
 	}
@@ -142,5 +150,50 @@ public class DataToViewModelAdapter {
 	
 	public static PendingIntent convertToPendingActivity(final Context context, final Intent intent) {
 		return PendingIntent.getActivity(context, intent.hashCode(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+	}
+
+	public boolean isGpsLocationDisabled() {
+		final LocationMonitor lm = new LocationMonitor(context);
+		return lm.isGpsSupported() && !lm.isGpsEnabled();
+	}
+
+	public boolean isNetworkLocationDisabled() {
+		final LocationMonitor lm = new LocationMonitor(context);
+		return lm.isNetworkSupported() && !lm.isNetworkEnabled();
+	}
+
+	public boolean isGpsLocationEnabled() {
+		final LocationMonitor lm = new LocationMonitor(context);
+		return lm.isGpsSupported() && lm.isGpsEnabled();
+	}
+
+	public CharSequence getErrorDescription() {
+		CharSequence result = "";
+		
+		if(state.hasError()) {
+			if(state.isError(CannotObtainAccurateFixException.class)) {
+				result = getText(R.string.error_its_taking_too_long_to_get_a_fix);
+			} else if(state.isError(NoLocationProvidersEnabledException.class)) {
+				result = getText(R.string.error_location_is_disabled);
+			} else {
+				result = getText(R.string.error_something_went_wrong_try_again);
+			}
+		}
+		return result;
+	}
+
+	public CharSequence getErrorTitle() {
+		CharSequence result = "";
+		
+		if(state.hasError()) {
+			if(state.isError(CannotObtainAccurateFixException.class)) {
+				result = getText(R.string.error_its_taking_too_long_to_get_a_fix);
+			} else if(state.isError(NoLocationProvidersEnabledException.class)) {
+				result = getText(R.string.error_location_is_disabled);
+			} else {
+				result = getText(R.string.error_something_went_wrong_try_again);
+			}
+		}
+		return result;
 	}
 }

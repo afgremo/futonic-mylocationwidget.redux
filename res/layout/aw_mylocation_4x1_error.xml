@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    style="@style/AppWidgetClassic">
+
+    <ImageButton android:id="@+id/ActionImageButton"
+        style="@style/AWCButton.Left"
+        android:layout_width="@dimen/use_weight"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_menu_refresh" />
+        
+	<ImageView style="@style/AWCVerticalDivider" />
+        
+	<LinearLayout android:id="@+id/DetailButtonLinearLayout"
+	    style="@style/AWCButton.Right"
+        android:layout_width="@dimen/use_weight"
+        android:layout_weight="5"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:clickable="true"
+        android:focusable="true"
+        android:paddingLeft="8dip"
+        android:paddingRight="8dip">
+
+        <TextView android:id="@+id/TitleTextView"
+            style="@style/AWCText.Important"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView android:id="@+id/DescriptionTextView"
+            style="@style/AWCText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    style="@style/AppWidgetClassic">
+
+    <ImageView android:id="@+id/DebugFullUpdateImageButton"
+        style="@style/AWCButton.Left"
+        android:layout_width="@dimen/use_weight"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_menu_refresh" />
+
+	<ImageView style="@style/AWCVerticalDivider" />
+	
+	 <ImageView android:id="@+id/DebugSyncLatestImageButton"
+        style="@style/AWCButton.Right"
+        android:layout_width="@dimen/use_weight"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_menu_refresh" />
+        
+</LinearLayout>
