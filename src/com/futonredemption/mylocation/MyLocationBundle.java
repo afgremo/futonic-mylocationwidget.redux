@@ -15,6 +15,7 @@ public class MyLocationBundle implements Parcelable {
 
 	private Location location = null;
 	private Address address = null;
+	private StaticMap staticMap = null;
 	
 	public MyLocationBundle() {
 	}
@@ -35,6 +36,10 @@ public class MyLocationBundle implements Parcelable {
 		this.address = address;
 	}
 	
+	public void setStaticMap(StaticMap staticMap) {
+		this.staticMap = staticMap;
+	}
+
 	public Location getLocation() {
 		return location;
 	}
@@ -43,12 +48,20 @@ public class MyLocationBundle implements Parcelable {
 		return address;
 	}
 	
+	public StaticMap getStaticMap() {
+		return this.staticMap;
+	}
+	
 	public boolean hasLocation() {
 		return location != null;
 	}
 	
 	public boolean hasAddress() {
 		return address != null;
+	}
+	
+	public boolean hasStaticMap() {
+		return staticMap != null;
 	}
 	
 	public GeoPoint toGeoPoint() {
@@ -66,11 +79,13 @@ public class MyLocationBundle implements Parcelable {
 	public void writeToParcel(Parcel dest, int flags) {
     	dest.writeParcelable(location, flags);
     	dest.writeParcelable(address, flags);
+    	dest.writeParcelable(staticMap, flags);
     }
 
     public void readFromParcel(Parcel in) {
     	location = in.readParcelable(null);
     	address = in.readParcelable(null);
+    	staticMap = in.readParcelable(getClass().getClassLoader());
     }
 
     public static final Parcelable.Creator<MyLocationBundle> CREATOR = new Parcelable.Creator<MyLocationBundle>() {

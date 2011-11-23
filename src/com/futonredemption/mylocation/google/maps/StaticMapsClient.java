@@ -8,7 +8,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import org.beryl.diagnostics.Logger;
-import org.beryl.io.DirectoryUtils;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,7 +16,7 @@ public class StaticMapsClient {
 
 	private static final String StaticMapsUri = "http://maps.googleapis.com/maps/api/staticmap";
 
-	public boolean downloadMap(String filePath, Parameters renderParams) {
+	public boolean downloadMap(File fileDesc, Parameters renderParams) {
 		boolean result = false;
 
 		Bundle httpParams = fromParameters(renderParams);
@@ -26,15 +25,11 @@ public class StaticMapsClient {
 		String urlString = uri.toString();
 
 		try {
-			File baseDir = DirectoryUtils.createPictureLibraryFolder(
-					"static-maps", true);
-			File staticLocalMapFile = File.createTempFile("map", ".png",
-					baseDir);
 			Logger.w(urlString);
 			URL url = new URL(urlString);
 			connection = (HttpURLConnection) url.openConnection();
 
-			FileOutputStream fos = new FileOutputStream(staticLocalMapFile);
+			FileOutputStream fos = new FileOutputStream(fileDesc);
 			InputStream is = connection.getInputStream();
 
 			byte[] buffer = new byte[1024];

@@ -11,6 +11,7 @@ import com.futonredemption.mylocation.MyLocationRetrievalState;
 import com.futonredemption.mylocation.tasks.DownloadStaticMapTask;
 import com.futonredemption.mylocation.tasks.RetrieveAddressTask;
 import com.futonredemption.mylocation.tasks.RetrieveLocationTask;
+import com.futonredemption.mylocation.tasks.SaveLocationBundleTask;
 import com.futonredemption.mylocation.tasks.UpdateWidgetsTask;
 
 import android.content.Context;
@@ -78,6 +79,7 @@ public class WidgetUpdateService extends AbstractService {
 		RetrieveAddressTask addressGet;
 		Future<MyLocationRetrievalState> future;
 		DownloadStaticMapTask staticMapGet;
+		SaveLocationBundleTask saveLocationBundle;
 		
 		widgetUpdate = new UpdateWidgetsTask(this, state);
 		future = service.submit(widgetUpdate);
@@ -90,6 +92,9 @@ public class WidgetUpdateService extends AbstractService {
 		
 		staticMapGet = new DownloadStaticMapTask(this, future);
 		future = service.submit(staticMapGet);
+		
+		saveLocationBundle = new SaveLocationBundleTask(this, future);
+		future = service.submit(saveLocationBundle);
 		
 		widgetUpdate = new UpdateWidgetsTask(this, future);
 		future = service.submit(widgetUpdate);

@@ -14,7 +14,7 @@ import com.futonredemption.mylocation.provider.StaticMapContentProvider;
 
 public class CursorConverters {
 
-	public static ContentValues toContentValues(int locationSID, StaticMap staticMap) {
+	public static ContentValues toContentValues(long locationSID, StaticMap staticMap) {
 		final ContentValues values = new ContentValues();
 		values.put(StaticMapContentProvider.URL, staticMap.getUrl());
 		values.put(StaticMapContentProvider.LOCATIONSID, locationSID);
@@ -34,7 +34,7 @@ public class CursorConverters {
 		return map;
 	}
 
-	public static ContentValues toContentValues(int locationSID, Address address) {
+	public static ContentValues toContentValues(long locationSID, Address address) {
 		final ContentValues values = new ContentValues();
 		
 		PackedString addressFlat = new PackedString();
