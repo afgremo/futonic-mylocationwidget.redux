@@ -8,6 +8,7 @@ import org.beryl.io.DirectoryUtils;
 import org.beryl.io.FileUtils;
 
 import com.futonredemption.mylocation.MyLocationRetrievalState;
+import com.futonredemption.mylocation.StaticMap;
 import com.futonredemption.mylocation.google.maps.Parameters;
 import com.futonredemption.mylocation.google.maps.Parameters.Center;
 import com.futonredemption.mylocation.google.maps.Parameters.Dimension;
@@ -35,11 +36,13 @@ public class DownloadStaticMapTask extends AbstractMyLocationTask {
 			params.scale = 2;
 			params.zoom = 9;
 			try {
+				StaticMap map = new StaticMap();
 				File targetDirectory = DirectoryUtils.getApplicationExternalStorageDirectory(context, "static-maps");
 				FileUtils.createDirectory(targetDirectory);
 				File targetFile = File.createTempFile("static-map", ".png", targetDirectory);
 				StaticMapsClient client = new StaticMapsClient();
-				client.downloadMap(targetFile, params);
+				map = client.downloadMap(targetFile, params);
+				state.setStaticMap(map);
 			} catch(Exception e) {
 				Logger.e(e);
 			}

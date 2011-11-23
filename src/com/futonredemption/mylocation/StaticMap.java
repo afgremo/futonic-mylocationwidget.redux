@@ -21,6 +21,10 @@ public class StaticMap implements Parcelable {
 		readFromParcel(in);
 	}
 	
+	public boolean hasMap() {
+		return filePath != null;
+	}
+	
 	public void setFilePath(String filePath) {
 		this.filePath = filePath;
 	}

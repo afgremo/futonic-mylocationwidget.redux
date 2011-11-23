@@ -67,6 +67,10 @@ public class MyLocationRetrievalState {
 		return bundle.getAddress();
 	}
 	
+	public StaticMap getStaticMap() {
+		return bundle.getStaticMap();
+	}
+	
 	public boolean hasLocation() {
 		return bundle.hasLocation();
 	}
@@ -75,6 +79,10 @@ public class MyLocationRetrievalState {
 		return bundle.hasAddress();
 	}
 
+	public boolean hasStaticMap() {
+		return this.bundle.hasStaticMap();
+	}
+	
 	public void setLocation(Location location) {
 		this.bundle.setLocation(location);
 	}
@@ -83,6 +91,10 @@ public class MyLocationRetrievalState {
 		this.bundle.setAddress(address);
 	}
 
+	public void setStaticMap(StaticMap staticMap) {
+		this.bundle.setStaticMap(staticMap);
+	}
+	
 	public void setStateLocationIndicator(boolean isStale) {
 		this.staleLocationIndicator = isStale;
 	}

@@ -9,6 +9,8 @@ import java.net.URL;
 
 import org.beryl.diagnostics.Logger;
 
+import com.futonredemption.mylocation.StaticMap;
+
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -16,14 +18,15 @@ public class StaticMapsClient {
 
 	private static final String StaticMapsUri = "http://maps.googleapis.com/maps/api/staticmap";
 
-	public boolean downloadMap(File fileDesc, Parameters renderParams) {
-		boolean result = false;
+	public StaticMap downloadMap(File fileDesc, Parameters renderParams) {
+		StaticMap map = new StaticMap();
 
 		Bundle httpParams = fromParameters(renderParams);
 		HttpURLConnection connection = null;
 		Uri uri = buildUri(httpParams);
 		String urlString = uri.toString();
 
+		
 		try {
 			Logger.w(urlString);
 			URL url = new URL(urlString);
@@ -40,6 +43,8 @@ public class StaticMapsClient {
 
 			fos.close();
 			is.close();
+			map.setUrl(urlString);
+			map.setFilePath(fileDesc.getAbsolutePath());
 		} catch (IOException e) {
 			Logger.e(e);
 		} finally {
@@ -47,7 +52,8 @@ public class StaticMapsClient {
 				connection.disconnect();
 			}
 		}
-		return result;
+		
+		return map;
 	}
 
 	protected Uri buildUri(Bundle params) {
