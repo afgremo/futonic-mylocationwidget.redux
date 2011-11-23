@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<style name="AppWidgetClassic">
+    <style name="WidgetFrame">
+        <item name="android:layout_margin">@dimen/widget_margin</item>
+    </style>
+    
+	<style name="AppWidgetClassic" parent="@style/WidgetFrame">
 	    <item name="android:background">@drawable/appwidget_dark_bg</item>
 	</style>
 	
