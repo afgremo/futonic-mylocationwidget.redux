@@ -7,12 +7,34 @@ import android.database.Cursor;
 import android.location.Address;
 import android.location.Location;
 
+import com.futonredemption.mylocation.StaticMap;
 import com.futonredemption.mylocation.provider.AddressContentProvider;
 import com.futonredemption.mylocation.provider.LocationHistoryContentProvider;
+import com.futonredemption.mylocation.provider.StaticMapContentProvider;
 
 public class CursorConverters {
 
-	public static ConventValues toContentValues(int locationSID, Address address) {
+	public static ContentValues toContentValues(int locationSID, StaticMap staticMap) {
+		final ContentValues values = new ContentValues();
+		values.put(StaticMapContentProvider.URL, staticMap.getUrl());
+		values.put(StaticMapContentProvider.LOCATIONSID, locationSID);
+		values.put(StaticMapContentProvider.FILEPATH, staticMap.getFilePath());
+		return values;
+	}
+	
+	public static StaticMap toStaticMap(Cursor cursor) {
+		
+		StaticMap map = new StaticMap();
+		String filePath = cursor.getString(cursor.getColumnIndex(StaticMapContentProvider.FILEPATH));
+		String url = cursor.getString(cursor.getColumnIndex(StaticMapContentProvider.URL));
+		
+		map.setFilePath(filePath);
+		map.setUrl(url);
+		
+		return map;
+	}
+
+	public static ContentValues toContentValues(int locationSID, Address address) {
 		final ContentValues values = new ContentValues();
 		
 		PackedString addressFlat = new PackedString();
