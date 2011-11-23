@@ -15,7 +15,9 @@
     
 	<style name="AWCButton">
 	    <item name="android:scaleType">centerInside</item>
+	    <item name="android:background">@android:color/transparent</item>
 	</style>
+	
 	<style name="AWCButton.Left">
 	    <item name="android:background">@drawable/appwidget_button_left</item>
 	</style>
@@ -56,5 +58,19 @@
 	<style name="AWCText.Important.Centered">
 	    <item name="android:gravity">center</item>
 	</style>
-
+	
+	<style name="AppWidgetSimple" parent="@style/WidgetFrame">
+	    <item name="android:background">@drawable/frame_top_widget_holo</item>
+	</style>
+	
+	<style name="AWSButton">
+	    <item name="android:scaleType">centerInside</item>
+	    <item name="android:background">@android:color/transparent</item>
+	</style>
+	
+	<style name="WidgetMapPresenter">
+	    <item name="android:scaleType">centerCrop</item>
+	    <item name="android:background">@android:color/transparent</item>
+	</style>
+	
 </resources>

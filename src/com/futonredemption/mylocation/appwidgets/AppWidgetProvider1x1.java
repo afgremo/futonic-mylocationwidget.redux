@@ -20,7 +20,6 @@ public class AppWidgetProvider1x1 extends AppWidgetProvider {
 		WidgetUpdateService.beginSyncLatestKnownLocation(context);
 	}
 
-	// TODO: Fix this for 1x1
 	public static IMyLocationStateViewModelSelectables ViewModelSelectables = new IMyLocationStateViewModelSelectables() {
 
 		public IMyLocationAppWidgetViewModel getAvailable() {

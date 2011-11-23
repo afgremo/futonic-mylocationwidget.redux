@@ -12,6 +12,8 @@ import com.futonredemption.mylocation.services.WidgetUpdateService;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.provider.Settings;
 
@@ -133,6 +135,16 @@ public class DataToViewModelAdapter {
 		return intent;
 	}
 
+	private Bitmap smallStaticMap = null;
+	public Bitmap getSmallStaticMap() {
+		
+		if(smallStaticMap == null && this.state.hasStaticMap()) {
+			final String filePath = state.getStaticMap().getFilePath();
+			smallStaticMap = BitmapFactory.decodeFile(filePath);
+		}
+		return smallStaticMap;
+	}
+	
 	public PendingIntent getPendingShareLocationAction() {
 		return convertToPendingActivity(context, getShareLocationAction());
 	}

@@ -32,6 +32,8 @@ public class MyLocation4x1AvailableViewModel extends AbstractMyLocationWidgetVie
 
 	@Override
 	protected void onFromAdapter(DataToViewModelAdapter adapter) {
+		Title = adapter.getTitle();
+		Description = adapter.getDescription();
 		RefreshAction = adapter.getPendingRefreshAction();
 		LocationDetailsAction = adapter.getPendingOpenLocationCardAction();
 		ShareLocationAction = adapter.getPendingShareLocationAction();

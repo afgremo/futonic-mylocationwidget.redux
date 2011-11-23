@@ -22,5 +22,6 @@
 	<dimen name="AppWidget_FullScreenWidth">@dimen/AppWidget_4Cell</dimen>
 	<dimen name="AppWidget_FullScreenHeight">@dimen/AppWidget_4Cell</dimen>
 	
-	<dimen name="widget_margin">15dp</dimen>
+	    <!-- <dimen name="widget_margin">15dp</dimen> -->
+	<dimen name="widget_margin">0dp</dimen>
 </resources>
