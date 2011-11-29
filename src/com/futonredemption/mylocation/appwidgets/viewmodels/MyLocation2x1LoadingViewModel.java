@@ -21,35 +21,8 @@ public class MyLocation2x1LoadingViewModel extends AbstractMyLocationWidgetViewM
 		
 		setOnClick(views, R.id.AppWidgetBackground, LocationSettingsAction);
 	}
-	
-	private void setupWriter() {
-		writer.addView(R.id.Description1TextView);
-		writer.addView(R.id.Description2TextView);
-		writer.addView(R.id.Description3TextView);
-		writer.addView(R.id.Description4TextView);
-	}
 
 	public void onFromAdapter(DataToViewModelAdapter adapter) {
-		boolean gpsDisabled = adapter.isGpsLocationDisabled();
-		boolean networkDisabled = adapter.isNetworkLocationDisabled();
-		boolean gpsEnabled = adapter.isGpsLocationEnabled();
-		
-		setupWriter();
-		
-		if(gpsDisabled) {
-			writer.addText(adapter.getText(R.string.loadingtext_gps_is_off));
-		}
-		
-		writer.addText(adapter.getText(R.string.loadingtext_pinpointing_location));
-		
-		if(networkDisabled) {
-			writer.addText(adapter.getText(R.string.loadingtext_network_is_off));
-		}
-		
-		if(gpsEnabled) {
-			writer.addText(adapter.getText(R.string.loadingtext_go_outside));
-		}
-		
 		LocationSettingsAction = adapter.getPendingOpenLocationSettingsAction();
 	}
 }

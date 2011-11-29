@@ -12,5 +12,8 @@ public class ApplicationBackupAgent extends BackupAgentHelper {
 		SharedPreferencesBackupHelper backupHelper = new SharedPreferencesBackupHelper(this, Constants.Preferences.ApplicationKey);
 		addHelper(Constants.Preferences.BackupAgentKey, backupHelper);
 		// http://developer.android.com/guide/topics/data/backup.html#BackupAgentHelper
+		
+		// TODO: Backup the database.
+		// http://stackoverflow.com/questions/5282936/android-backup-restore-how-to-backup-an-internal-database
 	}
 }

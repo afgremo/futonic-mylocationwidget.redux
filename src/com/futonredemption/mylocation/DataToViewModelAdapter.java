@@ -184,11 +184,11 @@ public class DataToViewModelAdapter {
 		
 		if(state.hasError()) {
 			if(state.isError(CannotObtainAccurateFixException.class)) {
-				result = getText(R.string.error_its_taking_too_long_to_get_a_fix);
+				result = getText(R.string.errordesc_try_going_outside);
 			} else if(state.isError(NoLocationProvidersEnabledException.class)) {
-				result = getText(R.string.error_location_is_disabled);
+				result = getText(R.string.errordesc_tap_here_to_turn_them_on);
 			} else {
-				result = getText(R.string.error_something_went_wrong_try_again);
+				result = getText(R.string.errordesc_tap_here_to_try_again);
 			}
 		}
 		return result;
@@ -199,11 +199,11 @@ public class DataToViewModelAdapter {
 		
 		if(state.hasError()) {
 			if(state.isError(CannotObtainAccurateFixException.class)) {
-				result = getText(R.string.error_its_taking_too_long_to_get_a_fix);
+				result = getText(R.string.errortitle_having_trouble_locating);
 			} else if(state.isError(NoLocationProvidersEnabledException.class)) {
-				result = getText(R.string.error_location_is_disabled);
+				result = getText(R.string.errortitle_location_services_are_off);
 			} else {
-				result = getText(R.string.error_something_went_wrong_try_again);
+				result = getText(R.string.errortitle_something_went_wrong);
 			}
 		}
 		return result;

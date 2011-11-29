@@ -1,7 +1,5 @@
 package com.futonredemption.mylocation.appwidgets.viewmodels;
 
-import org.beryl.diagnostics.Logger;
-
 import android.app.PendingIntent;
 import android.content.Context;
 import android.widget.RemoteViews;
@@ -12,7 +10,6 @@ public abstract class AbstractMyLocationWidgetViewModel implements IMyLocationAp
 
 	public final RemoteViews createViews(Context context) {
 		final RemoteViews views = new RemoteViews(context.getPackageName(), getLayoutId());
-		Logger.w("Creating RemoteViews...");
 		onCreateViews(context, views);
 		return views;
 	}

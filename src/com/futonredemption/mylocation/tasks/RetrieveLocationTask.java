@@ -130,7 +130,7 @@ public class RetrieveLocationTask extends EventBasedContextAwareCallable<MyLocat
 		}
 		
 		public void onLocationChanged(final Location location) {
-			Logger.w("Location Updated");
+			Logger.w("onLocationChanged");
 			synchronized(lock) {
 				if(bestLocation == null || bestLocation.getAccuracy() > location.getAccuracy()) {
 					bestLocation = location;

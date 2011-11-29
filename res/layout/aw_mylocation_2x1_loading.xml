@@ -14,29 +14,28 @@
         android:paddingLeft="8dip"
         android:paddingRight="8dip">
 
-        <TextView style="@style/AWCText.Important.Centered"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/locating4" />
-
         <ViewFlipper android:layout_width="match_parent" android:layout_height="wrap_content"
-            style="@style/WidgetTextTicker">
-            <TextView android:id="@+id/Description1TextView"
-	            style="@style/AWCText.Centered"
+            style="@style/WidgetTextTicker.Fast">
+            <TextView
+	            style="@style/AWCText"
 	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content" />
-            <TextView android:id="@+id/Description2TextView"
-	            style="@style/AWCText.Centered"
+	            android:layout_height="wrap_content"
+	            android:text="@string/locating1" />
+            <TextView
+	            style="@style/AWCText"
 	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content" />
-            <TextView android:id="@+id/Description3TextView"
-	            style="@style/AWCText.Centered"
+	            android:layout_height="wrap_content"
+	            android:text="@string/locating2" />
+            <TextView
+	            style="@style/AWCText"
 	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content" />
-            <TextView android:id="@+id/Description4TextView"
-	            style="@style/AWCText.Centered"
+	            android:layout_height="wrap_content"
+	            android:text="@string/locating3" />
+            <TextView
+	            style="@style/AWCText"
 	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content" />
+	            android:layout_height="wrap_content"
+	            android:text="@string/locating4" />
        	</ViewFlipper>
     </LinearLayout>
 </FrameLayout>

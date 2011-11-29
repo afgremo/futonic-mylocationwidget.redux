@@ -17,7 +17,7 @@
 	<FrameLayout android:id="@+id/DetailButtonLinearLayout"
 	    style="@style/AWCButton.Right"
 	    android:layout_width="@dimen/use_weight"
-        android:layout_weight="4"
+        android:layout_weight="3"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center_vertical"
@@ -30,12 +30,12 @@
 		    style="@style/WidgetTextTicker">
 	            
 	        <TextView android:id="@+id/TitleTextView"
-	            style="@style/AWCText.Centered"
+	            style="@style/AWCText"
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content" />
 	
 	        <TextView android:id="@+id/DescriptionTextView"
-	            style="@style/AWCText.Centered"
+	            style="@style/AWCText"
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content" />
 	        
