@@ -3,6 +3,7 @@ package com.futonredemption.mylocation.services;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.beryl.app.AbstractService;
 import org.beryl.diagnostics.Logger;
@@ -66,41 +67,48 @@ public class WidgetUpdateService extends AbstractService {
 		beginFullUpdate();
 	}
 
+	final AtomicBoolean UpdateTaskIsRunning = new AtomicBoolean(false);
+	
 	private void beginFullUpdate() {
-		Thread.currentThread().setName("WidgetUpdateService");
-		Logger.w("Starting WidgetUpdateService");
 		
-		Debug.waitForDebugger();
-		
-		final ExecutorService service = Executors.newSingleThreadExecutor();
-		final MyLocationRetrievalState state = new MyLocationRetrievalState();
-		UpdateWidgetsTask widgetUpdate;
-		RetrieveLocationTask locationGet;
-		RetrieveAddressTask addressGet;
-		Future<MyLocationRetrievalState> future;
-		DownloadStaticMapTask staticMapGet;
-		SaveLocationBundleTask saveLocationBundle;
-		
-		widgetUpdate = new UpdateWidgetsTask(this, state);
-		future = service.submit(widgetUpdate);
-		
-		locationGet = new RetrieveLocationTask(this, future);
-		future = service.submit(locationGet);
-		
-		addressGet = new RetrieveAddressTask(this, future);
-		future = service.submit(addressGet);
-		
-		staticMapGet = new DownloadStaticMapTask(this, future);
-		future = service.submit(staticMapGet);
-		
-		saveLocationBundle = new SaveLocationBundleTask(this, future);
-		future = service.submit(saveLocationBundle);
-		
-		widgetUpdate = new UpdateWidgetsTask(this, future);
-		future = service.submit(widgetUpdate);
-
-		RequestCompleted<Future<MyLocationRetrievalState>> serviceStopper = new RequestCompleted<Future<MyLocationRetrievalState>>(future, service);
-		service.submit(serviceStopper);
+		if(UpdateTaskIsRunning.compareAndSet(false, true)) {
+			Thread.currentThread().setName("WidgetUpdateService");
+			Logger.w("Starting WidgetUpdateService");
+			
+			Debug.waitForDebugger();
+			
+			final ExecutorService service = Executors.newSingleThreadExecutor();
+			final MyLocationRetrievalState state = new MyLocationRetrievalState();
+			UpdateWidgetsTask widgetUpdate;
+			RetrieveLocationTask locationGet;
+			RetrieveAddressTask addressGet;
+			Future<MyLocationRetrievalState> future;
+			DownloadStaticMapTask staticMapGet;
+			SaveLocationBundleTask saveLocationBundle;
+			
+			widgetUpdate = new UpdateWidgetsTask(this, state);
+			future = service.submit(widgetUpdate);
+			
+			locationGet = new RetrieveLocationTask(this, future);
+			future = service.submit(locationGet);
+			
+			addressGet = new RetrieveAddressTask(this, future);
+			future = service.submit(addressGet);
+			
+			staticMapGet = new DownloadStaticMapTask(this, future);
+			future = service.submit(staticMapGet);
+			
+			saveLocationBundle = new SaveLocationBundleTask(this, future);
+			future = service.submit(saveLocationBundle);
+			
+			widgetUpdate = new UpdateWidgetsTask(this, future);
+			future = service.submit(widgetUpdate);
+	
+			RequestCompleted<Future<MyLocationRetrievalState>> serviceStopper = new RequestCompleted<Future<MyLocationRetrievalState>>(future, service);
+			service.submit(serviceStopper);
+		} else {
+			setRequestCompleted();
+		}
 	}
 	
 	class RequestCompleted<T extends Future<?>> implements Runnable {
