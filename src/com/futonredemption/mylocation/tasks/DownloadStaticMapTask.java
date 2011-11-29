@@ -32,9 +32,9 @@ public class DownloadStaticMapTask extends AbstractMyLocationTask {
 		if(state.hasLocation()) {
 			Parameters params = new Parameters();
 			params.center = new Center(state.getLocation());
-			params.size = new Dimension(128,128);
+			params.size = new Dimension(256,256);
 			params.scale = 2;
-			params.zoom = 9;
+			params.zoom = 10; //128x128, z=9 or 256x256, z=10?
 			try {
 				StaticMap map = new StaticMap();
 				File targetDirectory = DirectoryUtils.getApplicationExternalStorageDirectory(context, "static-maps");
