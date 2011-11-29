@@ -8,6 +8,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.beryl.app.AbstractService;
 import org.beryl.diagnostics.Logger;
 
+import com.futonredemption.mylocation.Debugging;
 import com.futonredemption.mylocation.MyLocationRetrievalState;
 import com.futonredemption.mylocation.tasks.DownloadStaticMapTask;
 import com.futonredemption.mylocation.tasks.RetrieveAddressTask;
@@ -17,7 +18,6 @@ import com.futonredemption.mylocation.tasks.UpdateWidgetsTask;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Debug;
 
 public class WidgetUpdateService extends AbstractService {
 
@@ -75,7 +75,7 @@ public class WidgetUpdateService extends AbstractService {
 			Thread.currentThread().setName("WidgetUpdateService");
 			Logger.w("Starting WidgetUpdateService");
 			
-			Debug.waitForDebugger();
+			Debugging.breakpoint();
 			
 			final ExecutorService service = Executors.newSingleThreadExecutor();
 			final MyLocationRetrievalState state = new MyLocationRetrievalState();
