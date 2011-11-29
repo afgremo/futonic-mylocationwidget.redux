@@ -12,6 +12,7 @@ import android.widget.RemoteViews;
 import com.futonredemption.mylocation.DataToViewModelAdapter;
 import com.futonredemption.mylocation.MyLocationRetrievalState;
 import com.futonredemption.mylocation.appwidgets.AppWidgetProvider1x1;
+import com.futonredemption.mylocation.appwidgets.AppWidgetProvider2x1;
 import com.futonredemption.mylocation.appwidgets.AppWidgetProvider4x1;
 import com.futonredemption.mylocation.appwidgets.viewmodels.IMyLocationAppWidgetViewModel;
 import com.futonredemption.mylocation.appwidgets.viewmodels.IMyLocationStateViewModelSelectables;
@@ -41,7 +42,10 @@ public class UpdateWidgetsTask extends AbstractMyLocationTask {
 	
 	private void updateAllWidgets(DataToViewModelAdapter adapter) {
 		final AppWidgetManager manager = AppWidgetManager.getInstance(context);
+		
+		// Legacy Widgets
 		updateWidgets(manager, AppWidgetProvider1x1.class, AppWidgetProvider1x1.ViewModelSelectables, adapter);
+		updateWidgets(manager, AppWidgetProvider2x1.class, AppWidgetProvider2x1.ViewModelSelectables, adapter);
 		updateWidgets(manager, AppWidgetProvider4x1.class, AppWidgetProvider4x1.ViewModelSelectables, adapter);
 	}
 

@@ -208,4 +208,5 @@ public class DataToViewModelAdapter {
 		}
 		return result;
 	}
+
 }

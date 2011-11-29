@@ -59,7 +59,7 @@
 	    <item name="android:gravity">center</item>
 	</style>
 	
-	<style name="AppWidgetSimple" parent="@style/WidgetFrame">
+	<style name="AppWidgetFrameHolo" parent="@style/WidgetFrame">
 	    <item name="android:background">@drawable/frame_top_widget_holo</item>
 	</style>
 	

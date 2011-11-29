@@ -1,0 +1,37 @@
+package com.futonredemption.mylocation.appwidgets;
+
+import com.futonredemption.mylocation.appwidgets.viewmodels.IMyLocationAppWidgetViewModel;
+import com.futonredemption.mylocation.appwidgets.viewmodels.IMyLocationStateViewModelSelectables;
+import com.futonredemption.mylocation.appwidgets.viewmodels.MyLocation2x1AvailableViewModel;
+import com.futonredemption.mylocation.appwidgets.viewmodels.MyLocation2x1ErrorViewModel;
+import com.futonredemption.mylocation.appwidgets.viewmodels.MyLocation2x1LoadingViewModel;
+import com.futonredemption.mylocation.services.WidgetUpdateService;
+
+import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProvider;
+import android.content.Context;
+
+public class AppWidgetProvider2x1 extends AppWidgetProvider {
+
+	@Override
+    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+		super.onUpdate(context, appWidgetManager, appWidgetIds);
+		
+		WidgetUpdateService.beginSyncLatestKnownLocation(context);
+	}
+	
+	public static IMyLocationStateViewModelSelectables ViewModelSelectables = new IMyLocationStateViewModelSelectables() {
+
+		public IMyLocationAppWidgetViewModel getAvailable() {
+			return new MyLocation2x1AvailableViewModel();
+		}
+
+		public IMyLocationAppWidgetViewModel getError() {
+			return new MyLocation2x1ErrorViewModel();
+		}
+
+		public IMyLocationAppWidgetViewModel getLoading() {
+			return new MyLocation2x1LoadingViewModel();
+		}
+	};
+}

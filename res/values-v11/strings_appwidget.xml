@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="widget_label_1x1">@string/my_location</string>
+    <string name="widget_label_2x1">@string/my_location</string>
 	<string name="widget_label_4x1">@string/my_location</string>
 </resources>

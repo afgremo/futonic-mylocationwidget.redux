@@ -4,4 +4,12 @@
 	    <item name="android:indeterminate">true</item>
 	    <item name="android:indeterminateBehavior">cycle</item>
     </style>
+    <style name="WidgetTextTicker">
+	    <item name="android:measureAllChildren">true</item>
+	    <item name="android:flipInterval">10000</item>
+	    <item name="android:autoStart">true</item>
+	    <item name="android:inAnimation">@android:anim/slide_in_left</item>
+	    <item name="android:outAnimation">@android:anim/slide_out_right</item>
+	    <item name="android:animateFirstView">true</item>
+    </style>
 </resources>

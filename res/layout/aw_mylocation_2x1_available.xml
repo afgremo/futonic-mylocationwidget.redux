@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    style="@style/AppWidgetClassic">
+
+    <ImageButton android:id="@+id/ActionImageButton"
+        style="@style/AWCButton.Left"
+        android:layout_width="@dimen/use_weight"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_menu_refresh" />
+
+	<ImageView style="@style/AWCVerticalDivider" />
+        
+	<ImageButton android:id="@+id/DetailImageButton"
+        style="@style/AWCButton.Center"
+        android:layout_width="@dimen/use_weight"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_menu_myplaces" />
+
+	<ImageView style="@style/AWCVerticalDivider" />
+        
+    <ImageButton android:id="@+id/ShareImageButton"
+        style="@style/AWCButton.Right"
+        android:layout_width="@dimen/use_weight"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_menu_share" />
+        
+</LinearLayout>
