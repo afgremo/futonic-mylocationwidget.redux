@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@drawable/frame_top_widget_holo">
+
+    <include android:id="@+id/CardActions" layout="@layout/locationcard_actions"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" android:layout_alignParentLeft="true" android:layout_alignParentRight="true" />
+    
+    <ImageView android:id="@+id/StaticMapImageView"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" android:layout_alignParentLeft="true" android:layout_alignParentRight="true"
+        android:layout_above="@id/CardActions"
+        style="@style/ChromelessStaticMap"
+        android:src="@android:color/white" />
+    
+    <LinearLayout style="@style/StaticMapTitleOverlay.Large"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/StaticMapImageView"
+        android:layout_alignLeft="@id/StaticMapImageView"
+        android:layout_alignRight="@id/StaticMapImageView">
+        <TextView android:id="@+id/TitleTextView"
+            style="@style/StaticMapTitle.Large"
+			android:layout_width="match_parent" android:layout_height="wrap_content" 
+			android:text="Title Text"/>
+        <TextView android:id="@+id/DescriptionTextView"
+            style="@style/StaticMapTitle"
+			android:layout_width="match_parent" android:layout_height="wrap_content" 
+			android:text="Description Text"/>
+    </LinearLayout>
+</RelativeLayout>

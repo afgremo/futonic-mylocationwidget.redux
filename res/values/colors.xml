@@ -2,4 +2,17 @@
 <resources>
 	<color name="appwidget_text">#ffFFFFFF</color>
     <color name="appwidget_disabled">#ffD3D3D3</color>
+    
+    <!-- Color Theme -->
+    <color name="tropical_aqua">#ff549EA9</color>
+    <color name="clover">#ff83AC5E</color>
+    <color name="champagne">#ffE6DEC7</color>
+    
+    <color name="tropical_aqua_75">#c0549EA9</color>
+    <color name="clover_75">#c083AC5E</color>
+    <color name="champagne_75">#c0E6DEC7</color>
+    
+    <color name="tropical_aqua_50">#80549EA9</color>
+    <color name="clover_50">#8083AC5E</color>
+    <color name="champagne_50">#80E6DEC7</color>
 </resources>

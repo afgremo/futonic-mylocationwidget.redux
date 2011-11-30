@@ -130,9 +130,7 @@ public class DataToViewModelAdapter {
 	}
 
 	private Intent getOpenLocationCardAction() {
-		final Intent intent = new Intent(context, LocationCardActivity.class);
-		intent.putExtra("location", this.state.getLocationBundle());
-		return intent;
+		return LocationCardActivity.getActivityIntent(context, state.getLocationBundle());
 	}
 
 	private Bitmap smallStaticMap = null;
@@ -149,7 +147,7 @@ public class DataToViewModelAdapter {
 		return convertToPendingActivity(context, getShareLocationAction());
 	}
 	
-	private Intent getShareLocationAction() {
+	public Intent getShareLocationAction() {
 		// TODO: This isn't complete.
 		final Intent intent = new Intent(Intent.ACTION_SEND);
 		

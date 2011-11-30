@@ -29,12 +29,14 @@
         <TextView android:id="@+id/TitleTextView"
             style="@style/AWCText.Important"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="Title Text" />
 
         <TextView android:id="@+id/DescriptionTextView"
             style="@style/AWCText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="Description Text" />
         
     </LinearLayout>
 </LinearLayout>

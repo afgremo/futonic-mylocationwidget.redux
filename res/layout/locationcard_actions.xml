@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/LocationCardButtonStack"
+    android:layout_width="match_parent" android:layout_height="wrap_content">
+    <ImageButton android:id="@+id/RefreshLocationImageButton" 
+        style="@style/LocationCardButton"
+        android:src="@drawable/ic_menu_refresh" />
+    <ImageButton android:id="@+id/MyLocationActivityImageButton" 
+        style="@style/LocationCardButton"
+        android:src="@drawable/ic_menu_mapmode" />
+    <ImageButton android:id="@+id/SettingsImageButton" 
+        style="@style/LocationCardButton"
+        android:src="@drawable/ic_menu_manage" />
+    <ImageButton android:id="@+id/ShareImageButton" 
+        style="@style/LocationCardButton"
+        android:src="@drawable/ic_menu_share" />
+</LinearLayout>
