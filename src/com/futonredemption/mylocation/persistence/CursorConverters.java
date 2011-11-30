@@ -38,7 +38,7 @@ public class CursorConverters {
 		final ContentValues values = new ContentValues();
 		
 		PackedString addressFlat = new PackedString();
-		final int len = address.getMaxAddressLineIndex();
+		final int len = address.getMaxAddressLineIndex() + 1;
 		for(int i = 0; i < len; i++) {
 			addressFlat.put(address.getAddressLine(i));
 		}

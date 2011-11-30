@@ -11,6 +11,7 @@ import org.beryl.diagnostics.Logger;
 import com.futonredemption.mylocation.Debugging;
 import com.futonredemption.mylocation.MyLocationRetrievalState;
 import com.futonredemption.mylocation.tasks.DownloadStaticMapTask;
+import com.futonredemption.mylocation.tasks.LoadMostRecentLocationTask;
 import com.futonredemption.mylocation.tasks.RetrieveAddressTask;
 import com.futonredemption.mylocation.tasks.RetrieveLocationTask;
 import com.futonredemption.mylocation.tasks.SaveLocationBundleTask;
@@ -63,17 +64,40 @@ public class WidgetUpdateService extends AbstractService {
 	}
 
 	private void syncToLatestKnownLocation() {
-		// TODO Sync all widgets to latest known location. Otherwise obtain a new location.
-		beginFullUpdate();
+		if(UpdateTaskIsRunning.compareAndSet(false, true)) {
+			Thread.currentThread().setName("WidgetUpdateService");
+			Logger.w("Starting WidgetUpdateService, syncToLatestKnownLocation");
+			
+			Debugging.breakpoint();
+			
+			final ExecutorService service = Executors.newSingleThreadExecutor();
+			final MyLocationRetrievalState state = new MyLocationRetrievalState();
+			UpdateWidgetsTask widgetUpdate;
+			LoadMostRecentLocationTask loadMostRecentLocation;
+			Future<MyLocationRetrievalState> future;
+			
+			widgetUpdate = new UpdateWidgetsTask(this, state);
+			future = service.submit(widgetUpdate);
+			
+			loadMostRecentLocation = new LoadMostRecentLocationTask(this, future);
+			future = service.submit(loadMostRecentLocation);
+			
+			widgetUpdate = new UpdateWidgetsTask(this, future);
+			future = service.submit(widgetUpdate);
+	
+			RequestCompleted<Future<MyLocationRetrievalState>> serviceStopper = new RequestCompleted<Future<MyLocationRetrievalState>>(future, service);
+			service.submit(serviceStopper);
+		} else {
+			setRequestCompleted();
+		}
 	}
 
 	final AtomicBoolean UpdateTaskIsRunning = new AtomicBoolean(false);
 	
 	private void beginFullUpdate() {
-		
 		if(UpdateTaskIsRunning.compareAndSet(false, true)) {
 			Thread.currentThread().setName("WidgetUpdateService");
-			Logger.w("Starting WidgetUpdateService");
+			Logger.w("Starting WidgetUpdateService, beginFullUpdate");
 			
 			Debugging.breakpoint();
 			

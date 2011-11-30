@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
+import android.net.Uri;
 import android.provider.Settings;
 
 public class DataToViewModelAdapter {
@@ -29,6 +30,15 @@ public class DataToViewModelAdapter {
 	
 	public MyLocationRetrievalState getState() {
 		return state;
+	}
+	
+	public Uri getStaticMapFileUri() {
+		Uri uri = null;
+		StaticMap staticMap = state.getStaticMap();
+		if(staticMap != null && staticMap.getFilePath() != null) {
+			uri = Uri.parse(staticMap.getFilePath());
+		}
+		return uri;
 	}
 	
 	public double getLatitude() {

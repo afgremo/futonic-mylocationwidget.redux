@@ -18,6 +18,12 @@ public class MyLocationRetrievalState {
 		this.bundle = bundle;
 	}
 	
+	public void copyFrom(MyLocationBundle bundle) {
+		this.bundle.setAddress(bundle.getAddress());
+		this.bundle.setLocation(bundle.getLocation());
+		this.bundle.setStaticMap(bundle.getStaticMap());
+	}
+	
 	public Exception getError() {
 		return error;
 	}

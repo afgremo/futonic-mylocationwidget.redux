@@ -50,6 +50,28 @@ public class MyLocationBundlePersistence {
 		return locationSID;
 	}
 	
+	private static String [] LocationHistoryContentProviderIdOnlyProjection = new String [] { LocationHistoryContentProvider._ID };
+	public MyLocationBundle getMostRecent() {
+		int locationId = 0;
+		final ContentResolver resolver = context.getContentResolver();
+		Cursor cursor = null;
+		
+		try {
+			cursor = resolver.query(LocationHistoryContentProvider.CONTENT_URI, LocationHistoryContentProviderIdOnlyProjection, 
+					null, null, 
+					LocationHistoryContentProvider._ID + " DESC LIMIT 1");
+			if(cursor.moveToFirst()) {
+				locationId = cursor.getInt(0);
+			}
+		} finally {
+			if(cursor != null) {
+				cursor.close();
+			}
+		}
+
+		return get(locationId);
+	}
+	
 	public MyLocationBundle get(int locationId) {
 		MyLocationBundle bundle = new MyLocationBundle();
 		final Location location = getLocationFromLocationId(locationId);

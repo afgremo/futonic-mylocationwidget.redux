@@ -5,20 +5,24 @@
     android:orientation="horizontal"
     style="@style/AppWidgetClassic">
 
-    <ImageView android:id="@+id/DebugFullUpdateImageButton"
+    <TextView android:id="@+id/DebugFullUpdateImageButton"
         style="@style/AWCButton.Left"
         android:layout_width="@dimen/use_weight"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        android:src="@drawable/ic_menu_refresh" />
+        android:drawableTop="@drawable/ic_menu_refresh"
+        android:text="Full"
+        android:gravity="center" />
 
 	<ImageView style="@style/AWCVerticalDivider" />
 	
-	 <ImageView android:id="@+id/DebugSyncLatestImageButton"
+	 <TextView android:id="@+id/DebugSyncLatestImageButton"
         style="@style/AWCButton.Right"
         android:layout_width="@dimen/use_weight"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        android:src="@drawable/ic_menu_refresh" />
+        android:drawableTop="@drawable/ic_menu_refresh"
+        android:text="Sync"
+        android:gravity="center" />
         
 </LinearLayout>

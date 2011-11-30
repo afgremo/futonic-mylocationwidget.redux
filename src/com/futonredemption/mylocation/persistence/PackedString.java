@@ -25,6 +25,17 @@ public class PackedString {
 	}
 	
 	public static String[] unpack(String packedString) {
-		return splitPattern.split(packedString);
+		String [] unpacked = splitPattern.split(packedString);
+		if(packedString.charAt(packedString.length() - 1) == SEPARATOR) {
+			String [] copied = new String[unpacked.length + 1];
+			int i;
+			int len = unpacked.length;
+			for(i = 0; i < len; i++) {
+				copied[i] = unpacked[i];
+			}
+			copied[len] = "";
+			unpacked = copied;
+		}
+		return unpacked;
 	}
 }
