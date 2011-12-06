@@ -1,5 +1,7 @@
 package com.futonredemption.mylocation;
 
+import org.beryl.diagnostics.Logger;
+
 import android.os.Debug;
 
 /** Collection of utility methods for debugging an Android system. */
@@ -28,5 +30,17 @@ public class Debugging {
 	public static void breakpoint() {
 		if(!debugMode) return;
 		Debug.waitForDebugger();
+	}
+	
+	public static void e(Exception ex) {
+		Logger.e(ex);
+	}
+	
+	public static void e(String message) {
+		Logger.e(message);
+	}
+	
+	public static void w(String message) {
+		Logger.w(message);
 	}
 }

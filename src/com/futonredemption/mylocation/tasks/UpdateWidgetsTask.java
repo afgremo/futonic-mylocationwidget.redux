@@ -2,14 +2,13 @@ package com.futonredemption.mylocation.tasks;
 
 import java.util.concurrent.Future;
 
-import org.beryl.diagnostics.Logger;
-
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.widget.RemoteViews;
 
 import com.futonredemption.mylocation.DataToViewModelAdapter;
+import com.futonredemption.mylocation.Debugging;
 import com.futonredemption.mylocation.MyLocationRetrievalState;
 import com.futonredemption.mylocation.appwidgets.AppWidgetProvider1x1;
 import com.futonredemption.mylocation.appwidgets.AppWidgetProvider2x1;
@@ -30,7 +29,7 @@ public class UpdateWidgetsTask extends AbstractMyLocationTask {
 
 	@Override
 	protected void loadData(MyLocationRetrievalState state) {
-		Logger.w("UpdateWidgetsTask, updating...");
+		Debugging.w("UpdateWidgetsTask, updating...");
 		final DataToViewModelAdapter adapter = new DataToViewModelAdapter(context, state);
 		updateAllWidgets(adapter);
 	}

@@ -68,6 +68,7 @@ public class LocationCardActivity extends Activity {
 		
 		// TODO: This is being lazy.
 		MyLocationRetrievalState state = new MyLocationRetrievalState(locationBundle);
+		state.seal();
 		DataToViewModelAdapter adapter = new DataToViewModelAdapter(this, state);
 		
 		// TODO: Load bitmap in a separate thread.

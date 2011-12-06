@@ -3,7 +3,6 @@ package com.futonredemption.mylocation.tasks;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import org.beryl.diagnostics.Logger;
 import org.beryl.location.LocationMonitor;
 import org.beryl.location.ProviderSelectors;
 
@@ -48,6 +47,12 @@ public class RetrieveLocationTask extends EventBasedContextAwareCallable<MyLocat
 		try {
 			final MyLocationRetrievalState state = future.get();
 			this.result = state;
+			
+			// Don't run the location retrieval if the location is already there.
+			if(this.result != null && this.result.hasLocation()) {
+				finishWithResult(this.result);
+				return;
+			}
 			
 			startTimeoutWatchdog();
 			setupLocationMonitor();
@@ -130,7 +135,7 @@ public class RetrieveLocationTask extends EventBasedContextAwareCallable<MyLocat
 		}
 		
 		public void onLocationChanged(final Location location) {
-			Logger.w("onLocationChanged");
+			Debugging.w("onLocationChanged");
 			synchronized(lock) {
 				if(bestLocation == null || bestLocation.getAccuracy() > location.getAccuracy()) {
 					bestLocation = location;

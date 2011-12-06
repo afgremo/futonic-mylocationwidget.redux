@@ -7,8 +7,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import org.beryl.diagnostics.Logger;
-
+import com.futonredemption.mylocation.Debugging;
 import com.futonredemption.mylocation.StaticMap;
 
 import android.net.Uri;
@@ -28,7 +27,7 @@ public class StaticMapsClient {
 
 		
 		try {
-			Logger.w(urlString);
+			Debugging.w(urlString);
 			URL url = new URL(urlString);
 			connection = (HttpURLConnection) url.openConnection();
 
@@ -46,7 +45,7 @@ public class StaticMapsClient {
 			map.setUrl(urlString);
 			map.setFilePath(fileDesc.getAbsolutePath());
 		} catch (IOException e) {
-			Logger.e(e);
+			Debugging.e(e);
 		} finally {
 			if (connection != null) {
 				connection.disconnect();
@@ -67,7 +66,7 @@ public class StaticMapsClient {
 				}
 			}
 		} catch (Exception e) {
-			Logger.e(e);
+			Debugging.e(e);
 		}
 
 		return builder.build();

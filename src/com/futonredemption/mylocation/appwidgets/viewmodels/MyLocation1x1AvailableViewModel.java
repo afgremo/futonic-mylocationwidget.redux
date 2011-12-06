@@ -20,8 +20,10 @@ public class MyLocation1x1AvailableViewModel extends AbstractMyLocationWidgetVie
 
 	@Override
 	protected void onCreateViews(Context context, RemoteViews views) {
-		views.setUri(R.id.ActionImageButton, "setImageURI", fileUri);
-		setOnClick(views, R.id.ActionImageButton, LocationDetailsAction);
+		if(fileUri != null) {
+			views.setUri(R.id.ActionImageButton, "setImageURI", fileUri);
+			setOnClick(views, R.id.ActionImageButton, LocationDetailsAction);
+		}
 	}
 
 	@Override

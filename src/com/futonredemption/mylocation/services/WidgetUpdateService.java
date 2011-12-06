@@ -6,7 +6,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.beryl.app.AbstractService;
-import org.beryl.diagnostics.Logger;
 
 import com.futonredemption.mylocation.Debugging;
 import com.futonredemption.mylocation.MyLocationRetrievalState;
@@ -15,6 +14,7 @@ import com.futonredemption.mylocation.tasks.LoadMostRecentLocationTask;
 import com.futonredemption.mylocation.tasks.RetrieveAddressTask;
 import com.futonredemption.mylocation.tasks.RetrieveLocationTask;
 import com.futonredemption.mylocation.tasks.SaveLocationBundleTask;
+import com.futonredemption.mylocation.tasks.SealLocationBundleTask;
 import com.futonredemption.mylocation.tasks.UpdateWidgetsTask;
 
 import android.content.Context;
@@ -45,7 +45,7 @@ public class WidgetUpdateService extends AbstractService {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		Logger.w("Service Destroy");
+		Debugging.w("Service Destroy");
 	}
 	
 	@Override
@@ -66,21 +66,23 @@ public class WidgetUpdateService extends AbstractService {
 	private void syncToLatestKnownLocation() {
 		if(UpdateTaskIsRunning.compareAndSet(false, true)) {
 			Thread.currentThread().setName("WidgetUpdateService");
-			Logger.w("Starting WidgetUpdateService, syncToLatestKnownLocation");
+			Debugging.w("Starting WidgetUpdateService, syncToLatestKnownLocation");
 			
 			Debugging.breakpoint();
 			
 			final ExecutorService service = Executors.newSingleThreadExecutor();
 			final MyLocationRetrievalState state = new MyLocationRetrievalState();
+			Future<MyLocationRetrievalState> future;
 			UpdateWidgetsTask widgetUpdate;
 			LoadMostRecentLocationTask loadMostRecentLocation;
-			Future<MyLocationRetrievalState> future;
 			
 			widgetUpdate = new UpdateWidgetsTask(this, state);
 			future = service.submit(widgetUpdate);
 			
 			loadMostRecentLocation = new LoadMostRecentLocationTask(this, future);
 			future = service.submit(loadMostRecentLocation);
+			
+			future = addStandardMetadataTasks(service, future);
 			
 			widgetUpdate = new UpdateWidgetsTask(this, future);
 			future = service.submit(widgetUpdate);
@@ -97,33 +99,19 @@ public class WidgetUpdateService extends AbstractService {
 	private void beginFullUpdate() {
 		if(UpdateTaskIsRunning.compareAndSet(false, true)) {
 			Thread.currentThread().setName("WidgetUpdateService");
-			Logger.w("Starting WidgetUpdateService, beginFullUpdate");
+			Debugging.w("Starting WidgetUpdateService, beginFullUpdate");
 			
 			Debugging.breakpoint();
 			
 			final ExecutorService service = Executors.newSingleThreadExecutor();
 			final MyLocationRetrievalState state = new MyLocationRetrievalState();
-			UpdateWidgetsTask widgetUpdate;
-			RetrieveLocationTask locationGet;
-			RetrieveAddressTask addressGet;
 			Future<MyLocationRetrievalState> future;
-			DownloadStaticMapTask staticMapGet;
-			SaveLocationBundleTask saveLocationBundle;
-			
+			UpdateWidgetsTask widgetUpdate;
+
 			widgetUpdate = new UpdateWidgetsTask(this, state);
 			future = service.submit(widgetUpdate);
 			
-			locationGet = new RetrieveLocationTask(this, future);
-			future = service.submit(locationGet);
-			
-			addressGet = new RetrieveAddressTask(this, future);
-			future = service.submit(addressGet);
-			
-			staticMapGet = new DownloadStaticMapTask(this, future);
-			future = service.submit(staticMapGet);
-			
-			saveLocationBundle = new SaveLocationBundleTask(this, future);
-			future = service.submit(saveLocationBundle);
+			future = addStandardMetadataTasks(service, future);
 			
 			widgetUpdate = new UpdateWidgetsTask(this, future);
 			future = service.submit(widgetUpdate);
@@ -133,6 +121,31 @@ public class WidgetUpdateService extends AbstractService {
 		} else {
 			setRequestCompleted();
 		}
+	}
+	
+	public Future<MyLocationRetrievalState> addStandardMetadataTasks(ExecutorService service, Future<MyLocationRetrievalState> future) {
+		RetrieveLocationTask locationGet;
+		RetrieveAddressTask addressGet;
+		DownloadStaticMapTask staticMapGet;
+		SaveLocationBundleTask saveLocationBundle;
+		SealLocationBundleTask sealLocationTask;
+		
+		locationGet = new RetrieveLocationTask(this, future);
+		future = service.submit(locationGet);
+		
+		addressGet = new RetrieveAddressTask(this, future);
+		future = service.submit(addressGet);
+		
+		staticMapGet = new DownloadStaticMapTask(this, future);
+		future = service.submit(staticMapGet);
+		
+		saveLocationBundle = new SaveLocationBundleTask(this, future);
+		future = service.submit(saveLocationBundle);
+		
+		sealLocationTask = new SealLocationBundleTask(this, future);
+		future = service.submit(sealLocationTask);
+
+		return future;
 	}
 	
 	class RequestCompleted<T extends Future<?>> implements Runnable {

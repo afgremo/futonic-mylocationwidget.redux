@@ -84,7 +84,7 @@
         <provider
             android:authorities="com.futonredemption.mylocation.provider.staticmapcontentprovider" android:name=".provider.StaticMapContentProvider"/>
         
-		<uses-library android:name="com.google.android.maps" />
+		<uses-library android:name="com.google.android.maps" android:required="false" />
 		<meta-data android:name="com.google.android.backup.api_key"
     		android:value="@string/apikey_google_backupagent" />
     </application>

@@ -2,10 +2,9 @@ package com.futonredemption.mylocation.tasks;
 
 import java.util.concurrent.Future;
 
-import org.beryl.diagnostics.Logger;
-
 import android.content.Context;
 
+import com.futonredemption.mylocation.Debugging;
 import com.futonredemption.mylocation.MyLocationRetrievalState;
 import com.futonredemption.mylocation.persistence.MyLocationBundlePersistence;
 
@@ -20,8 +19,13 @@ public class SaveLocationBundleTask extends AbstractMyLocationTask {
 
 	@Override
 	protected void loadData(MyLocationRetrievalState state) {
-		Logger.w("Update Widgets");
+		Debugging.w("Update Widgets");
 		MyLocationBundlePersistence persist = new MyLocationBundlePersistence(context);
-		persist.save(state.getLocationBundle());
+		
+		if(state.isNew()) {
+			persist.save(state.getLocationBundle());
+		} else {
+			// TODO: Use previous id to update information.
+		}
 	}
 }

@@ -1,6 +1,6 @@
 package com.futonredemption.mylocation.tasks;
 
-import org.beryl.diagnostics.Logger;
+import com.futonredemption.mylocation.Debugging;
 
 import android.content.Context;
 import android.os.Handler;
@@ -32,7 +32,7 @@ public abstract class EventBasedContextAwareCallable<V> extends ContextAwareCall
 			Looper.loop();
 		} catch(Exception e) {
 			finishWithError(e);
-			Logger.e(e);
+			Debugging.e(e);
 		} finally {
 			onFinishTask();
 			looper.quit();

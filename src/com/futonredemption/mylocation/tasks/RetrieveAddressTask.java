@@ -3,13 +3,12 @@ package com.futonredemption.mylocation.tasks;
 import java.util.List;
 import java.util.concurrent.Future;
 
-import org.beryl.diagnostics.Logger;
-
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 
+import com.futonredemption.mylocation.Debugging;
 import com.futonredemption.mylocation.MyLocationRetrievalState;
 
 public class RetrieveAddressTask extends AbstractMyLocationTask {
@@ -26,7 +25,7 @@ public class RetrieveAddressTask extends AbstractMyLocationTask {
 
 	@Override
 	protected void loadData(MyLocationRetrievalState state) {
-		if(state.hasLocation()) {
+		if(state.hasLocation() && ! state.hasAddress()) {
 			final Location location = state.getLocation();
 			try {
 				final Geocoder coder = new Geocoder(context);
@@ -48,7 +47,7 @@ public class RetrieveAddressTask extends AbstractMyLocationTask {
 		try {
 			addresses = coder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
 		} catch (Exception e) {
-			Logger.e(e);
+			Debugging.e(e);
 		}
 		
 		if(addresses == null || addresses.size() == 0) {

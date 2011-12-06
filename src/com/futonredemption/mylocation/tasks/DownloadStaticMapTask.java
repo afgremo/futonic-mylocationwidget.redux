@@ -3,10 +3,10 @@ package com.futonredemption.mylocation.tasks;
 import java.io.File;
 import java.util.concurrent.Future;
 
-import org.beryl.diagnostics.Logger;
 import org.beryl.io.DirectoryUtils;
 import org.beryl.io.FileUtils;
 
+import com.futonredemption.mylocation.Debugging;
 import com.futonredemption.mylocation.MyLocationRetrievalState;
 import com.futonredemption.mylocation.StaticMap;
 import com.futonredemption.mylocation.google.maps.Parameters;
@@ -29,7 +29,7 @@ public class DownloadStaticMapTask extends AbstractMyLocationTask {
 	@Override
 	protected void loadData(MyLocationRetrievalState state) {
 
-		if(state.hasLocation()) {
+		if(state.hasLocation() && ! state.hasStaticMap()) {
 			Parameters params = new Parameters();
 			params.center = new Center(state.getLocation());
 			params.size = new Dimension(256,256);
@@ -44,7 +44,7 @@ public class DownloadStaticMapTask extends AbstractMyLocationTask {
 				map = client.downloadMap(targetFile, params);
 				state.setStaticMap(map);
 			} catch(Exception e) {
-				Logger.e(e);
+				Debugging.e(e);
 			}
 		}
 	}

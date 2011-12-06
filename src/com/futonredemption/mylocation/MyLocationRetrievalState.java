@@ -9,6 +9,10 @@ public class MyLocationRetrievalState {
 	private final MyLocationBundle bundle;
 	private Exception error = null;
 	private boolean staleLocationIndicator = false;
+	private boolean isModified = false;
+	private boolean isNew = true;
+	
+	private boolean isSealed = false;
 	
 	public MyLocationRetrievalState() {
 		this.bundle = new MyLocationBundle();
@@ -16,16 +20,31 @@ public class MyLocationRetrievalState {
 	
 	public MyLocationRetrievalState(MyLocationBundle bundle) {
 		this.bundle = bundle;
+		this.isNew = false;
 	}
 	
 	public void copyFrom(MyLocationBundle bundle) {
 		this.bundle.setAddress(bundle.getAddress());
 		this.bundle.setLocation(bundle.getLocation());
 		this.bundle.setStaticMap(bundle.getStaticMap());
+		this.isModified = false;
+		this.isNew = false;
 	}
 	
 	public Exception getError() {
 		return error;
+	}
+	
+	public boolean isNew() {
+		return this.isNew;
+	}
+	
+	public boolean isModified() {
+		return this.isModified;
+	}
+	
+	public boolean isSealed() {
+		return this.isSealed;
 	}
 	
 	public boolean hasError() {
@@ -47,7 +66,7 @@ public class MyLocationRetrievalState {
 	}
 	
 	public boolean isLoading() {
-		return ! hasError() && !(bundle.hasLocation() && bundle.hasAddress());
+		return ! hasError() && ! isSealed;
 	}
 	
 	public boolean isCompleted() {
@@ -91,14 +110,17 @@ public class MyLocationRetrievalState {
 	
 	public void setLocation(Location location) {
 		this.bundle.setLocation(location);
+		this.isModified = true;
 	}
 	
 	public void setAddress(Address address) {
 		this.bundle.setAddress(address);
+		this.isModified = true;
 	}
 
 	public void setStaticMap(StaticMap staticMap) {
 		this.bundle.setStaticMap(staticMap);
+		this.isModified = true;
 	}
 	
 	public void setStateLocationIndicator(boolean isStale) {
@@ -111,5 +133,10 @@ public class MyLocationRetrievalState {
 
 	public MyLocationBundle getLocationBundle() {
 		return this.bundle;
+	}
+
+	/** Indicate that no more data will be written to the bundle's metadata. */
+	public void seal() {
+		this.isSealed = true;
 	}
 }
