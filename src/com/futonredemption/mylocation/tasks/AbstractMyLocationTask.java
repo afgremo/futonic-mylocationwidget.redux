@@ -45,6 +45,8 @@ public abstract class AbstractMyLocationTask extends ContextAwareCallable<MyLoca
 				state = currentState;
 			}
 			
+			Debugging.w(this.getClass().getSimpleName());
+			
 			if(state.hasError()) {
 				loadDataFromErrorState(state);
 			} else {

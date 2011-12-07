@@ -103,6 +103,7 @@ public class WidgetUpdateService extends AbstractService {
 		if(updateTaskIsRunning.compareAndSet(false, true)) {
 			Thread.currentThread().setName("WidgetUpdateService");
 			Debugging.w("Starting WidgetUpdateService, beginFullUpdate");
+			Debugging.breakpoint();
 			
 			final ExecutorService service = createExecutorService();
 			final MyLocationRetrievalState state = new MyLocationRetrievalState();

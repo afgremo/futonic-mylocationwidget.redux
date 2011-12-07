@@ -16,7 +16,7 @@ public class StaticMapsClient {
 	private static final String StaticMapsUri = "http://maps.googleapis.com/maps/api/staticmap";
 
 	public StaticMap downloadMap(Context context, Parameters renderParams) {
-		StaticMap map = new StaticMap();
+		StaticMap map = null;
 
 		Bundle httpParams = fromParameters(renderParams);
 		Uri uri = buildUri(httpParams);
@@ -25,6 +25,7 @@ public class StaticMapsClient {
 		SimpleFileDownloader downloader = new SimpleFileDownloader();
 		File mapFile = downloader.download(context, urlString, ".png");
 		if(mapFile != null) {
+			map = new StaticMap();
 			map.setUrl(urlString);
 			map.setFilePath(mapFile.getAbsolutePath());
 		}
