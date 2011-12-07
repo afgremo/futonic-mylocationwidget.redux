@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <bool name="UsingLegacyWidgetApis">false</bool>
-    
-    <!-- Android 3.x was only for tablets -->
     <bool name="IsPhone">false</bool>
 	<bool name="IsTablet">true</bool>
 </resources>

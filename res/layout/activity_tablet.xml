@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     
-	<include android:id="@+id/mapview" layout="@layout/mapview"
-	    android:layout_width="match_parent" android:layout_height="match_parent" />
+	<fragment class="com.futonredemption.mylocation.fragments.LocationHistoryFragment"
+	    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
     
 </LinearLayout>

@@ -10,8 +10,7 @@
             android:label="@string/app_name"
             android:theme="@style/Theme.Dialog">
         </activity>
-        
-        <!-- 
+
         <activity android:name=".activities.PhoneActivity"
             android:label="@string/app_name" android:enabled="@bool/IsPhone"
             android:theme="@style/Theme.ActivityDefault">
@@ -29,7 +28,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-         -->
+
 		<activity android:name="org.beryl.app.IntentChooser"
                   android:label="@string/my_location"
                   android:theme="@android:style/Theme.Translucent.NoTitleBar"

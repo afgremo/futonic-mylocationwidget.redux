@@ -9,6 +9,8 @@
     <string name="could_not_get_location">Could not get location</string>
     <string name="tap_here_to_fix">Tap here to fix.</string>
     
+    <string name="empty_location_history">Empty Location History</string>
+    
    	<string name="locating1">Locating</string>
    	<string name="locating2">Locating.</string>
    	<string name="locating3">Locating..</string>
