@@ -1,5 +1,8 @@
 package com.futonredemption.mylocation.tasks;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import android.content.Context;
@@ -9,27 +12,35 @@ import com.futonredemption.mylocation.MyLocationRetrievalState;
 
 public abstract class AbstractMyLocationTask extends ContextAwareCallable<MyLocationRetrievalState> {
 
-	private final Future<MyLocationRetrievalState> stateFuture;
+	private final List<Future<MyLocationRetrievalState>> stateFuture = new ArrayList<Future<MyLocationRetrievalState>>();
 	private final MyLocationRetrievalState currentState;
 	
 	public AbstractMyLocationTask(Context context, MyLocationRetrievalState state) {
 		super(context);
-		this.stateFuture = null;
 		this.currentState = state;
 	}
 	
 	public AbstractMyLocationTask(Context context, Future<MyLocationRetrievalState> state) {
 		super(context);
-		this.stateFuture = state;
+		this.stateFuture.add(state);
+		this.currentState = null;
+	}
+	
+	public AbstractMyLocationTask(Context context, Future<MyLocationRetrievalState> [] state) {
+		super(context);
+		final int len = state.length;
+		for(int i = 0; i < len; i++) {
+			this.stateFuture.add(state[i]);
+		}
 		this.currentState = null;
 	}
 	
 	public final MyLocationRetrievalState call() throws Exception {
+		Thread.currentThread().setName(this.getClass().getSimpleName());
 		MyLocationRetrievalState state = null;
-		
 		try {
-			if(stateFuture != null) {
-				state = this.stateFuture.get();
+			if(! stateFuture.isEmpty()) {
+				state = this.stateFuture.get(0).get();
 			} else {
 				state = currentState;
 			}
@@ -47,6 +58,16 @@ public abstract class AbstractMyLocationTask extends ContextAwareCallable<MyLoca
 		return state;
 	}
 
+	public void addFuture(Future<MyLocationRetrievalState> future) {
+		this.stateFuture.add(future);
+	}
+	
+	protected void waitForAllFutures() throws InterruptedException, ExecutionException {
+		for(Future<MyLocationRetrievalState> stateIter : this.stateFuture) {
+			stateIter.get();
+		}
+	}
+	
 	protected void loadDataFromErrorState(final MyLocationRetrievalState state) {
 		
 	}

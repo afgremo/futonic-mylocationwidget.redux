@@ -21,6 +21,7 @@ public class LoadMostRecentLocationTask extends AbstractMyLocationTask {
 	@Override
 	protected void loadData(MyLocationRetrievalState state) {
 		Debugging.w("Obtain Bundle from Storage");
+		
 		MyLocationBundlePersistence persist = new MyLocationBundlePersistence(context);
 		MyLocationBundle locationBundle = persist.getMostRecent();
 		state.copyFrom(locationBundle);

@@ -19,13 +19,16 @@ public class SaveLocationBundleTask extends AbstractMyLocationTask {
 
 	@Override
 	protected void loadData(MyLocationRetrievalState state) {
-		Debugging.w("Update Widgets");
-		MyLocationBundlePersistence persist = new MyLocationBundlePersistence(context);
-		
-		if(state.isNew()) {
-			persist.save(state.getLocationBundle());
-		} else {
-			// TODO: Use previous id to update information.
-		}
+		try {
+			waitForAllFutures();
+			Debugging.w("Save Location Bundle");
+			MyLocationBundlePersistence persist = new MyLocationBundlePersistence(context);
+			
+			if(state.isNew()) {
+				persist.save(state.getLocationBundle());
+			} else {
+				// TODO: Use previous id to update information.
+			}
+		} catch(Exception e) {}
 	}
 }

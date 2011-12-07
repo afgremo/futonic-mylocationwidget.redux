@@ -1,15 +1,13 @@
 package com.futonredemption.mylocation.google.maps;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+
+import org.beryl.net.SimpleFileDownloader;
 
 import com.futonredemption.mylocation.Debugging;
 import com.futonredemption.mylocation.StaticMap;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -17,41 +15,19 @@ public class StaticMapsClient {
 
 	private static final String StaticMapsUri = "http://maps.googleapis.com/maps/api/staticmap";
 
-	public StaticMap downloadMap(File fileDesc, Parameters renderParams) {
+	public StaticMap downloadMap(Context context, Parameters renderParams) {
 		StaticMap map = new StaticMap();
 
 		Bundle httpParams = fromParameters(renderParams);
-		HttpURLConnection connection = null;
 		Uri uri = buildUri(httpParams);
 		String urlString = uri.toString();
 
-		
-		try {
-			Debugging.w(urlString);
-			URL url = new URL(urlString);
-			connection = (HttpURLConnection) url.openConnection();
-
-			FileOutputStream fos = new FileOutputStream(fileDesc);
-			InputStream is = connection.getInputStream();
-
-			byte[] buffer = new byte[1024];
-			int len1 = 0;
-			while ((len1 = is.read(buffer)) != -1) {
-				fos.write(buffer, 0, len1);
-			}
-
-			fos.close();
-			is.close();
+		SimpleFileDownloader downloader = new SimpleFileDownloader();
+		File mapFile = downloader.download(context, urlString, ".png");
+		if(mapFile != null) {
 			map.setUrl(urlString);
-			map.setFilePath(fileDesc.getAbsolutePath());
-		} catch (IOException e) {
-			Debugging.e(e);
-		} finally {
-			if (connection != null) {
-				connection.disconnect();
-			}
+			map.setFilePath(mapFile.getAbsolutePath());
 		}
-		
 		return map;
 	}
 

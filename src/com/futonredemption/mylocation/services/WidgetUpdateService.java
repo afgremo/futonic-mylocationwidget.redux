@@ -19,6 +19,7 @@ import com.futonredemption.mylocation.tasks.UpdateWidgetsTask;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.IBinder;
 
 public class WidgetUpdateService extends AbstractService {
 
@@ -42,6 +43,8 @@ public class WidgetUpdateService extends AbstractService {
 		context.startService(getBeginFullUpdate(context));
 	}
 	
+	final AtomicBoolean updateTaskIsRunning = new AtomicBoolean(false);
+	
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
@@ -49,7 +52,7 @@ public class WidgetUpdateService extends AbstractService {
 	}
 	
 	@Override
-	protected int handleOnStartCommand(Intent intent, int flags, int startId) {
+	protected int handleOnStartCommand2(Intent intent, int flags, int startId) {
 		final String method = intent.getStringExtra("method");
 		
 		if(method.equalsIgnoreCase("FullUpdate")) {
@@ -60,17 +63,15 @@ public class WidgetUpdateService extends AbstractService {
 			setRequestCompleted();
 		}
 		
-		return 0;
+		return START_NOT_STICKY;
 	}
 
 	private void syncToLatestKnownLocation() {
-		if(UpdateTaskIsRunning.compareAndSet(false, true)) {
+		if(updateTaskIsRunning.compareAndSet(false, true)) {
 			Thread.currentThread().setName("WidgetUpdateService");
 			Debugging.w("Starting WidgetUpdateService, syncToLatestKnownLocation");
-			
-			Debugging.breakpoint();
-			
-			final ExecutorService service = Executors.newSingleThreadExecutor();
+	
+			final ExecutorService service = createExecutorService();
 			final MyLocationRetrievalState state = new MyLocationRetrievalState();
 			Future<MyLocationRetrievalState> future;
 			UpdateWidgetsTask widgetUpdate;
@@ -93,17 +94,17 @@ public class WidgetUpdateService extends AbstractService {
 			setRequestCompleted();
 		}
 	}
-
-	final AtomicBoolean UpdateTaskIsRunning = new AtomicBoolean(false);
+	
+	private ExecutorService createExecutorService() {
+		return Executors.newCachedThreadPool();
+	}
 	
 	private void beginFullUpdate() {
-		if(UpdateTaskIsRunning.compareAndSet(false, true)) {
+		if(updateTaskIsRunning.compareAndSet(false, true)) {
 			Thread.currentThread().setName("WidgetUpdateService");
 			Debugging.w("Starting WidgetUpdateService, beginFullUpdate");
 			
-			Debugging.breakpoint();
-			
-			final ExecutorService service = Executors.newSingleThreadExecutor();
+			final ExecutorService service = createExecutorService();
 			final MyLocationRetrievalState state = new MyLocationRetrievalState();
 			Future<MyLocationRetrievalState> future;
 			UpdateWidgetsTask widgetUpdate;
@@ -129,17 +130,21 @@ public class WidgetUpdateService extends AbstractService {
 		DownloadStaticMapTask staticMapGet;
 		SaveLocationBundleTask saveLocationBundle;
 		SealLocationBundleTask sealLocationTask;
+		Future<MyLocationRetrievalState> futureAddress;
+		Future<MyLocationRetrievalState> futureStaticMap;
 		
 		locationGet = new RetrieveLocationTask(this, future);
 		future = service.submit(locationGet);
 		
 		addressGet = new RetrieveAddressTask(this, future);
-		future = service.submit(addressGet);
+		futureAddress = service.submit(addressGet);
 		
 		staticMapGet = new DownloadStaticMapTask(this, future);
-		future = service.submit(staticMapGet);
+		futureStaticMap = service.submit(staticMapGet);
 		
 		saveLocationBundle = new SaveLocationBundleTask(this, future);
+		saveLocationBundle.addFuture(futureAddress);
+		saveLocationBundle.addFuture(futureStaticMap);
 		future = service.submit(saveLocationBundle);
 		
 		sealLocationTask = new SealLocationBundleTask(this, future);
@@ -167,5 +172,10 @@ public class WidgetUpdateService extends AbstractService {
 			service.shutdown();
 			setRequestCompleted();
 		}
+	}
+
+	@Override
+	public IBinder onBind(Intent intent) {
+		return null;
 	}
 }

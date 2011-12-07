@@ -1,10 +1,6 @@
 package com.futonredemption.mylocation.tasks;
 
-import java.io.File;
 import java.util.concurrent.Future;
-
-import org.beryl.io.DirectoryUtils;
-import org.beryl.io.FileUtils;
 
 import com.futonredemption.mylocation.Debugging;
 import com.futonredemption.mylocation.MyLocationRetrievalState;
@@ -37,11 +33,8 @@ public class DownloadStaticMapTask extends AbstractMyLocationTask {
 			params.zoom = 10; //128x128, z=9 or 256x256, z=10?
 			try {
 				StaticMap map = new StaticMap();
-				File targetDirectory = DirectoryUtils.getApplicationExternalStorageDirectory(context, "static-maps");
-				FileUtils.createDirectory(targetDirectory);
-				File targetFile = File.createTempFile("static-map", ".png", targetDirectory);
 				StaticMapsClient client = new StaticMapsClient();
-				map = client.downloadMap(targetFile, params);
+				map = client.downloadMap(context, params);
 				state.setStaticMap(map);
 			} catch(Exception e) {
 				Debugging.e(e);
