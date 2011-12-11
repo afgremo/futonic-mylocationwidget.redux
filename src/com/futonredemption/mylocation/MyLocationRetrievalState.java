@@ -1,16 +1,20 @@
 package com.futonredemption.mylocation;
 
+import com.futonredemption.mylocation.persistence.MyLocationBundleRecord;
+
 import android.location.Address;
 import android.location.Location;
 
-/** Stores the state of the Location Retrieval process from the WidgetUpdateService. */
+/** Stores the state of the Location retrieval process from the WidgetUpdateService. */
 public class MyLocationRetrievalState {
 
+	private OriginalCoordinates origin = null;
 	private final MyLocationBundle bundle;
 	private Exception error = null;
 	private boolean staleLocationIndicator = false;
 	private boolean isModified = false;
 	private boolean isNew = true;
+	private Integer id = null;
 	
 	private boolean isSealed = false;
 	
@@ -84,6 +88,38 @@ public class MyLocationRetrievalState {
 		return R.string.unknown;
 	}
 
+	public void setOriginalCoordinates(OriginalCoordinates origin) {
+		this.origin = origin;
+	}
+	
+	public boolean hasOriginalCoordinates() {
+		return this.origin != null;
+	}
+	
+	public double getOriginalLatitude() {
+		if(hasOriginalCoordinates()) {
+			return this.origin.getLatitude();
+		} else if(hasLocation()) {
+			return this.getLocation().getLatitude();
+		} else {
+			return 0.0;
+		}
+	}
+	
+	public double getOriginalLongitude() {
+		if(hasOriginalCoordinates()) {
+			return this.origin.getLongitude();
+		} else if(hasLocation()) {
+			return this.getLocation().getLongitude();
+		} else {
+			return 0.0;
+		}
+	}
+	
+	public OriginalCoordinates getOriginalCoordinates() {
+		return this.origin;
+	}
+	
 	public Location getLocation() {
 		return bundle.getLocation();
 	}
@@ -96,6 +132,10 @@ public class MyLocationRetrievalState {
 		return bundle.getStaticMap();
 	}
 	
+	public Integer getLocationId() {
+		return this.id;
+	}
+	
 	public boolean hasLocation() {
 		return bundle.hasLocation();
 	}
@@ -106,6 +146,10 @@ public class MyLocationRetrievalState {
 
 	public boolean hasStaticMap() {
 		return this.bundle.hasStaticMap();
+	}
+	
+	public boolean hasLocationId() {
+		return this.id != null;
 	}
 	
 	public void setLocation(Location location) {
@@ -123,6 +167,10 @@ public class MyLocationRetrievalState {
 		this.isModified = true;
 	}
 	
+	public void setLocationId(Integer id) {
+		this.id = id;
+	}
+	
 	public void setStateLocationIndicator(boolean isStale) {
 		this.staleLocationIndicator = isStale;
 	}
@@ -138,5 +186,35 @@ public class MyLocationRetrievalState {
 	/** Indicate that no more data will be written to the bundle's metadata. */
 	public void seal() {
 		this.isSealed = true;
+	}
+
+	public boolean hasAllStaticMaps() {
+		return this.bundle.hasAllStaticMaps();
+	}
+
+	public boolean hasMissingData() {
+		return ! hasLocation() || ! hasAddress() || ! hasAllStaticMaps();
+	}
+
+	public void fillFrom(MyLocationBundle originalBundle) {
+		bundle.fillFrom(originalBundle);
+	}
+
+	public MyLocationBundleRecord toBundleRecord() {
+		MyLocationBundleRecord record = new MyLocationBundleRecord();
+		record.setBundle(this.bundle);
+		if(hasOriginalCoordinates()) {
+			record.setOriginalCoordinates(this.origin);
+		} else {
+			OriginalCoordinates selfCoords = new OriginalCoordinates();
+			selfCoords.setLatitude(getOriginalLatitude());
+			selfCoords.setLongitude(getOriginalLongitude());
+			selfCoords.setId(this.id);
+			record.setOriginalCoordinates(selfCoords);
+		}
+		
+		record.setId(this.id);
+		
+		return record;
 	}
 }

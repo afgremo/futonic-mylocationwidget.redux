@@ -5,7 +5,6 @@ import java.io.File;
 import org.beryl.net.SimpleFileDownloader;
 
 import com.futonredemption.mylocation.Debugging;
-import com.futonredemption.mylocation.StaticMap;
 
 import android.content.Context;
 import android.net.Uri;
@@ -14,9 +13,24 @@ import android.os.Bundle;
 public class StaticMapsClient {
 
 	private static final String StaticMapsUri = "http://maps.googleapis.com/maps/api/staticmap";
+	
+	private String filePath = null;
+	private String url = null;
 
-	public StaticMap downloadMap(Context context, Parameters renderParams) {
-		StaticMap map = null;
+	public boolean isSuccessful() {
+		return this.filePath != null;
+	}
+	
+	public String getFilePath() {
+		return this.filePath;
+	}
+	
+	public String getUrl() {
+		return this.url;
+	}
+	
+	public boolean downloadMap(Context context, Parameters renderParams) {
+		boolean success = false;
 
 		Bundle httpParams = fromParameters(renderParams);
 		Uri uri = buildUri(httpParams);
@@ -25,11 +39,11 @@ public class StaticMapsClient {
 		SimpleFileDownloader downloader = new SimpleFileDownloader();
 		File mapFile = downloader.download(context, urlString, ".png");
 		if(mapFile != null) {
-			map = new StaticMap();
-			map.setUrl(urlString);
-			map.setFilePath(mapFile.getAbsolutePath());
+			this.filePath = mapFile.getAbsolutePath();
+			this.url = urlString;
+			success = true;
 		}
-		return map;
+		return success;
 	}
 
 	protected Uri buildUri(Bundle params) {

@@ -8,7 +8,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 /**
  * Data Transfer Object for MyLocation Elements
- * @author jeremyje
  *
  */
 public class MyLocationBundle implements Parcelable {
@@ -97,4 +96,37 @@ public class MyLocationBundle implements Parcelable {
             return new MyLocationBundle[size];
         }
     };
+
+	public boolean hasAllStaticMaps() {
+		if(this.hasStaticMap()) {
+			return staticMap.hasAllMaps();
+		}
+		return false;
+	}
+
+	public boolean hasAnyStaticMap() {
+		if(hasStaticMap()) {
+			return staticMap.hasAnyStaticMap();
+		} else {
+			return false;
+		}
+	}
+	
+	public void fillFrom(MyLocationBundle originalBundle) {
+		if(! hasLocation() && originalBundle.hasLocation()) {
+			setLocation(originalBundle.getLocation());
+		}
+		
+		if(! hasAddress() && originalBundle.hasAddress()) {
+			setAddress(originalBundle.getAddress());
+		}
+		
+		if(! hasAllStaticMaps() && originalBundle.hasAnyStaticMap()) {
+			if(hasStaticMap()) {
+				this.staticMap.fillFrom(originalBundle.getStaticMap());
+			} else {
+				setStaticMap(originalBundle.getStaticMap());
+			}
+		}
+	}
 }

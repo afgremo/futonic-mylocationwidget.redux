@@ -5,9 +5,9 @@ import java.util.concurrent.Future;
 import android.content.Context;
 
 import com.futonredemption.mylocation.Debugging;
-import com.futonredemption.mylocation.MyLocationBundle;
 import com.futonredemption.mylocation.MyLocationRetrievalState;
 import com.futonredemption.mylocation.persistence.MyLocationBundlePersistence;
+import com.futonredemption.mylocation.persistence.MyLocationBundleRecord;
 
 public class LoadMostRecentLocationTask extends AbstractMyLocationTask {
 	public LoadMostRecentLocationTask(Context context, MyLocationRetrievalState state) {
@@ -22,8 +22,16 @@ public class LoadMostRecentLocationTask extends AbstractMyLocationTask {
 	protected void loadData(MyLocationRetrievalState state) {
 		Debugging.w("Obtain Bundle from Storage");
 		
-		MyLocationBundlePersistence persist = new MyLocationBundlePersistence(context);
-		MyLocationBundle locationBundle = persist.getMostRecent();
-		state.copyFrom(locationBundle);
+		final MyLocationBundlePersistence persist = new MyLocationBundlePersistence(context);
+		Integer mostRecentId = persist.getMostRecentId();
+		if(mostRecentId != null) {
+			MyLocationBundleRecord record = persist.get(mostRecentId.intValue());
+			
+			if(record.hasBundle()) {
+				state.setLocationId(mostRecentId);
+				state.copyFrom(record.getBundle());
+				state.setOriginalCoordinates(record.getOriginalCoordinates());
+			}
+		}
 	}
 }

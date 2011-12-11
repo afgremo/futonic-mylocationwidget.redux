@@ -25,10 +25,13 @@ public class SaveLocationBundleTask extends AbstractMyLocationTask {
 			MyLocationBundlePersistence persist = new MyLocationBundlePersistence(context);
 			
 			if(state.isNew()) {
-				persist.save(state.getLocationBundle());
+				persist.insert(state.toBundleRecord());
 			} else {
-				// TODO: Use previous id to update information.
+				persist.update(state.toBundleRecord());
 			}
-		} catch(Exception e) {}
+			
+		} catch(Exception e) {
+			Debugging.e(e);
+		}
 	}
 }

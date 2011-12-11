@@ -28,7 +28,7 @@ public class MyLocation1x1AvailableViewModel extends AbstractMyLocationWidgetVie
 
 	@Override
 	protected void onFromAdapter(DataToViewModelAdapter adapter) {
-		fileUri = adapter.getStaticMapFileUri();
+		fileUri = adapter.getSmallStaticMapFileUri();
 		LocationDetailsAction = adapter.getPendingOpenLocationCardAction();
 	}
 }

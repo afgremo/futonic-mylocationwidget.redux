@@ -7,82 +7,90 @@ import android.database.Cursor;
 import android.location.Address;
 import android.location.Location;
 
+import com.futonredemption.mylocation.OriginalCoordinates;
 import com.futonredemption.mylocation.StaticMap;
-import com.futonredemption.mylocation.provider.AddressContentProvider;
 import com.futonredemption.mylocation.provider.LocationHistoryContentProvider;
-import com.futonredemption.mylocation.provider.StaticMapContentProvider;
 
 public class CursorConverters {
 
-	public static ContentValues toContentValues(long locationSID, StaticMap staticMap) {
-		final ContentValues values = new ContentValues();
-		values.put(StaticMapContentProvider.URL, staticMap.getUrl());
-		values.put(StaticMapContentProvider.LOCATIONSID, locationSID);
-		values.put(StaticMapContentProvider.FILEPATH, staticMap.getFilePath());
-		return values;
+	public static void appendValues(final ContentValues values, StaticMap staticMap) {
+		values.put(LocationHistoryContentProvider.MAPTILEURLSMALL, staticMap.getSmallMapUrl());
+		values.put(LocationHistoryContentProvider.MAPTILEFILESMALL, staticMap.getSmallMapFilePath());
+		values.put(LocationHistoryContentProvider.MAPTILEURLMEDIUM, staticMap.getMediumMapUrl());
+		values.put(LocationHistoryContentProvider.MAPTILEFILEMEDIUM, staticMap.getMediumMapFilePath());
+		values.put(LocationHistoryContentProvider.MAPTILEURLLARGE, staticMap.getLargeMapUrl());
+		values.put(LocationHistoryContentProvider.MAPTILEFILELARGE, staticMap.getLargeMapFilePath());
 	}
 	
 	public static StaticMap toStaticMap(Cursor cursor) {
 		
 		StaticMap map = new StaticMap();
-		String filePath = cursor.getString(cursor.getColumnIndex(StaticMapContentProvider.FILEPATH));
-		String url = cursor.getString(cursor.getColumnIndex(StaticMapContentProvider.URL));
+		String filePath;
+		String url;
 		
-		map.setFilePath(filePath);
-		map.setUrl(url);
+		url = cursor.getString(cursor.getColumnIndex(LocationHistoryContentProvider.MAPTILEURLSMALL));
+		filePath = cursor.getString(cursor.getColumnIndex(LocationHistoryContentProvider.MAPTILEFILESMALL));
+		map.setSmallMapUrl(url);
+		map.setSmallMapFilePath(filePath);
+		
+		url = cursor.getString(cursor.getColumnIndex(LocationHistoryContentProvider.MAPTILEURLMEDIUM));
+		filePath = cursor.getString(cursor.getColumnIndex(LocationHistoryContentProvider.MAPTILEFILEMEDIUM));
+		map.setMediumMapUrl(url);
+		map.setMediumMapFilePath(filePath);
+		
+		url = cursor.getString(cursor.getColumnIndex(LocationHistoryContentProvider.MAPTILEURLLARGE));
+		filePath = cursor.getString(cursor.getColumnIndex(LocationHistoryContentProvider.MAPTILEFILELARGE));
+		map.setLargeMapUrl(url);
+		map.setLargeMapFilePath(filePath);
 		
 		return map;
 	}
 
-	public static ContentValues toContentValues(long locationSID, Address address) {
-		final ContentValues values = new ContentValues();
-		
+	public static void appendValues(final ContentValues values, final Address address) {
 		PackedString addressFlat = new PackedString();
 		final int len = address.getMaxAddressLineIndex() + 1;
 		for(int i = 0; i < len; i++) {
 			addressFlat.put(address.getAddressLine(i));
 		}
 		
-		values.put(AddressContentProvider.LOCATIONSID, locationSID);
-		values.put(AddressContentProvider.ADDRESSLINES, addressFlat.toString());
-		values.put(AddressContentProvider.ADMINAREA, address.getAdminArea());
-		values.put(AddressContentProvider.COUNTRYCODE, address.getCountryCode());
-		values.put(AddressContentProvider.COUNTRYNAME, address.getCountryName());
-		values.put(AddressContentProvider.FEATURENAME, address.getFeatureName());
-		values.put(AddressContentProvider.LATITUDE, address.getLatitude());
-		values.put(AddressContentProvider.LONGITUDE, address.getLongitude());
-		values.put(AddressContentProvider.LOCALE, Converters.toString(address.getLocale()));
-		values.put(AddressContentProvider.LOCALITY, address.getLocality());
-		values.put(AddressContentProvider.PHONE, address.getPhone());
-		values.put(AddressContentProvider.POSTALCODE, address.getPostalCode());
-		values.put(AddressContentProvider.PREMISES, address.getPremises());
-		values.put(AddressContentProvider.SUBADMINAREA, address.getSubAdminArea());
-		values.put(AddressContentProvider.SUBLOCALITY, address.getSubLocality());
-		values.put(AddressContentProvider.SUBTHOROUGHFARE, address.getSubThoroughfare());
-		values.put(AddressContentProvider.THOROUGHFARE, address.getThoroughfare());
-		values.put(AddressContentProvider.URL, address.getUrl());
-
-		return values;
+		values.put(LocationHistoryContentProvider.ADDRESSLINES, addressFlat.toString());
+		values.put(LocationHistoryContentProvider.ADMINAREA, address.getAdminArea());
+		values.put(LocationHistoryContentProvider.COUNTRYCODE, address.getCountryCode());
+		values.put(LocationHistoryContentProvider.COUNTRYNAME, address.getCountryName());
+		values.put(LocationHistoryContentProvider.FEATURENAME, address.getFeatureName());
+		// Duplicated by location, not needed.
+		//values.put(LocationHistoryContentProvider.LATITUDE, address.getLatitude());
+		//values.put(LocationHistoryContentProvider.LONGITUDE, address.getLongitude());
+		values.put(LocationHistoryContentProvider.LOCALE, Converters.toString(address.getLocale()));
+		values.put(LocationHistoryContentProvider.LOCALITY, address.getLocality());
+		values.put(LocationHistoryContentProvider.PHONE, address.getPhone());
+		values.put(LocationHistoryContentProvider.POSTALCODE, address.getPostalCode());
+		values.put(LocationHistoryContentProvider.PREMISES, address.getPremises());
+		values.put(LocationHistoryContentProvider.SUBADMINAREA, address.getSubAdminArea());
+		values.put(LocationHistoryContentProvider.SUBLOCALITY, address.getSubLocality());
+		values.put(LocationHistoryContentProvider.SUBTHOROUGHFARE, address.getSubThoroughfare());
+		values.put(LocationHistoryContentProvider.THOROUGHFARE, address.getThoroughfare());
+		values.put(LocationHistoryContentProvider.ADDRESSURL, address.getUrl());
 	}
 	
 	public static Address toAddress(Cursor cursor) {
-		String addressLines = cursor.getString(cursor.getColumnIndex(AddressContentProvider.ADDRESSLINES));
-		String adminArea = cursor.getString(cursor.getColumnIndex(AddressContentProvider.ADMINAREA));
-		String countryCode = cursor.getString(cursor.getColumnIndex(AddressContentProvider.COUNTRYCODE));
-		String countryName = cursor.getString(cursor.getColumnIndex(AddressContentProvider.COUNTRYNAME));
-		String featureName = cursor.getString(cursor.getColumnIndex(AddressContentProvider.FEATURENAME));
-		double latitude = cursor.getDouble(cursor.getColumnIndex(AddressContentProvider.LATITUDE));
-		double longitude = cursor.getDouble(cursor.getColumnIndex(AddressContentProvider.LONGITUDE));
-		String locale = cursor.getString(cursor.getColumnIndex(AddressContentProvider.LOCALE));
-		String locality = cursor.getString(cursor.getColumnIndex(AddressContentProvider.LOCALITY));
-		String phone = cursor.getString(cursor.getColumnIndex(AddressContentProvider.PHONE));
-		String postalCode = cursor.getString(cursor.getColumnIndex(AddressContentProvider.POSTALCODE));
-		String premises = cursor.getString(cursor.getColumnIndex(AddressContentProvider.PREMISES));
-		String subAdminArea = cursor.getString(cursor.getColumnIndex(AddressContentProvider.SUBADMINAREA));
-		String sublocality = cursor.getString(cursor.getColumnIndex(AddressContentProvider.SUBLOCALITY));
-		String subthoroughfare = cursor.getString(cursor.getColumnIndex(AddressContentProvider.SUBTHOROUGHFARE));
-		String thoroughfare = cursor.getString(cursor.getColumnIndex(AddressContentProvider.THOROUGHFARE));
-		String url = cursor.getString(cursor.getColumnIndex(AddressContentProvider.URL));
+		String addressLines = cursor.getString(cursor.getColumnIndex(LocationHistoryContentProvider.ADDRESSLINES));
+		String adminArea = cursor.getString(cursor.getColumnIndex(LocationHistoryContentProvider.ADMINAREA));
+		String countryCode = cursor.getString(cursor.getColumnIndex(LocationHistoryContentProvider.COUNTRYCODE));
+		String countryName = cursor.getString(cursor.getColumnIndex(LocationHistoryContentProvider.COUNTRYNAME));
+		String featureName = cursor.getString(cursor.getColumnIndex(LocationHistoryContentProvider.FEATURENAME));
+		double latitude = cursor.getDouble(cursor.getColumnIndex(LocationHistoryContentProvider.LATITUDE));
+		double longitude = cursor.getDouble(cursor.getColumnIndex(LocationHistoryContentProvider.LONGITUDE));
+		String locale = cursor.getString(cursor.getColumnIndex(LocationHistoryContentProvider.LOCALE));
+		String locality = cursor.getString(cursor.getColumnIndex(LocationHistoryContentProvider.LOCALITY));
+		String phone = cursor.getString(cursor.getColumnIndex(LocationHistoryContentProvider.PHONE));
+		String postalCode = cursor.getString(cursor.getColumnIndex(LocationHistoryContentProvider.POSTALCODE));
+		String premises = cursor.getString(cursor.getColumnIndex(LocationHistoryContentProvider.PREMISES));
+		String subAdminArea = cursor.getString(cursor.getColumnIndex(LocationHistoryContentProvider.SUBADMINAREA));
+		String sublocality = cursor.getString(cursor.getColumnIndex(LocationHistoryContentProvider.SUBLOCALITY));
+		String subthoroughfare = cursor.getString(cursor.getColumnIndex(LocationHistoryContentProvider.SUBTHOROUGHFARE));
+		String thoroughfare = cursor.getString(cursor.getColumnIndex(LocationHistoryContentProvider.THOROUGHFARE));
+		String url = cursor.getString(cursor.getColumnIndex(LocationHistoryContentProvider.ADDRESSURL));
 		
 		final Locale localeNative = Converters.fromString(locale);
 		final Address address = new Address(localeNative);
@@ -112,9 +120,7 @@ public class CursorConverters {
 		return address;
 	}
 
-	public static ContentValues toContentValues(Location location) {
-		ContentValues values = new ContentValues();
-		
+	public static void appendValues(final ContentValues values, final Location location) {
 		values.put(LocationHistoryContentProvider.ACCURACY, location.getAccuracy());
 		values.put(LocationHistoryContentProvider.ALTITUDE, location.getAltitude());
 		values.put(LocationHistoryContentProvider.BEARING, location.getBearing());
@@ -123,7 +129,6 @@ public class CursorConverters {
 		values.put(LocationHistoryContentProvider.PROVIDER, location.getProvider());
 		values.put(LocationHistoryContentProvider.SPEED, location.getSpeed());
 		values.put(LocationHistoryContentProvider.TIME, location.getTime());
-		return values;
 	}
 	
 	public static Location toLocation(Cursor cursor) {
@@ -150,5 +155,20 @@ public class CursorConverters {
 		location.setTime(time);
 
 		return location;
+	}
+
+	public static void appendValues(final ContentValues values, final OriginalCoordinates coords) {
+		values.put(LocationHistoryContentProvider.ORIGINALLATITUDE, coords.getLatitude());
+		values.put(LocationHistoryContentProvider.ORIGINALLONGITUDE, coords.getLongitude());
+	}
+	
+	public static OriginalCoordinates toOriginalCoordinates(final Cursor cursor) {
+		final OriginalCoordinates coordinates = new OriginalCoordinates();
+		double latitude = cursor.getFloat(cursor.getColumnIndex(LocationHistoryContentProvider.ORIGINALLATITUDE));
+		double longitude = cursor.getDouble(cursor.getColumnIndex(LocationHistoryContentProvider.ORIGINALLONGITUDE));
+		
+		coordinates.setLatitude(latitude);
+		coordinates.setLongitude(longitude);
+		return coordinates;
 	}
 }

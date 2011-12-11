@@ -9,59 +9,99 @@ import android.location.Address;
 import android.location.Location;
 import android.net.Uri;
 
+import com.futonredemption.mylocation.Constants;
 import com.futonredemption.mylocation.MyLocationBundle;
+import com.futonredemption.mylocation.OriginalCoordinates;
 import com.futonredemption.mylocation.StaticMap;
-import com.futonredemption.mylocation.provider.AddressContentProvider;
 import com.futonredemption.mylocation.provider.LocationHistoryContentProvider;
-import com.futonredemption.mylocation.provider.StaticMapContentProvider;
 
 public class MyLocationBundlePersistence {
 
+	private static final double RANGE_SIZE = 0.001;
+	private static final String [] OriginalLatLongProjection = new String [] { LocationHistoryContentProvider._ID, LocationHistoryContentProvider.ORIGINALLATITUDE, LocationHistoryContentProvider.ORIGINALLONGITUDE };
+	private static final String [] IdOnlyProjection = new String [] { LocationHistoryContentProvider._ID };
+	private static final String RoughCloseEnoughQueryString;
+	
+	static {
+		final StringBuilder sb = new StringBuilder();
+		sb.append(LocationHistoryContentProvider.ORIGINALLATITUDE);
+		sb.append(" >= ? and ");
+		sb.append(LocationHistoryContentProvider.ORIGINALLATITUDE);
+		sb.append(" <= ? and ");
+		
+		sb.append(LocationHistoryContentProvider.ORIGINALLONGITUDE);
+		sb.append(" >= ? and ");
+		sb.append(LocationHistoryContentProvider.ORIGINALLONGITUDE);
+		sb.append(" <= ?");
+		
+		RoughCloseEnoughQueryString = sb.toString();
+	}
+	
 	private final Context context;
 	public MyLocationBundlePersistence(final Context context) {
 		this.context = context;
 	}
 	
-	public long save(MyLocationBundle bundle) {
+	private void valuesForInsert(final ContentValues values, MyLocationBundleRecord record) {
+		final MyLocationBundle bundle = record.getBundle();
+		final OriginalCoordinates coords = record.getOriginalCoordinates();
+		final Location location = bundle.getLocation();
+		
+		CursorConverters.appendValues(values, location);
+		
+		if(bundle.hasAddress()) {
+			final Address address = bundle.getAddress();
+			CursorConverters.appendValues(values, address);
+		}
+		
+		if(bundle.hasStaticMap()) {
+			final StaticMap staticMap = bundle.getStaticMap();
+			CursorConverters.appendValues(values, staticMap);
+		}
+		CursorConverters.appendValues(values, coords);
+	}
+	
+	public boolean update(MyLocationBundleRecord record) {
 		final ContentResolver resolver = context.getContentResolver();
-		ContentValues values;
+		final ContentValues values = new ContentValues();
+		
+		if(record.getBundle().hasLocation()) {
+			valuesForInsert(values, record);
+			
+			final Uri contentUri = ContentUris.withAppendedId(LocationHistoryContentProvider.CONTENT_URI, record.getId());
+			
+			resolver.update(contentUri, values, null, null);
+		}
+		
+		return true;
+	}
+	
+	public long insert(MyLocationBundleRecord record) {
+		final ContentResolver resolver = context.getContentResolver();
+		final ContentValues values = new ContentValues();
 		long locationSID = -1;
 		
-		if(bundle.hasLocation()) {
-			final Location location = bundle.getLocation();
-			values = CursorConverters.toContentValues(location);
-			Uri locationUri = resolver.insert(LocationHistoryContentProvider.CONTENT_URI, values);
-
-			locationSID = ContentUris.parseId(locationUri);
+		if(record.getBundle().hasLocation()) {
+			valuesForInsert(values, record);
 			
-			if(bundle.hasAddress()) {
-				final Address address = bundle.getAddress();
-				values = CursorConverters.toContentValues(locationSID, address);
-				resolver.insert(AddressContentProvider.CONTENT_URI, values);
-			}
-			
-			if(bundle.hasStaticMap()) {
-				final StaticMap staticMap = bundle.getStaticMap();
-				values = CursorConverters.toContentValues(locationSID, staticMap);
-				resolver.insert(StaticMapContentProvider.CONTENT_URI, values);
-			}
+			final Uri savedUri = resolver.insert(LocationHistoryContentProvider.CONTENT_URI, values);
+			locationSID = ContentUris.parseId(savedUri);
 		}
 		
 		return locationSID;
 	}
 	
-	private static String [] LocationHistoryContentProviderIdOnlyProjection = new String [] { LocationHistoryContentProvider._ID };
-	public MyLocationBundle getMostRecent() {
-		int locationId = 0;
+	public Integer getMostRecentId() {
+		Integer result = null;
 		final ContentResolver resolver = context.getContentResolver();
 		Cursor cursor = null;
 		
 		try {
-			cursor = resolver.query(LocationHistoryContentProvider.CONTENT_URI, LocationHistoryContentProviderIdOnlyProjection, 
+			cursor = resolver.query(LocationHistoryContentProvider.CONTENT_URI, IdOnlyProjection, 
 					null, null, 
 					LocationHistoryContentProvider._ID + " DESC LIMIT 1");
 			if(cursor.moveToFirst()) {
-				locationId = cursor.getInt(0);
+				result = new Integer(cursor.getInt(0));
 			}
 		} finally {
 			if(cursor != null) {
@@ -69,26 +109,57 @@ public class MyLocationBundlePersistence {
 			}
 		}
 
-		return get(locationId);
+		return result;
 	}
 	
-	public MyLocationBundle get(int locationId) {
-		MyLocationBundle bundle = new MyLocationBundle();
-		final Location location = getLocationFromLocationId(locationId);
-		final Address address = getAddressFromLocationId(locationId);
-		final StaticMap staticMap = getStaticMapFromLocationId(locationId);
-		bundle.setLocation(location);
-		bundle.setAddress(address);
-		bundle.setStaticMap(staticMap);
-		return bundle;
+	public OriginalCoordinates getCloseEnough(double latitude, double longitude) {
+		OriginalCoordinates coordDesc = null;
+		final ContentResolver resolver = context.getContentResolver();
+		Cursor cursor = null;
+		final Location currentLoc = new Location("");
+		final Location storedLoc = new Location("");
+		currentLoc.setLatitude(latitude);
+		currentLoc.setLongitude(longitude);
+
+		// Looks ugly, Used for > and < criteria.
+		final String [] queryParams = new String[] {
+					Double.toString(latitude - RANGE_SIZE), Double.toString(latitude + RANGE_SIZE), 
+					Double.toString(longitude - RANGE_SIZE), Double.toString(longitude + RANGE_SIZE)
+		};
+		
+		try {
+			cursor = resolver.query(LocationHistoryContentProvider.CONTENT_URI, OriginalLatLongProjection, 
+					RoughCloseEnoughQueryString, queryParams,
+					LocationHistoryContentProvider._ID + " DESC");
+			
+			if(cursor.moveToFirst()) {
+				do {
+					storedLoc.setLatitude(cursor.getDouble(1));
+					storedLoc.setLongitude(cursor.getDouble(2));
+					if(currentLoc.distanceTo(storedLoc) <= Constants.CloseEnoughDistanceInMeters) {
+						coordDesc = new OriginalCoordinates();
+						coordDesc.setId(cursor.getInt(0));
+						coordDesc.setLatitude(storedLoc.getLatitude());
+						coordDesc.setLongitude(storedLoc.getLongitude());
+					}
+				} while(cursor.moveToNext() && coordDesc == null);
+			}
+		} finally {
+			if(cursor != null) {
+				cursor.close();
+			}
+		}
+
+		return coordDesc;
 	}
 	
-	public Location getLocationFromLocationId(int id) {
-		return getLocation(id);
-	}
-	
-	public Location getLocation(int id) {
+	public MyLocationBundleRecord get(int id) {
+		final MyLocationBundleRecord record = new MyLocationBundleRecord();
+		MyLocationBundle bundle = null;
 		Location location = null;
+		Address address = null;
+		StaticMap staticMap;
+		OriginalCoordinates coordinates = null;
 		final ContentResolver resolver = context.getContentResolver();
 		final Uri contentUri = ContentUris.withAppendedId(LocationHistoryContentProvider.CONTENT_URI, id);
 		Cursor cursor = null;
@@ -96,67 +167,17 @@ public class MyLocationBundlePersistence {
 		try {
 			cursor = resolver.query(contentUri, null, null, null, LocationHistoryContentProvider.DEFAULT_SORT_ORDER);
 			if(cursor.moveToFirst()) {
+				bundle = new MyLocationBundle();
 				location = CursorConverters.toLocation(cursor);
-			}
-		} finally {
-			if(cursor != null) {
-				cursor.close();
-			}
-		}
-		
-		return location;
-	}
-	
-	public Address getAddress(int id) {
-		Address address = null;
-		final ContentResolver resolver = context.getContentResolver();
-		final Uri contentUri = ContentUris.withAppendedId(AddressContentProvider.CONTENT_URI, id);
-		Cursor cursor = null;
-		
-		try {
-			cursor = resolver.query(contentUri, null, null, null, AddressContentProvider.DEFAULT_SORT_ORDER);
-			if(cursor.moveToFirst()) {
 				address = CursorConverters.toAddress(cursor);
-			}
-		} finally {
-			if(cursor != null) {
-				cursor.close();
-			}
-		}
-		
-		return address;
-	}
-	
-	public Address getAddressFromLocationId(int id) {
-		Address address = null;
-		final ContentResolver resolver = context.getContentResolver();
-		final Uri contentUri = ContentUris.withAppendedId(AddressContentProvider.LOCATIONSID_FIELD_CONTENT_URI, id);
-		Cursor cursor = null;
-		
-		try {
-			cursor = resolver.query(contentUri, null, null, null, AddressContentProvider.DEFAULT_SORT_ORDER);
-			if(cursor.moveToFirst()) {
-				address = CursorConverters.toAddress(cursor);
-			}
-		} finally {
-			if(cursor != null) {
-				cursor.close();
-			}
-		}
-		
-		return address;
-	}
-	
-	public StaticMap getStaticMap(int id) {
-		StaticMap staticMap = null;
-		final ContentResolver resolver = context.getContentResolver();
-		final Uri contentUri = ContentUris.withAppendedId(StaticMapContentProvider.CONTENT_URI, id);
-		Cursor cursor = null;
-		
-		try {
-			cursor = resolver.query(contentUri, null, null, null, StaticMapContentProvider.DEFAULT_SORT_ORDER);
-			if(cursor.moveToFirst()) {
 				staticMap = CursorConverters.toStaticMap(cursor);
+				coordinates = CursorConverters.toOriginalCoordinates(cursor);
+				bundle.setLocation(location);
+				bundle.setAddress(address);
+				bundle.setStaticMap(staticMap);
+				record.setBundle(bundle);
+				record.setOriginalCoordinates(coordinates);
+				record.setId(cursor.getInt(cursor.getColumnIndex(LocationHistoryContentProvider._ID)));
 			}
 		} finally {
 			if(cursor != null) {
@@ -164,25 +185,6 @@ public class MyLocationBundlePersistence {
 			}
 		}
 		
-		return staticMap;
-	}
-	public StaticMap getStaticMapFromLocationId(int id) {
-		StaticMap staticMap = null;
-		final ContentResolver resolver = context.getContentResolver();
-		final Uri contentUri = ContentUris.withAppendedId(StaticMapContentProvider.LOCATIONSID_FIELD_CONTENT_URI, id);
-		Cursor cursor = null;
-		
-		try {
-			cursor = resolver.query(contentUri, null, null, null, StaticMapContentProvider.DEFAULT_SORT_ORDER);
-			if(cursor.moveToFirst()) {
-				staticMap = CursorConverters.toStaticMap(cursor);
-			}
-		} finally {
-			if(cursor != null) {
-				cursor.close();
-			}
-		}
-		
-		return staticMap;
+		return record;
 	}
 }

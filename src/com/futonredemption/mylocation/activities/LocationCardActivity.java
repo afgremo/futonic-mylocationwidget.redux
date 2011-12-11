@@ -72,7 +72,7 @@ public class LocationCardActivity extends Activity {
 		DataToViewModelAdapter adapter = new DataToViewModelAdapter(this, state);
 		
 		// TODO: Load bitmap in a separate thread.
-		StaticMapImageView.setImageBitmap(adapter.getSmallStaticMap());
+		StaticMapImageView.setImageURI(adapter.getSmallStaticMapFileUri());
 		TitleTextView.setText(adapter.getTitle());
 		DescriptionTextView.setText(adapter.getDescription());
 		// TODO: Some of these intents aren't proper for the button presses.

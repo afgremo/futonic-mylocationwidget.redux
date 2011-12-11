@@ -28,17 +28,48 @@ public class DownloadStaticMapTask extends AbstractMyLocationTask {
 		if(state.hasLocation() && ! state.hasStaticMap()) {
 			Parameters params = new Parameters();
 			params.center = new Center(state.getLocation());
-			params.size = new Dimension(256,256);
-			params.scale = 2;
-			params.zoom = 10; //128x128, z=9 or 256x256, z=10?
 			try {
 				StaticMap map = new StaticMap();
-				StaticMapsClient client = new StaticMapsClient();
-				map = client.downloadMap(context, params);
+				downloadSmallMap(map, params);
+				downloadMediumMap(map, params);
+				downloadLargeMap(map, params);
 				state.setStaticMap(map);
 			} catch(Exception e) {
 				Debugging.e(e);
 			}
+		}
+	}
+
+	private void downloadSmallMap(StaticMap map, Parameters params) {
+		final StaticMapsClient client = new StaticMapsClient();
+		params.size = new Dimension(128,128);
+		params.scale = 1;
+		params.zoom = 18; //128x128, z=9 or 256x256, z=10?
+		if(client.downloadMap(context, params)) {
+			map.setMediumMapUrl(client.getUrl());
+			map.setMediumMapFilePath(client.getFilePath());
+		}
+	}
+	
+	private void downloadMediumMap(StaticMap map, Parameters params) {
+		final StaticMapsClient client = new StaticMapsClient();
+		params.size = new Dimension(256,256);
+		params.scale = 2;
+		params.zoom = 10; //128x128, z=9 or 256x256, z=10?
+		if(client.downloadMap(context, params)) {
+			map.setMediumMapUrl(client.getUrl());
+			map.setMediumMapFilePath(client.getFilePath());
+		}
+	}
+
+	private void downloadLargeMap(StaticMap map, Parameters params) {
+		final StaticMapsClient client = new StaticMapsClient();
+		params.size = new Dimension(512,512);
+		params.scale = 2;
+		params.zoom = 10; //128x128, z=9 or 256x256, z=10?
+		if(client.downloadMap(context, params)) {
+			map.setLargeMapUrl(client.getUrl());
+			map.setLargeMapFilePath(client.getFilePath());
 		}
 	}
 }

@@ -10,6 +10,7 @@ import org.beryl.app.AbstractService;
 import com.futonredemption.mylocation.Debugging;
 import com.futonredemption.mylocation.MyLocationRetrievalState;
 import com.futonredemption.mylocation.tasks.DownloadStaticMapTask;
+import com.futonredemption.mylocation.tasks.LoadCloseEnoughDataTask;
 import com.futonredemption.mylocation.tasks.LoadMostRecentLocationTask;
 import com.futonredemption.mylocation.tasks.RetrieveAddressTask;
 import com.futonredemption.mylocation.tasks.RetrieveLocationTask;
@@ -96,7 +97,7 @@ public class WidgetUpdateService extends AbstractService {
 	}
 	
 	private ExecutorService createExecutorService() {
-		return Executors.newCachedThreadPool();
+		return Executors.newSingleThreadExecutor();
 	}
 	
 	private void beginFullUpdate() {
@@ -131,11 +132,15 @@ public class WidgetUpdateService extends AbstractService {
 		DownloadStaticMapTask staticMapGet;
 		SaveLocationBundleTask saveLocationBundle;
 		SealLocationBundleTask sealLocationTask;
+		LoadCloseEnoughDataTask locationCacheGet;
 		Future<MyLocationRetrievalState> futureAddress;
 		Future<MyLocationRetrievalState> futureStaticMap;
 		
 		locationGet = new RetrieveLocationTask(this, future);
 		future = service.submit(locationGet);
+		
+		locationCacheGet = new LoadCloseEnoughDataTask(this, future);
+		future = service.submit(locationCacheGet);
 		
 		addressGet = new RetrieveAddressTask(this, future);
 		futureAddress = service.submit(addressGet);

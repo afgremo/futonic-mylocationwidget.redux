@@ -6,4 +6,5 @@ public class Constants {
 		public static final String BackupAgentKey = "com.futonredemption.mylocation.backupstore.preferences";
 	}
 	
+	public static final float CloseEnoughDistanceInMeters = 10.0f;
 }

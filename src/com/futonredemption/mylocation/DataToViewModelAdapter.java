@@ -12,8 +12,6 @@ import com.futonredemption.mylocation.services.WidgetUpdateService;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.net.Uri;
 import android.provider.Settings;
@@ -32,11 +30,29 @@ public class DataToViewModelAdapter {
 		return state;
 	}
 	
-	public Uri getStaticMapFileUri() {
+	public Uri getSmallStaticMapFileUri() {
 		Uri uri = null;
 		StaticMap staticMap = state.getStaticMap();
-		if(staticMap != null && staticMap.getFilePath() != null) {
-			uri = Uri.parse(staticMap.getFilePath());
+		if(staticMap != null && staticMap.getSmallMapFilePath() != null) {
+			uri = Uri.parse(staticMap.getSmallMapFilePath());
+		}
+		return uri;
+	}
+	
+	public Uri getMediumStaticMapFileUri() {
+		Uri uri = null;
+		StaticMap staticMap = state.getStaticMap();
+		if(staticMap != null && staticMap.getMediumMapFilePath() != null) {
+			uri = Uri.parse(staticMap.getMediumMapFilePath());
+		}
+		return uri;
+	}
+	
+	public Uri getLargeStaticMapFileUri() {
+		Uri uri = null;
+		StaticMap staticMap = state.getStaticMap();
+		if(staticMap != null && staticMap.getLargeMapFilePath() != null) {
+			uri = Uri.parse(staticMap.getLargeMapFilePath());
 		}
 		return uri;
 	}
@@ -143,16 +159,6 @@ public class DataToViewModelAdapter {
 		return LocationCardActivity.getActivityIntent(context, state.getLocationBundle());
 	}
 
-	private Bitmap smallStaticMap = null;
-	public Bitmap getSmallStaticMap() {
-		
-		if(smallStaticMap == null && this.state.hasStaticMap()) {
-			final String filePath = state.getStaticMap().getFilePath();
-			smallStaticMap = BitmapFactory.decodeFile(filePath);
-		}
-		return smallStaticMap;
-	}
-	
 	public PendingIntent getPendingShareLocationAction() {
 		return convertToPendingActivity(context, getShareLocationAction());
 	}
