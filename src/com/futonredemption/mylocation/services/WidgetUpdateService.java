@@ -97,7 +97,7 @@ public class WidgetUpdateService extends AbstractService {
 	}
 	
 	private ExecutorService createExecutorService() {
-		return Executors.newSingleThreadExecutor();
+		return Executors.newCachedThreadPool();
 	}
 	
 	private void beginFullUpdate() {

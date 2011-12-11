@@ -44,10 +44,10 @@ public class DownloadStaticMapTask extends AbstractMyLocationTask {
 		final StaticMapsClient client = new StaticMapsClient();
 		params.size = new Dimension(128,128);
 		params.scale = 1;
-		params.zoom = 18; //128x128, z=9 or 256x256, z=10?
+		params.zoom = 19; //128x128, z=9 or 256x256, z=10?
 		if(client.downloadMap(context, params)) {
-			map.setMediumMapUrl(client.getUrl());
-			map.setMediumMapFilePath(client.getFilePath());
+			map.setSmallMapUrl(client.getUrl());
+			map.setSmallMapFilePath(client.getFilePath());
 		}
 	}
 	

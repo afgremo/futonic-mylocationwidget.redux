@@ -5,6 +5,8 @@ import java.util.Locale;
 import org.beryl.location.LocationMonitor;
 
 import com.futonredemption.mylocation.activities.LocationCardActivity;
+import com.futonredemption.mylocation.activities.PhoneActivity;
+import com.futonredemption.mylocation.activities.TabletActivity;
 import com.futonredemption.mylocation.exceptions.CannotObtainAccurateFixException;
 import com.futonredemption.mylocation.exceptions.NoLocationProvidersEnabledException;
 import com.futonredemption.mylocation.services.WidgetUpdateService;
@@ -134,6 +136,11 @@ public class DataToViewModelAdapter {
 		return state.isLoading();
 	}
 
+	// If there's no location then we just started processing.
+	public boolean hasJustStarted() {
+		return ! state.hasLocation() && ! state.hasError();
+	}
+	
 	public Intent getRefreshAction() {
 		final Intent intent = WidgetUpdateService.getBeginFullUpdate(context);
 		return intent;
@@ -155,12 +162,30 @@ public class DataToViewModelAdapter {
 		return convertToPendingActivity(context, getOpenLocationCardAction());
 	}
 
-	private Intent getOpenLocationCardAction() {
+	public Intent getOpenLocationCardAction() {
 		return LocationCardActivity.getActivityIntent(context, state.getLocationBundle());
 	}
 
 	public PendingIntent getPendingShareLocationAction() {
 		return convertToPendingActivity(context, getShareLocationAction());
+	}
+	
+	public PendingIntent getPendingMainActivityAction() {
+		return convertToPendingActivity(context, getMainActivityAction());
+	}
+	
+	public Intent getMainActivityAction() {
+		if(context.getResources().getBoolean(R.bool.IsTablet)) {
+			return getTabletMainActivityAction();
+		} else {
+			return getPhoneMainActivityAction();
+		}
+	}
+	public Intent getTabletMainActivityAction() {
+		return new Intent(context, TabletActivity.class);
+	}
+	public Intent getPhoneMainActivityAction() {
+		return new Intent(context, PhoneActivity.class);
 	}
 	
 	public Intent getShareLocationAction() {

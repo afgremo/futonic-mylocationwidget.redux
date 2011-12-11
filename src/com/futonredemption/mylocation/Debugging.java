@@ -7,11 +7,11 @@ import android.os.Debug;
 /** Collection of utility methods for debugging an Android system. */
 public class Debugging {
 
-	private static final boolean debugMode = false;
+	private static final boolean debugMode = true;
 	
 	/** Pauses the current thread for 10 seconds. */
 	public static final void haltForAWhile() {
-		haltForAWhile(10);
+		haltForAWhile(1);
 	}
 
 	/** Pauses the current thread for a specified amount of seconds. */
