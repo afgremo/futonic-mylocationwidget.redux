@@ -25,15 +25,28 @@ public class DownloadStaticMapTask extends AbstractMyLocationTask {
 	@Override
 	protected void loadData(MyLocationRetrievalState state) {
 
-		if(state.hasLocation() && ! state.hasStaticMap()) {
+		if(state.hasLocation() && ! state.hasAllStaticMaps()) {
 			Parameters params = new Parameters();
 			params.center = new Center(state.getLocation());
 			try {
-				StaticMap map = new StaticMap();
-				downloadSmallMap(map, params);
-				downloadMediumMap(map, params);
-				downloadLargeMap(map, params);
-				state.setStaticMap(map);
+				StaticMap map = state.getStaticMap();
+				
+				if(map == null) {
+					map = new StaticMap();
+					state.setStaticMap(map);
+				}
+				
+				if(!state.hasSmallStaticMap()) {
+					downloadSmallMap(map, params);
+				}
+				
+				if(!state.hasMediumStaticMap()) {
+					downloadMediumMap(map, params);
+				}
+				
+				if(! state.hasLargeStaticMap()) {
+					downloadLargeMap(map, params);
+				}
 			} catch(Exception e) {
 				Debugging.e(e);
 			}
@@ -55,7 +68,7 @@ public class DownloadStaticMapTask extends AbstractMyLocationTask {
 		final StaticMapsClient client = new StaticMapsClient();
 		params.size = new Dimension(256,256);
 		params.scale = 2;
-		params.zoom = 10; //128x128, z=9 or 256x256, z=10?
+		params.zoom = 18; //128x128, z=9 or 256x256, z=10?
 		if(client.downloadMap(context, params)) {
 			map.setMediumMapUrl(client.getUrl());
 			map.setMediumMapFilePath(client.getFilePath());
@@ -66,7 +79,7 @@ public class DownloadStaticMapTask extends AbstractMyLocationTask {
 		final StaticMapsClient client = new StaticMapsClient();
 		params.size = new Dimension(512,512);
 		params.scale = 2;
-		params.zoom = 10; //128x128, z=9 or 256x256, z=10?
+		params.zoom = 17; //128x128, z=9 or 256x256, z=10?
 		if(client.downloadMap(context, params)) {
 			map.setLargeMapUrl(client.getUrl());
 			map.setLargeMapFilePath(client.getFilePath());

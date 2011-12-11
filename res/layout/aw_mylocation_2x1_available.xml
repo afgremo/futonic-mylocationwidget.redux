@@ -12,22 +12,22 @@
         android:layout_height="match_parent"
         android:src="@drawable/ic_menu_refresh" />
 
-	<ImageView style="@style/AWCVerticalDivider" />
+    <ImageView style="@style/AWCVerticalDivider" />
         
-	<ImageButton android:id="@+id/DetailImageButton"
+    <ImageButton android:id="@+id/ShareImageButton"
         style="@style/AWCButton.Center"
         android:layout_width="@dimen/use_weight"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        android:src="@drawable/ic_menu_myplaces" />
-
+        android:src="@drawable/ic_menu_share" />
+    
 	<ImageView style="@style/AWCVerticalDivider" />
         
-    <ImageButton android:id="@+id/ShareImageButton"
+	<ImageButton android:id="@+id/DetailImageButton"
         style="@style/AWCButton.Right"
         android:layout_width="@dimen/use_weight"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        android:src="@drawable/ic_menu_share" />
+        android:src="@drawable/ic_menu_myplaces" />
         
 </LinearLayout>

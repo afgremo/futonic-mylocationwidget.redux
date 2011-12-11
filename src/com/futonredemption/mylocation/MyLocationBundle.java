@@ -129,4 +129,28 @@ public class MyLocationBundle implements Parcelable {
 			}
 		}
 	}
+
+	public boolean hasSmallStaticMap() {
+		if(hasStaticMap()) {
+			return staticMap.hasSmallMap();
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean hasMediumStaticMap() {
+		if(hasStaticMap()) {
+			return staticMap.hasMediumMap();
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean hasLargeStaticMap() {
+		if(hasStaticMap()) {
+			return staticMap.hasLargeMap();
+		} else {
+			return false;
+		}
+	}
 }

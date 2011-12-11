@@ -14,6 +14,8 @@ import com.futonredemption.mylocation.services.WidgetUpdateService;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.net.Uri;
 import android.provider.Settings;
@@ -30,6 +32,11 @@ public class DataToViewModelAdapter {
 	
 	public MyLocationRetrievalState getState() {
 		return state;
+	}
+	
+	/** Has enough information to start displaying data to the user. Some data may still be missing. */
+	public boolean hasBasicInformation() {
+		return state.hasAddress();
 	}
 	
 	public Uri getSmallStaticMapFileUri() {
@@ -120,6 +127,15 @@ public class DataToViewModelAdapter {
 		return description;
 	}
 	
+	public CharSequence getTickerText() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(getTitle());
+		sb.append(" ");
+		sb.append(getDescription());
+		
+		return sb.toString();
+	}
+	
 	private CharSequence getOneLineCoordinates() {
 		return String.format(Locale.ENGLISH, "Lat: %s Long: %s", getLatitude(), getLongitude());
 	}
@@ -195,6 +211,37 @@ public class DataToViewModelAdapter {
 		return intent;
 	}
 
+	public String getNotificationMapFilePath() {
+		String filePath = null;
+		
+		if(this.state.hasStaticMap()) {
+			final StaticMap map = state.getStaticMap();
+			if(map.hasSmallMap()) {
+				filePath = map.getSmallMapFilePath();
+			} else if(map.hasMediumMap()) {
+				filePath = map.getMediumMapFilePath();
+			}
+			
+			// Large Map isn't acceptable for a notification icon.
+		}
+		
+		return filePath;
+	}
+	
+	public Bitmap getNotificationMapImage() {
+		Bitmap result = null;
+		try {
+			final String filePath = getNotificationMapFilePath();
+			if(filePath != null) {
+				result = BitmapFactory.decodeFile(filePath);
+			}
+		} catch(Exception e) {
+			Debugging.e(e);
+			result = null;
+		}
+		
+		return result;
+	}
 	public static PendingIntent convertToPendingService(final Context context, final Intent intent) {
 		return PendingIntent.getService(context, intent.hashCode(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 	}

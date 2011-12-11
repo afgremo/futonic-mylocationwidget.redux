@@ -10,6 +10,7 @@ import android.location.Location;
 import android.net.Uri;
 
 import com.futonredemption.mylocation.Constants;
+import com.futonredemption.mylocation.Debugging;
 import com.futonredemption.mylocation.MyLocationBundle;
 import com.futonredemption.mylocation.OriginalCoordinates;
 import com.futonredemption.mylocation.StaticMap;
@@ -169,9 +170,24 @@ public class MyLocationBundlePersistence {
 			if(cursor.moveToFirst()) {
 				bundle = new MyLocationBundle();
 				location = CursorConverters.toLocation(cursor);
-				address = CursorConverters.toAddress(cursor);
-				staticMap = CursorConverters.toStaticMap(cursor);
-				coordinates = CursorConverters.toOriginalCoordinates(cursor);
+				try {
+					address = CursorConverters.toAddress(cursor);
+				} catch(Exception e) {
+					Debugging.e(e);
+					address = null;
+				}
+				try {
+					staticMap = CursorConverters.toStaticMap(cursor);
+				} catch(Exception e) {
+					Debugging.e(e);
+					staticMap = null;
+				}
+				try {
+					coordinates = CursorConverters.toOriginalCoordinates(cursor);
+				} catch(Exception e) {
+					Debugging.e(e);
+					coordinates = null;
+				}
 				bundle.setLocation(location);
 				bundle.setAddress(address);
 				bundle.setStaticMap(staticMap);

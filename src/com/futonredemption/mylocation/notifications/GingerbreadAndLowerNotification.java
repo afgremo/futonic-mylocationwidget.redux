@@ -17,7 +17,8 @@ public class GingerbreadAndLowerNotification implements INotification {
 
 	private static final int CustomMessageId = 1;
 	protected Notification notify = null;
-	public static final int INTERVAL_NotificationLed = 5000;
+	public static final int NotificationLightInterval = 5000;
+	protected static final int NotificationLightColor = 0xff0000ff;
 	
 	protected final Context context;
 	protected final AppWidgetManager manager;
@@ -55,9 +56,9 @@ public class GingerbreadAndLowerNotification implements INotification {
 		
 		notify.flags = Notification.FLAG_SHOW_LIGHTS | Notification.FLAG_AUTO_CANCEL;
 		notify.icon = R.drawable.ic_stat_findlocation;
-		notify.ledOffMS = INTERVAL_NotificationLed;
-		notify.ledOnMS = INTERVAL_NotificationLed;
-		notify.ledARGB = 0xff0000ff;
+		notify.ledOffMS = NotificationLightInterval;
+		notify.ledOnMS = NotificationLightInterval;
+		notify.ledARGB = NotificationLightColor;
 		notify.tickerText = contentTitle + " " + contentText;
 		notify.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
 	}
@@ -66,26 +67,52 @@ public class GingerbreadAndLowerNotification implements INotification {
 		notify = createBaseNotification();
 		notify.tickerText = getText(R.string.finding_location);
 		notify.flags = Notification.FLAG_ONGOING_EVENT;
-		CharSequence contentText;
-		PendingIntent contentIntent;
+		CharSequence contentTitle = getLoadingTitle();
+		CharSequence contentText = getLoadingText(adapter);
+		PendingIntent contentIntent = getLoadingIntent(adapter);
 		
+		notify.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
+	}
+
+	protected CharSequence getErrorTickerText(final DataToViewModelAdapter adapter) {
+		return getErrorTitle(adapter);
+	}
+	
+	protected CharSequence getErrorTitle(final DataToViewModelAdapter adapter) {
+		return adapter.getErrorTitle();
+	}
+	
+	protected CharSequence getErrorText(final DataToViewModelAdapter adapter) {
+		return adapter.getErrorDescription();
+	}
+	
+	protected CharSequence getLoadingTickerText() {
+		return getLoadingTitle();
+	}
+	
+	protected CharSequence getLoadingTitle() {
+		return getText(R.string.pinpointing_location);
+	}
+	
+	protected CharSequence getLoadingText(final DataToViewModelAdapter adapter) {
+		CharSequence contentText;
 		if(adapter.isGpsLocationDisabled()) {
 			contentText = getText(R.string.loadingtext_gps_is_off);
-			contentIntent = adapter.getPendingOpenLocationSettingsAction();
 		} else if(adapter.isNetworkLocationDisabled()) {
 			contentText = getText(R.string.loadingtext_network_is_off);
-			contentIntent = adapter.getPendingOpenLocationSettingsAction();
 		} else {
 			contentText = getText(R.string.loadingtext_go_outside);
-			contentIntent = adapter.getPendingOpenLocationSettingsAction();
 		}
-		
-		notify.setLatestEventInfo(context, getText(R.string.pinpointing_location), contentText, contentIntent);
+		return contentText;
+	}
+	
+	protected PendingIntent getLoadingIntent(final DataToViewModelAdapter adapter) {
+		return adapter.getPendingOpenLocationSettingsAction();
 	}
 	
 	private Notification createBaseNotification() {
 		final Notification notifier = new Notification();
-		notifier.icon = R.drawable.ic_stat_findlocation;
+		notifier.icon = getNotificationIcon();
 		return notifier;
 	}
 	
@@ -126,6 +153,10 @@ public class GingerbreadAndLowerNotification implements INotification {
 	protected boolean isWidgetOnScreen(final Class<?> clazz) {
 		final int [] ids = manager.getAppWidgetIds(new ComponentName(context, clazz));
 		return ids.length > 0;
+	}
+	
+	protected int getNotificationIcon() {
+		return R.drawable.ic_stat_findlocation;
 	}
 	
 	protected CharSequence getText(int resId) {

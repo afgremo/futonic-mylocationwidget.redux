@@ -217,4 +217,16 @@ public class MyLocationRetrievalState {
 		
 		return record;
 	}
+
+	public boolean hasSmallStaticMap() {
+		return bundle.hasSmallStaticMap();
+	}
+	
+	public boolean hasMediumStaticMap() {
+		return bundle.hasMediumStaticMap();
+	}
+	
+	public boolean hasLargeStaticMap() {
+		return bundle.hasLargeStaticMap();
+	}
 }
