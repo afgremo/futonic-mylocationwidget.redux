@@ -11,7 +11,7 @@
     <ImageButton android:id="@+id/SettingsImageButton" 
         style="@style/LocationCardButton"
         android:src="@drawable/ic_menu_manage" />
-    <ImageButton android:id="@+id/ShareImageButton" 
+    <ImageButton android:id="@+id/ShareImageButton"
         style="@style/LocationCardButton"
         android:src="@drawable/ic_menu_share" />
 </LinearLayout>

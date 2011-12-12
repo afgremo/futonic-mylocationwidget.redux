@@ -15,5 +15,4 @@ public class StartActivityButtonAction implements OnClickListener {
 		final Context context = v.getContext();
 		context.startActivity(intent);
 	}
-
 }
