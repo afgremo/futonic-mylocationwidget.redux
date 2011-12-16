@@ -3,14 +3,14 @@ package com.futonredemption.mylocation.fragments;
 import com.futonredemption.mylocation.R;
 import com.futonredemption.mylocation.provider.LocationHistoryContentProvider;
 
-import android.app.ListFragment;
-import android.app.LoaderManager;
-import android.content.CursorLoader;
-import android.content.Loader;
+import android.support.v4.content.CursorLoader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.widget.SimpleCursorAdapter;
+import android.support.v4.app.ListFragment;
+import android.support.v4.content.Loader;
+import android.support.v4.widget.SimpleCursorAdapter;
+import android.support.v4.app.LoaderManager;
 
 public class LocationHistoryFragment extends ListFragment 
 	implements LoaderManager.LoaderCallbacks<Cursor>{
@@ -21,10 +21,10 @@ public class LocationHistoryFragment extends ListFragment
         super.onActivityCreated(savedInstanceState);
 
         setEmptyText(getText(R.string.empty_location_history));
-
+	
         adapter = new SimpleCursorAdapter(getActivity(),
                 android.R.layout.simple_list_item_2, null,
-                new String[] { LocationHistoryContentProvider.LATITUDE, LocationHistoryContentProvider.LONGITUDE },
+                new String[] { LocationHistoryContentProvider.COUNTRYNAME, LocationHistoryContentProvider.ADDRESSLINES },
                 new int[] { android.R.id.text1, android.R.id.text2 }, 0);
         setListAdapter(adapter);
 

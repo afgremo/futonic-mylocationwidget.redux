@@ -16,6 +16,7 @@ import com.futonredemption.mylocation.tasks.RetrieveAddressTask;
 import com.futonredemption.mylocation.tasks.RetrieveLocationTask;
 import com.futonredemption.mylocation.tasks.SaveLocationBundleTask;
 import com.futonredemption.mylocation.tasks.SealLocationBundleTask;
+import com.futonredemption.mylocation.tasks.ShortenUrlTask;
 import com.futonredemption.mylocation.tasks.UpdateWidgetsTask;
 
 import android.content.Context;
@@ -97,7 +98,8 @@ public class WidgetUpdateService extends AbstractService {
 	}
 	
 	private ExecutorService createExecutorService() {
-		return Executors.newCachedThreadPool();
+		return Executors.newSingleThreadExecutor();
+		//return Executors.newCachedThreadPool();
 	}
 	
 	private void beginFullUpdate() {
@@ -133,11 +135,16 @@ public class WidgetUpdateService extends AbstractService {
 		SaveLocationBundleTask saveLocationBundle;
 		SealLocationBundleTask sealLocationTask;
 		LoadCloseEnoughDataTask locationCacheGet;
+		ShortenUrlTask shortUrlGet;
 		Future<MyLocationRetrievalState> futureAddress;
 		Future<MyLocationRetrievalState> futureStaticMap;
 		
 		locationGet = new RetrieveLocationTask(this, future);
 		future = service.submit(locationGet);
+
+		// TODO: Move this later.
+		shortUrlGet = new ShortenUrlTask(this, future);
+		future = service.submit(shortUrlGet);
 		
 		locationCacheGet = new LoadCloseEnoughDataTask(this, future);
 		future = service.submit(locationCacheGet);
@@ -147,7 +154,7 @@ public class WidgetUpdateService extends AbstractService {
 		
 		staticMapGet = new DownloadStaticMapTask(this, future);
 		futureStaticMap = service.submit(staticMapGet);
-		
+
 		saveLocationBundle = new SaveLocationBundleTask(this, future);
 		saveLocationBundle.addFuture(futureAddress);
 		saveLocationBundle.addFuture(futureStaticMap);
