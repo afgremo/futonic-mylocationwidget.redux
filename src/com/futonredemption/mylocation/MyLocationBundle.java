@@ -15,7 +15,7 @@ public class MyLocationBundle implements Parcelable {
 	private Location location = null;
 	private Address address = null;
 	private StaticMap staticMap = null;
-	private MapLink mapLinks = null;
+	private ShortMapUrls shortUrls = null;
 	
 	public MyLocationBundle() {
 	}
@@ -39,6 +39,10 @@ public class MyLocationBundle implements Parcelable {
 	public void setStaticMap(StaticMap staticMap) {
 		this.staticMap = staticMap;
 	}
+	
+	public void setShortMapUrls(ShortMapUrls shortUrls) {
+		this.shortUrls = shortUrls;
+	}
 
 	public Location getLocation() {
 		return location;
@@ -52,6 +56,10 @@ public class MyLocationBundle implements Parcelable {
 		return this.staticMap;
 	}
 	
+	public ShortMapUrls getShortMapUrls() {
+		return this.shortUrls;
+	}
+	
 	public boolean hasLocation() {
 		return location != null;
 	}
@@ -62,6 +70,10 @@ public class MyLocationBundle implements Parcelable {
 	
 	public boolean hasStaticMap() {
 		return staticMap != null;
+	}
+	
+	public boolean hasShortMapUrls() {
+		return shortUrls != null;
 	}
 	
 	public GeoPoint toGeoPoint() {
@@ -80,14 +92,14 @@ public class MyLocationBundle implements Parcelable {
     	dest.writeParcelable(location, flags);
     	dest.writeParcelable(address, flags);
     	dest.writeParcelable(staticMap, flags);
-    	dest.writeParcelable(mapLinks, flags);
+    	dest.writeParcelable(shortUrls, flags);
     }
 
     public void readFromParcel(Parcel in) {
     	location = in.readParcelable(null);
     	address = in.readParcelable(null);
     	staticMap = in.readParcelable(getClass().getClassLoader());
-    	mapLinks = in.readParcelable(getClass().getClassLoader());
+    	shortUrls = in.readParcelable(getClass().getClassLoader());
     }
 
     public static final Parcelable.Creator<MyLocationBundle> CREATOR = new Parcelable.Creator<MyLocationBundle>() {
@@ -102,7 +114,7 @@ public class MyLocationBundle implements Parcelable {
 
 	public boolean hasAllStaticMaps() {
 		if(this.hasStaticMap()) {
-			return staticMap.hasAllMaps();
+			return staticMap.hasAllStaticMaps();
 		}
 		return false;
 	}
@@ -110,6 +122,21 @@ public class MyLocationBundle implements Parcelable {
 	public boolean hasAnyStaticMap() {
 		if(hasStaticMap()) {
 			return staticMap.hasAnyStaticMap();
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean hasAllShortMapUrls() {
+		if(this.hasShortMapUrls()) {
+			return shortUrls.hasAllShortUrls();
+		}
+		return false;
+	}
+
+	public boolean hasAnyShortMapUrls() {
+		if(hasShortMapUrls()) {
+			return shortUrls.hasAnyShortUrl();
 		} else {
 			return false;
 		}
@@ -129,6 +156,14 @@ public class MyLocationBundle implements Parcelable {
 				this.staticMap.fillFrom(originalBundle.getStaticMap());
 			} else {
 				setStaticMap(originalBundle.getStaticMap());
+			}
+		}
+		
+		if(! hasAllShortMapUrls() && originalBundle.hasAnyShortMapUrls()) {
+			if(hasShortMapUrls()) {
+				this.shortUrls.fillFrom(originalBundle.getShortMapUrls());
+			} else {
+				setShortMapUrls(originalBundle.getShortMapUrls());
 			}
 		}
 	}
@@ -152,6 +187,22 @@ public class MyLocationBundle implements Parcelable {
 	public boolean hasLargeStaticMap() {
 		if(hasStaticMap()) {
 			return staticMap.hasLargeMap();
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean hasBasicShortUrl() {
+		if(hasShortMapUrls()) {
+			return shortUrls.hasBasicShortUrl();
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean hasAddressShortUrl() {
+		if(hasShortMapUrls()) {
+			return shortUrls.hasAddressShortUrl();
 		} else {
 			return false;
 		}

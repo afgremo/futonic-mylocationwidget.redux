@@ -4,7 +4,7 @@
     <string name="address">Address</string>
     <string name="locating">Locating</string>
     <string name="pinpointing_location">Pinpointing Location</string>
-    <string name="finding_location">Finding Location...</string>
+    <string name="finding_location">Finding Location&#8230;</string>
     <string name="unknown">Unknown</string>
     <string name="error">Error</string>
     <string name="could_not_get_location">Could not get location</string>
@@ -15,7 +15,7 @@
    	<string name="locating1">Locating</string>
    	<string name="locating2">Locating.</string>
    	<string name="locating3">Locating..</string>
-   	<string name="locating4">Locating...</string>
+   	<string name="locating4">Locating&#8230;</string>
    	
    	<string name="loadingtext_pinpointing_location">Pinpointing your location. This might take awhile.</string>
    	<string name="loadingtext_gps_is_off">GPS is off. <b>Tap here</b> for better accuracy.</string>
@@ -30,4 +30,6 @@
    	
    	<string name="errortitle_something_went_wrong">Something Went Wrong</string>
    	<string name="errordesc_tap_here_to_try_again"><b>Tap Here</b> to try again.</string>
+   	
+   	<string name="share_address_subject">My Location</string>
 </resources>

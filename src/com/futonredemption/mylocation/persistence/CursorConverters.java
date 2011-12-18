@@ -8,6 +8,7 @@ import android.location.Address;
 import android.location.Location;
 
 import com.futonredemption.mylocation.OriginalCoordinates;
+import com.futonredemption.mylocation.ShortMapUrls;
 import com.futonredemption.mylocation.StaticMap;
 import com.futonredemption.mylocation.provider.LocationHistoryContentProvider;
 
@@ -45,11 +46,30 @@ public class CursorConverters {
 		
 		return map;
 	}
+	
+	public static void appendValues(final ContentValues values, ShortMapUrls shortUrls) {
+		values.put(LocationHistoryContentProvider.BASICSHORTURL, shortUrls.getBasicShortUrl());
+		values.put(LocationHistoryContentProvider.ADDRESSSHORTURL, shortUrls.getAddressShortUrl());
+	}
+	
+	public static ShortMapUrls toShortMapUrls(Cursor cursor) {
+		
+		ShortMapUrls shortUrls = new ShortMapUrls();
+		String basicUrl;
+		String addressUrl;
+		
+		basicUrl = cursor.getString(cursor.getColumnIndex(LocationHistoryContentProvider.BASICSHORTURL));
+		addressUrl = cursor.getString(cursor.getColumnIndex(LocationHistoryContentProvider.ADDRESSLINES));
+		shortUrls.setBasicShortUrl(basicUrl);
+		shortUrls.setAddressShortUrl(addressUrl);
+		
+		return shortUrls;
+	}
 
 	public static void appendValues(final ContentValues values, final Address address) {
 		PackedString addressFlat = new PackedString();
-		final int len = address.getMaxAddressLineIndex() + 1;
-		for(int i = 0; i < len; i++) {
+		final int len = address.getMaxAddressLineIndex();
+		for(int i = 0; i <= len; i++) {
 			addressFlat.put(address.getAddressLine(i));
 		}
 		

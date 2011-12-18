@@ -6,6 +6,7 @@ import android.content.Context;
 
 import com.futonredemption.mylocation.Debugging;
 import com.futonredemption.mylocation.MyLocationRetrievalState;
+import com.futonredemption.mylocation.ShortMapUrls;
 import com.futonredemption.mylocation.google.urlshortener.GooglShortener;
 
 public class ShortenUrlTask extends AbstractMyLocationTask {
@@ -19,11 +20,31 @@ public class ShortenUrlTask extends AbstractMyLocationTask {
 
 	@Override
 	protected void loadData(MyLocationRetrievalState state) {
-		String longUrl = state.getLongMapsUrl();
 		
-		String shortUrl = tryShortenUrl(longUrl, 3);
-		
-		state.setShortMapsUrl(shortUrl);
+		if(state.hasLocation() && ! state.hasAllShortMapUrls()) {
+			ShortMapUrls urls;
+			String longUrl;
+			String shortUrl;
+			
+			if(state.hasShortMapUrls()) {
+				urls = state.getShortMapUrls();
+			} else {
+				urls = new ShortMapUrls();
+				state.setShortMapsUrls(urls);
+			}
+			
+			if(state.hasBasicShortMapUrl()) {
+				longUrl = state.getBasicLongMapsUrl();
+				shortUrl = tryShortenUrl(longUrl, 3);
+				urls.setBasicShortUrl(shortUrl);
+			}
+			
+			if(state.hasAddressShortMapUrl()) {
+				longUrl = state.getAddressLongMapsUrl();
+				shortUrl = tryShortenUrl(longUrl, 3);
+				urls.setAddressShortUrl(shortUrl);
+			}
+		}
 	}
 	
 	protected String tryShortenUrl(final String longUrl, final int attempts) {

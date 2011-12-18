@@ -138,19 +138,19 @@ public class WidgetUpdateService extends AbstractService {
 		ShortenUrlTask shortUrlGet;
 		Future<MyLocationRetrievalState> futureAddress;
 		Future<MyLocationRetrievalState> futureStaticMap;
+		Future<MyLocationRetrievalState> futureShortUrl;
 		
 		locationGet = new RetrieveLocationTask(this, future);
 		future = service.submit(locationGet);
 
-		// TODO: Move this later.
-		shortUrlGet = new ShortenUrlTask(this, future);
-		future = service.submit(shortUrlGet);
-		
 		locationCacheGet = new LoadCloseEnoughDataTask(this, future);
 		future = service.submit(locationCacheGet);
 		
 		addressGet = new RetrieveAddressTask(this, future);
 		futureAddress = service.submit(addressGet);
+		
+		shortUrlGet = new ShortenUrlTask(this, futureAddress);
+		futureShortUrl = service.submit(shortUrlGet);
 		
 		staticMapGet = new DownloadStaticMapTask(this, future);
 		futureStaticMap = service.submit(staticMapGet);
@@ -158,6 +158,7 @@ public class WidgetUpdateService extends AbstractService {
 		saveLocationBundle = new SaveLocationBundleTask(this, future);
 		saveLocationBundle.addFuture(futureAddress);
 		saveLocationBundle.addFuture(futureStaticMap);
+		saveLocationBundle.addFuture(futureShortUrl);
 		future = service.submit(saveLocationBundle);
 		
 		sealLocationTask = new SealLocationBundleTask(this, future);

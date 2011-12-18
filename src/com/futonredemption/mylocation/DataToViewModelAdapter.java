@@ -1,7 +1,5 @@
 package com.futonredemption.mylocation;
 
-import java.util.Locale;
-
 import org.beryl.location.LocationMonitor;
 
 import com.futonredemption.mylocation.activities.LocationCardActivity;
@@ -136,8 +134,8 @@ public class DataToViewModelAdapter {
 		return sb.toString();
 	}
 	
-	private CharSequence getOneLineCoordinates() {
-		return String.format(Locale.ENGLISH, "Lat: %s Long: %s", getLatitude(), getLongitude());
+	private String getOneLineCoordinates() {
+		return this.state.getOneLineCoordinates();
 	}
 
 	public CharSequence getText(int resId) {
@@ -204,9 +202,41 @@ public class DataToViewModelAdapter {
 		return new Intent(context, PhoneActivity.class);
 	}
 	
+	public static final String MimeEmail = "text/plain";
+	
+	public CharSequence getEmailShareContent() {
+		final StringBuilder sb = new StringBuilder();
+		final String address = getOneLineAddress();
+		
+		
+		if(address != null) {
+			sb.append(address);
+		} else {
+			final String coordinates = getOneLineCoordinates();
+			sb.append(coordinates);
+		}
+		
+		if(state.hasBasicShortMapUrl()) {
+			sb.append(" ");
+			sb.append(state.getBasicShortMapUrl());
+		}
+			
+		return sb.toString();
+	}
+	
+	private String getOneLineAddress() {
+		return state.getOneLineAddress();
+	}
+
 	public Intent getShareLocationAction() {
-		// TODO: This isn't complete.
 		final Intent intent = new Intent(Intent.ACTION_SEND);
+		
+		CharSequence subject = getText(R.string.share_address_subject);
+		CharSequence content = getEmailShareContent();
+		intent.setType(MimeEmail);
+		intent.putExtra(Intent.EXTRA_EMAIL, new String[] { "" });
+		intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+		intent.putExtra(Intent.EXTRA_TEXT, content);
 		
 		return intent;
 	}

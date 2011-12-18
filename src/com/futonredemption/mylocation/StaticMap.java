@@ -121,7 +121,7 @@ public class StaticMap implements Parcelable {
         }
     };
 
-	public boolean hasAllMaps() {
+	public boolean hasAllStaticMaps() {
 		return hasSmallMap() && hasMediumMap() && hasLargeMap();
 	}
 

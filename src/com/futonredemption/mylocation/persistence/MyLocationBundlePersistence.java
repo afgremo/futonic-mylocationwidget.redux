@@ -13,6 +13,7 @@ import com.futonredemption.mylocation.Constants;
 import com.futonredemption.mylocation.Debugging;
 import com.futonredemption.mylocation.MyLocationBundle;
 import com.futonredemption.mylocation.OriginalCoordinates;
+import com.futonredemption.mylocation.ShortMapUrls;
 import com.futonredemption.mylocation.StaticMap;
 import com.futonredemption.mylocation.provider.LocationHistoryContentProvider;
 
@@ -58,6 +59,11 @@ public class MyLocationBundlePersistence {
 		if(bundle.hasStaticMap()) {
 			final StaticMap staticMap = bundle.getStaticMap();
 			CursorConverters.appendValues(values, staticMap);
+		}
+		
+		if(bundle.hasShortMapUrls()) {
+			final ShortMapUrls mapLinks = bundle.getShortMapUrls();
+			CursorConverters.appendValues(values, mapLinks);
 		}
 		CursorConverters.appendValues(values, coords);
 	}
@@ -160,6 +166,7 @@ public class MyLocationBundlePersistence {
 		Location location = null;
 		Address address = null;
 		StaticMap staticMap;
+		ShortMapUrls shortUrls;
 		OriginalCoordinates coordinates = null;
 		final ContentResolver resolver = context.getContentResolver();
 		final Uri contentUri = ContentUris.withAppendedId(LocationHistoryContentProvider.CONTENT_URI, id);
@@ -183,6 +190,12 @@ public class MyLocationBundlePersistence {
 					staticMap = null;
 				}
 				try {
+					shortUrls = CursorConverters.toShortMapUrls(cursor);
+				} catch(Exception e) {
+					Debugging.e(e);
+					shortUrls = null;
+				}
+				try {
 					coordinates = CursorConverters.toOriginalCoordinates(cursor);
 				} catch(Exception e) {
 					Debugging.e(e);
@@ -191,6 +204,7 @@ public class MyLocationBundlePersistence {
 				bundle.setLocation(location);
 				bundle.setAddress(address);
 				bundle.setStaticMap(staticMap);
+				bundle.setShortMapUrls(shortUrls);
 				record.setBundle(bundle);
 				record.setOriginalCoordinates(coordinates);
 				record.setId(cursor.getInt(cursor.getColumnIndex(LocationHistoryContentProvider._ID)));

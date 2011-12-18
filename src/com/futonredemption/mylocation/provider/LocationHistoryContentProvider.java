@@ -118,6 +118,12 @@ public class LocationHistoryContentProvider extends ContentProvider {
 	public static final Uri ORIGINALID_FIELD_CONTENT_URI = Uri
 			.parse("content://" + AUTHORITY + "/" + TABLE_NAME.toLowerCase()
 					+ "/originalid");
+	public static final Uri BASICSHORTURL_FIELD_CONTENT_URI = Uri
+			.parse("content://" + AUTHORITY + "/" + TABLE_NAME.toLowerCase()
+					+ "/basicshorturl");
+	public static final Uri ADDRESSSHORTURL_FIELD_CONTENT_URI = Uri
+			.parse("content://" + AUTHORITY + "/" + TABLE_NAME.toLowerCase()
+					+ "/addressshorturl");
 
 	public static final String DEFAULT_SORT_ORDER = "_id ASC";
 
@@ -157,6 +163,8 @@ public class LocationHistoryContentProvider extends ContentProvider {
 	private static final int LOCATIONHISTORY_ORIGINALLATITUDE = 32;
 	private static final int LOCATIONHISTORY_ORIGINALLONGITUDE = 33;
 	private static final int LOCATIONHISTORY_ORIGINALID = 34;
+	private static final int LOCATIONHISTORY_BASICSHORTURL = 35;
+	private static final int LOCATIONHISTORY_ADDRESSSHORTURL = 36;
 
 	// Content values keys (using column names)
 	public static final String _ID = "_id";
@@ -192,6 +200,8 @@ public class LocationHistoryContentProvider extends ContentProvider {
 	public static final String ORIGINALLATITUDE = "OriginalLatitude";
 	public static final String ORIGINALLONGITUDE = "OriginalLongitude";
 	public static final String ORIGINALID = "OriginalID";
+	public static final String BASICSHORTURL = "BasicShortUrl";
+	public static final String ADDRESSSHORTURL = "AddressShortUrl";
 
 	public boolean onCreate() {
 		dbHelper = new MyLocationOpenHelper(getContext(), true);
@@ -351,6 +361,16 @@ public class LocationHistoryContentProvider extends ContentProvider {
 			qb.setTables(TABLE_NAME);
 			qb.appendWhere("originalid='" + url.getPathSegments().get(2) + "'");
 			break;
+		case LOCATIONHISTORY_BASICSHORTURL:
+			qb.setTables(TABLE_NAME);
+			qb.appendWhere("basicshorturl='" + url.getPathSegments().get(2)
+					+ "'");
+			break;
+		case LOCATIONHISTORY_ADDRESSSHORTURL:
+			qb.setTables(TABLE_NAME);
+			qb.appendWhere("addressshorturl='" + url.getPathSegments().get(2)
+					+ "'");
+			break;
 
 		default:
 			throw new IllegalArgumentException("Unknown URL " + url);
@@ -436,6 +456,10 @@ public class LocationHistoryContentProvider extends ContentProvider {
 		case LOCATIONHISTORY_ORIGINALLONGITUDE:
 			return "vnd.android.cursor.item/vnd.com.futonredemption.mylocation.provider.locationhistory";
 		case LOCATIONHISTORY_ORIGINALID:
+			return "vnd.android.cursor.item/vnd.com.futonredemption.mylocation.provider.locationhistory";
+		case LOCATIONHISTORY_BASICSHORTURL:
+			return "vnd.android.cursor.item/vnd.com.futonredemption.mylocation.provider.locationhistory";
+		case LOCATIONHISTORY_ADDRESSSHORTURL:
 			return "vnd.android.cursor.item/vnd.com.futonredemption.mylocation.provider.locationhistory";
 
 		default:
@@ -737,6 +761,22 @@ public class LocationHistoryContentProvider extends ContentProvider {
 							+ (!TextUtils.isEmpty(where) ? " AND (" + where
 									+ ')' : ""), whereArgs);
 			break;
+		case LOCATIONHISTORY_BASICSHORTURL:
+			segment = "'" + url.getPathSegments().get(2) + "'";
+			count = mDB.delete(TABLE_NAME,
+					"basicshorturl="
+							+ segment
+							+ (!TextUtils.isEmpty(where) ? " AND (" + where
+									+ ')' : ""), whereArgs);
+			break;
+		case LOCATIONHISTORY_ADDRESSSHORTURL:
+			segment = "'" + url.getPathSegments().get(2) + "'";
+			count = mDB.delete(TABLE_NAME,
+					"addressshorturl="
+							+ segment
+							+ (!TextUtils.isEmpty(where) ? " AND (" + where
+									+ ')' : ""), whereArgs);
+			break;
 
 		default:
 			throw new IllegalArgumentException("Unknown URL " + url);
@@ -1018,6 +1058,22 @@ public class LocationHistoryContentProvider extends ContentProvider {
 							+ (!TextUtils.isEmpty(where) ? " AND (" + where
 									+ ')' : ""), whereArgs);
 			break;
+		case LOCATIONHISTORY_BASICSHORTURL:
+			segment = "'" + url.getPathSegments().get(2) + "'";
+			count = mDB.update(TABLE_NAME, values,
+					"basicshorturl="
+							+ segment
+							+ (!TextUtils.isEmpty(where) ? " AND (" + where
+									+ ')' : ""), whereArgs);
+			break;
+		case LOCATIONHISTORY_ADDRESSSHORTURL:
+			segment = "'" + url.getPathSegments().get(2) + "'";
+			count = mDB.update(TABLE_NAME, values,
+					"addressshorturl="
+							+ segment
+							+ (!TextUtils.isEmpty(where) ? " AND (" + where
+									+ ')' : ""), whereArgs);
+			break;
 
 		default:
 			throw new IllegalArgumentException("Unknown URL " + url);
@@ -1099,6 +1155,10 @@ public class LocationHistoryContentProvider extends ContentProvider {
 				LOCATIONHISTORY_ORIGINALLONGITUDE);
 		URL_MATCHER.addURI(AUTHORITY, TABLE_NAME.toLowerCase() + "/originalid"
 				+ "/*", LOCATIONHISTORY_ORIGINALID);
+		URL_MATCHER.addURI(AUTHORITY, TABLE_NAME.toLowerCase()
+				+ "/basicshorturl" + "/*", LOCATIONHISTORY_BASICSHORTURL);
+		URL_MATCHER.addURI(AUTHORITY, TABLE_NAME.toLowerCase()
+				+ "/addressshorturl" + "/*", LOCATIONHISTORY_ADDRESSSHORTURL);
 
 		LOCATIONHISTORY_PROJECTION_MAP = new HashMap<String, String>();
 		LOCATIONHISTORY_PROJECTION_MAP.put(_ID, "_id");
@@ -1140,6 +1200,8 @@ public class LocationHistoryContentProvider extends ContentProvider {
 		LOCATIONHISTORY_PROJECTION_MAP.put(ORIGINALLONGITUDE,
 				"originallongitude");
 		LOCATIONHISTORY_PROJECTION_MAP.put(ORIGINALID, "originalid");
+		LOCATIONHISTORY_PROJECTION_MAP.put(BASICSHORTURL, "basicshorturl");
+		LOCATIONHISTORY_PROJECTION_MAP.put(ADDRESSSHORTURL, "addressshorturl");
 
 	}
 }

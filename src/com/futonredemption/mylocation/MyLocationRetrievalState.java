@@ -1,5 +1,7 @@
 package com.futonredemption.mylocation;
 
+import java.util.Locale;
+
 import com.futonredemption.mylocation.google.maps.GoogleMapsLinkBuilder;
 import com.futonredemption.mylocation.persistence.MyLocationBundleRecord;
 
@@ -231,15 +233,75 @@ public class MyLocationRetrievalState {
 		return bundle.hasLargeStaticMap();
 	}
 
-	public String getLongMapsUrl() {
+	public String getBasicLongMapsUrl() {
 		GoogleMapsLinkBuilder builder = new GoogleMapsLinkBuilder(this.getLocation());
 		builder.setCustomMessage("Your friend is here.");
 		
 		return builder.build();
 	}
-
-	public void setShortMapsUrl(String shortUrl) {
-		// TODO Auto-generated method stub
+	
+	public String getAddressLongMapsUrl() {
+		GoogleMapsLinkBuilder builder = new GoogleMapsLinkBuilder(this.getLocation());
+		builder.setCustomMessage("Your friend is at " + getOneLineAddress());
 		
+		return builder.build();
+	}
+
+	public void setShortMapsUrls(ShortMapUrls shortUrl) {
+		this.setShortMapsUrls(shortUrl);
+	}
+
+	public String getOneLineAddress() {
+		String result = null;
+
+		if(bundle.hasAddress()) {
+			final Address address = this.bundle.getAddress();
+			
+			final StringBuilder sb = new StringBuilder();
+			final int len = address.getMaxAddressLineIndex();
+			
+			for(int i = 0; i <= len; i++) {
+				if(i > 0) {
+					sb.append(" ");
+				}
+				address.getAddressLine(i);
+			}
+			result = sb.toString();
+		}
+		
+		return result;
+	}
+
+	public String getOneLineCoordinates() {
+		final Location location = getLocation();
+		return String.format(Locale.ENGLISH, "Lat: %s Long: %s", location.getLatitude(), location.getLongitude());
+	}
+
+	public boolean hasBasicShortMapUrl() {
+		return bundle.hasBasicShortUrl();
+	}
+	
+	public String getBasicShortMapUrl() {
+		return bundle.getShortMapUrls().getBasicShortUrl();
+	}
+
+	public boolean hasAddressShortMapUrl() {
+		return bundle.hasAddressShortUrl();
+	}
+	
+	public String getAddressShortMapUrl() {
+		return bundle.getShortMapUrls().getAddressShortUrl();
+	}
+	
+	public boolean hasShortMapUrls() {
+		return bundle.hasShortMapUrls();
+	}
+
+	public ShortMapUrls getShortMapUrls() {
+		return bundle.getShortMapUrls();
+	}
+
+	public boolean hasAllShortMapUrls() {
+		return bundle.hasAllShortMapUrls();
 	}
 }
