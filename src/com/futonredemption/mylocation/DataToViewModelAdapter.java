@@ -34,7 +34,7 @@ public class DataToViewModelAdapter {
 	
 	/** Has enough information to start displaying data to the user. Some data may still be missing. */
 	public boolean hasBasicInformation() {
-		return state.hasAddress();
+		return state.hasAddress() && state.hasShortMapUrls();
 	}
 	
 	public Uri getSmallStaticMapFileUri() {

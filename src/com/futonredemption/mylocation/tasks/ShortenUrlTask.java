@@ -30,16 +30,16 @@ public class ShortenUrlTask extends AbstractMyLocationTask {
 				urls = state.getShortMapUrls();
 			} else {
 				urls = new ShortMapUrls();
-				state.setShortMapsUrls(urls);
+				state.setShortMapUrls(urls);
 			}
 			
-			if(state.hasBasicShortMapUrl()) {
+			if(! state.hasBasicShortMapUrl()) {
 				longUrl = state.getBasicLongMapsUrl();
 				shortUrl = tryShortenUrl(longUrl, 3);
 				urls.setBasicShortUrl(shortUrl);
 			}
 			
-			if(state.hasAddressShortMapUrl()) {
+			if(! state.hasAddressShortMapUrl()) {
 				longUrl = state.getAddressLongMapsUrl();
 				shortUrl = tryShortenUrl(longUrl, 3);
 				urls.setAddressShortUrl(shortUrl);

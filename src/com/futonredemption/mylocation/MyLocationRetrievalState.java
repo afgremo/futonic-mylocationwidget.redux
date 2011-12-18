@@ -247,8 +247,8 @@ public class MyLocationRetrievalState {
 		return builder.build();
 	}
 
-	public void setShortMapsUrls(ShortMapUrls shortUrl) {
-		this.setShortMapsUrls(shortUrl);
+	public void setShortMapUrls(ShortMapUrls shortUrl) {
+		bundle.setShortMapUrls(shortUrl);
 	}
 
 	public String getOneLineAddress() {
@@ -264,7 +264,7 @@ public class MyLocationRetrievalState {
 				if(i > 0) {
 					sb.append(" ");
 				}
-				address.getAddressLine(i);
+				sb.append(address.getAddressLine(i));
 			}
 			result = sb.toString();
 		}
