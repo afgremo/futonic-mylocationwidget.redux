@@ -58,7 +58,7 @@ public class RetrieveLocationTask extends EventBasedContextAwareCallable<MyLocat
 			setupLocationMonitor();
 
 			if(monitor.isAnyProviderEnabled()) {
-				monitor.startListening();
+				monitor.startListening(2000, 0);
 			} else {
 				finishWithError(new NoLocationProvidersEnabledException());
 			}

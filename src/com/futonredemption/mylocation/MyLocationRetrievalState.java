@@ -1,5 +1,6 @@
 package com.futonredemption.mylocation;
 
+import com.futonredemption.mylocation.google.maps.GoogleMapsLinkBuilder;
 import com.futonredemption.mylocation.persistence.MyLocationBundleRecord;
 
 import android.location.Address;
@@ -228,5 +229,17 @@ public class MyLocationRetrievalState {
 	
 	public boolean hasLargeStaticMap() {
 		return bundle.hasLargeStaticMap();
+	}
+
+	public String getLongMapsUrl() {
+		GoogleMapsLinkBuilder builder = new GoogleMapsLinkBuilder(this.getLocation());
+		builder.setCustomMessage("Your friend is here.");
+		
+		return builder.build();
+	}
+
+	public void setShortMapsUrl(String shortUrl) {
+		// TODO Auto-generated method stub
+		
 	}
 }

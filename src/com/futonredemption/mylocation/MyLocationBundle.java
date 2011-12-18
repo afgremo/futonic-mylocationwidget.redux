@@ -15,6 +15,7 @@ public class MyLocationBundle implements Parcelable {
 	private Location location = null;
 	private Address address = null;
 	private StaticMap staticMap = null;
+	private MapLink mapLinks = null;
 	
 	public MyLocationBundle() {
 	}
@@ -79,12 +80,14 @@ public class MyLocationBundle implements Parcelable {
     	dest.writeParcelable(location, flags);
     	dest.writeParcelable(address, flags);
     	dest.writeParcelable(staticMap, flags);
+    	dest.writeParcelable(mapLinks, flags);
     }
 
     public void readFromParcel(Parcel in) {
     	location = in.readParcelable(null);
     	address = in.readParcelable(null);
     	staticMap = in.readParcelable(getClass().getClassLoader());
+    	mapLinks = in.readParcelable(getClass().getClassLoader());
     }
 
     public static final Parcelable.Creator<MyLocationBundle> CREATOR = new Parcelable.Creator<MyLocationBundle>() {
