@@ -13,7 +13,7 @@
         android:src="@drawable/ic_menu_refresh"
         android:contentDescription="@string/refresh" />
 
-    <View style="@style/AWCVerticalDivider" />
+    <ImageView style="@style/AWCVerticalDivider" />
         
     <ImageButton android:id="@+id/ShareImageButton"
         style="@style/AWCButton.Center"
@@ -23,7 +23,7 @@
         android:src="@drawable/ic_menu_share"
         android:contentDescription="@string/share_location" />
     
-	<View style="@style/AWCVerticalDivider" />
+	<ImageView style="@style/AWCVerticalDivider" />
         
 	<ImageButton android:id="@+id/DetailImageButton"
         style="@style/AWCButton.Right"

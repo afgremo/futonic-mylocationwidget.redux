@@ -13,7 +13,7 @@
         android:src="@drawable/ic_menu_refresh"
         android:contentDescription="@string/refresh" />
         
-	<View style="@style/AWCVerticalDivider" />
+	<ImageView style="@style/AWCVerticalDivider" />
         
 	<LinearLayout android:id="@+id/DetailButtonLinearLayout"
 	    style="@style/AWCButton.Right"
