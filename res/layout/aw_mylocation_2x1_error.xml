@@ -7,16 +7,17 @@
 
     <ImageButton android:id="@+id/ActionImageButton"
         style="@style/AWCButton.Left"
-        android:layout_width="@dimen/use_weight"
+        android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        android:src="@drawable/ic_menu_refresh" />
+        android:src="@drawable/ic_menu_refresh"
+        android:contentDescription="@string/refresh" />
         
-	<ImageView style="@style/AWCVerticalDivider" />
+	<View style="@style/AWCVerticalDivider" />
 
 	<FrameLayout android:id="@+id/DetailButtonLinearLayout"
 	    style="@style/AWCButton.Right"
-	    android:layout_width="@dimen/use_weight"
+	    android:layout_width="0dp"
         android:layout_weight="3"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
@@ -24,6 +25,7 @@
         android:focusable="true"
         android:paddingLeft="8dip"
         android:paddingRight="8dip">
+        
 		<ViewFlipper android:layout_width="match_parent" android:layout_height="wrap_content"
 		    style="@style/WidgetTextTicker"
 		    android:layout_gravity="center">
@@ -31,14 +33,12 @@
 	        <TextView android:id="@+id/TitleTextView"
 	            style="@style/AWCText"
 	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:text="Title Text" />
+	            android:layout_height="wrap_content" />
 	
 	        <TextView android:id="@+id/DescriptionTextView"
 	            style="@style/AWCText"
 	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:text="Description Text" />
+	            android:layout_height="wrap_content" />
 	        
 	    </ViewFlipper>
     </FrameLayout>

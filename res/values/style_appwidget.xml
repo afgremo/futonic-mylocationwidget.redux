@@ -68,9 +68,16 @@
 	    <item name="android:background">@android:color/transparent</item>
 	</style>
 	
-	<style name="WidgetMapPresenter">
+	<style name="WidgetMapPresenter" parent="@style/WidgetFrame">
 	    <item name="android:scaleType">centerCrop</item>
 	    <item name="android:background">@android:color/transparent</item>
+	    <item name="android:cropToPadding">true</item>
+	</style>
+	
+	<style name="SingleWidgetMapPresenter" parent="@style/WidgetFrame">
+	    <item name="android:background">@drawable/frame_top_widget_holo</item>
+	    <item name="android:scaleType">centerCrop</item>
+	    <item name="android:cropToPadding">true</item>
 	</style>
 	
 </resources>

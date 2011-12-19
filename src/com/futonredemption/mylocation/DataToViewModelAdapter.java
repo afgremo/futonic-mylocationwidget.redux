@@ -241,6 +241,23 @@ public class DataToViewModelAdapter {
 		return intent;
 	}
 
+	public Uri getSmallWidgetMapUri() {
+		Uri uri = null;
+		
+		if(this.state.hasStaticMap()) {
+			final StaticMap map = state.getStaticMap();
+			if(map.hasMediumMap()) {
+				uri = getMediumStaticMapFileUri();
+			} else if(map.hasSmallMap()) {
+				uri = getSmallStaticMapFileUri();
+			}
+			
+			// Large Map isn't acceptable for a notification icon.
+		}
+		
+		return uri;
+	}
+	
 	public String getNotificationMapFilePath() {
 		String filePath = null;
 		

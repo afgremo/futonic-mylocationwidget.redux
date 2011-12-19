@@ -7,16 +7,17 @@
 
     <ImageButton android:id="@+id/ActionImageButton"
         style="@style/AWCButton.Left"
-        android:layout_width="@dimen/use_weight"
+        android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        android:src="@drawable/ic_menu_refresh" />
+        android:src="@drawable/ic_menu_refresh"
+        android:contentDescription="@string/refresh" />
 
 	<ImageView style="@style/AWCVerticalDivider" />
         
 	<LinearLayout android:id="@+id/DetailButtonLinearLayout"
         style="@style/AWCButton.Center"
-        android:layout_width="@dimen/use_weight"
+        android:layout_width="0dp"
         android:layout_weight="4"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -41,9 +42,10 @@
         
     <ImageButton android:id="@+id/ShareImageButton"
         style="@style/AWCButton.Right"
-        android:layout_width="@dimen/use_weight"
+        android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        android:src="@drawable/ic_menu_share" />
+        android:src="@drawable/ic_menu_share"
+        android:contentDescription="@string/share_location" />
         
 </LinearLayout>

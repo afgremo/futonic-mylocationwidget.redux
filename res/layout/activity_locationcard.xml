@@ -6,7 +6,7 @@
     <ImageView style="@style/SpringView.Vertical" />
     
     <include android:id="@+id/CardBody" layout="@layout/locationcard_body"
-        android:layout_width="match_parent" android:layout_height="@dimen/use_weight"
+        android:layout_width="match_parent" android:layout_height="0dp"
         android:layout_weight="3" android:layout_marginLeft="16dp" android:layout_marginRight="16dp" />
     
 	<ImageView style="@style/SpringView.Vertical" />

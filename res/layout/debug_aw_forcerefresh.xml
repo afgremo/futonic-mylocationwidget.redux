@@ -7,22 +7,22 @@
 
     <TextView android:id="@+id/DebugFullUpdateImageButton"
         style="@style/AWCButton.Left"
-        android:layout_width="@dimen/use_weight"
+        android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
         android:drawableTop="@drawable/ic_menu_refresh"
-        android:text="Full"
+        android:text="@string/debug_full"
         android:gravity="center" />
 
 	<ImageView style="@style/AWCVerticalDivider" />
 	
 	 <TextView android:id="@+id/DebugSyncLatestImageButton"
         style="@style/AWCButton.Right"
-        android:layout_width="@dimen/use_weight"
+        android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
         android:drawableTop="@drawable/ic_menu_refresh"
-        android:text="Sync"
+        android:text="@string/debug_sync"
         android:gravity="center" />
         
 </LinearLayout>

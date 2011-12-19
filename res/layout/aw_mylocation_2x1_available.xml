@@ -7,27 +7,30 @@
 
     <ImageButton android:id="@+id/ActionImageButton"
         style="@style/AWCButton.Left"
-        android:layout_width="@dimen/use_weight"
+        android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        android:src="@drawable/ic_menu_refresh" />
+        android:src="@drawable/ic_menu_refresh"
+        android:contentDescription="@string/refresh" />
 
-    <ImageView style="@style/AWCVerticalDivider" />
+    <View style="@style/AWCVerticalDivider" />
         
     <ImageButton android:id="@+id/ShareImageButton"
         style="@style/AWCButton.Center"
-        android:layout_width="@dimen/use_weight"
+        android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        android:src="@drawable/ic_menu_share" />
+        android:src="@drawable/ic_menu_share"
+        android:contentDescription="@string/share_location" />
     
-	<ImageView style="@style/AWCVerticalDivider" />
+	<View style="@style/AWCVerticalDivider" />
         
 	<ImageButton android:id="@+id/DetailImageButton"
         style="@style/AWCButton.Right"
-        android:layout_width="@dimen/use_weight"
+        android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        android:src="@drawable/ic_menu_myplaces" />
+        android:src="@drawable/ic_menu_myplaces"
+        android:contentDescription="@string/about_location" />
         
 </LinearLayout>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<dimen name="use_weight">0dp</dimen>
+    <dimen name="use_weight">0dp</dimen>
 	<dimen name="hairline">1dp</dimen>
 	<dimen name="finger_comfortable">56dp</dimen>
 </resources>

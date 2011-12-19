@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    style="@style/AppWidgetClassic">
-
-    <ImageButton android:id="@+id/ActionImageButton"
-        style="@style/AWSButton"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/ic_menu_report_image" />
-
-</FrameLayout>
+<ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/ActionImageButton"
+	style="@style/AppWidgetClassic.Clickable"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:src="@drawable/ic_menu_report_image"
+	android:contentDescription="@string/errortitle_something_went_wrong" />

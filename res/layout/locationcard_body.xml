@@ -12,7 +12,8 @@
         android:layout_alignParentTop="true" android:layout_alignParentLeft="true" android:layout_alignParentRight="true"
         android:layout_above="@id/CardActions"
         style="@style/ChromelessStaticMap"
-        android:src="@android:color/white" />
+        android:src="@android:color/white"
+        android:contentDescription="@string/background_map" />
     
     <LinearLayout style="@style/StaticMapTitleOverlay.Large"
         android:layout_width="match_parent" android:layout_height="wrap_content"
@@ -21,11 +22,9 @@
         android:layout_alignRight="@id/StaticMapImageView">
         <TextView android:id="@+id/TitleTextView"
             style="@style/StaticMapTitle.Large"
-			android:layout_width="match_parent" android:layout_height="wrap_content" 
-			android:text="Title Text"/>
+			android:layout_width="match_parent" android:layout_height="wrap_content" />
         <TextView android:id="@+id/DescriptionTextView"
             style="@style/StaticMapTitle"
-			android:layout_width="match_parent" android:layout_height="wrap_content" 
-			android:text="Description Text"/>
+			android:layout_width="match_parent" android:layout_height="wrap_content" />
     </LinearLayout>
 </RelativeLayout>

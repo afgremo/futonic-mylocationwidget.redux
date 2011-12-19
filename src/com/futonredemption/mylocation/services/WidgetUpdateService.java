@@ -50,6 +50,7 @@ public class WidgetUpdateService extends AbstractService {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		Thread.currentThread().setName("UI Thread, Nothing");
 		Debugging.w("Service Destroy");
 	}
 	

@@ -7,7 +7,7 @@
     
 	<style name="LocationCardButton" parent="@style/WidgetFrame">
 	    <item name="android:background">@drawable/button_simple</item>
-	    <item name="android:layout_width">@dimen/use_weight</item>
+	    <item name="android:layout_width">0dp</item>
 	    <item name="android:layout_weight">1</item>
 	    <item name="android:layout_height">@dimen/finger_comfortable</item>
 	</style>

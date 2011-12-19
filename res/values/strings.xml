@@ -6,9 +6,7 @@
     <string name="pinpointing_location">Pinpointing Location</string>
     <string name="finding_location">Finding Location&#8230;</string>
     <string name="unknown">Unknown</string>
-    <string name="error">Error</string>
     <string name="could_not_get_location">Could not get location</string>
-    <string name="tap_here_to_fix">Tap here to fix.</string>
     
     <string name="empty_location_history">Empty Location History</string>
     
@@ -31,5 +29,11 @@
    	<string name="errortitle_something_went_wrong">Something Went Wrong</string>
    	<string name="errordesc_tap_here_to_try_again"><b>Tap Here</b> to try again.</string>
    	
+	<string name="refresh">Refresh</string>
+	<string name="share_location">Share Location</string>
+	<string name="about_location">About Location</string>
+	
    	<string name="share_address_subject">My Location</string>
+   	
+   	<string name="background_map">Background Map</string>
 </resources>
