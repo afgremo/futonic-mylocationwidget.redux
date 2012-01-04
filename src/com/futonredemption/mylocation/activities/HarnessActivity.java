@@ -3,7 +3,6 @@ package com.futonredemption.mylocation.activities;
 import com.futonredemption.mylocation.R;
 import com.futonredemption.mylocation.adapters.PhoneFragmentsPagerAdapter;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
